@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "JetpackComposeMVVMCleanArchitecture"
 include(":app")
+include(":common:ui:theme")

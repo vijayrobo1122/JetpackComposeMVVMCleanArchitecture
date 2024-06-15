@@ -1,4 +1,4 @@
-package com.app.jetpack.mvvm.ui.theme
+package com.app.jetpack.mvvm.common.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -51,7 +51,7 @@ fun JetpackComposeMVVMCleanArchitectureTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = typography,
         content = content
     )
 }
