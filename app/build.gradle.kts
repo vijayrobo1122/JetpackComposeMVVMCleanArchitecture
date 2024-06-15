@@ -66,6 +66,8 @@ android {
 
 dependencies {
 
+    implementation(project(":common:navigation"))
+    implementation(project(":common:ui:compositions"))
     implementation(project(":common:ui:theme"))
 
     implementation(platform(libs.androidx.compose.bom))
@@ -75,7 +77,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
 
     implementation(libs.material)
-    //implementation(libs.androidx.material)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
 

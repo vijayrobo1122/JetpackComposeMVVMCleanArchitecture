@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_movie_detail">Movie Detail</string>
+    <string name="title_artist_detail">Artist Detail</string>
+    <string name="app_title">Movie World</string>
+    <string name="tab_home">Home</string>
+    <string name="tab_popular">Popular</string>
+    <string name="tab_top_rate">Top rated</string>
+    <string name="tab_up_coming">Up coming</string>
+</resources>
