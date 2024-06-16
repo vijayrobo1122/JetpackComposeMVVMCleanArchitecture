@@ -1,7 +1,6 @@
 package com.app.jetpack.mvvm.features.upcoming.di
 
 import com.app.jetpack.mvvm.common.domain.usecase.GetUpcomingMoviesUseCase
-import com.app.jetpack.mvvm.common.ui.widgets.mapper.GenreToUiStateMapper
 import com.app.jetpack.mvvm.common.ui.widgets.mapper.MovieItemToUiStateMapper
 import com.app.jetpack.mvvm.features.upcoming.UpComingViewModel
 import dagger.Module
@@ -19,12 +18,10 @@ class UpcomingModule {
     fun provideUpComingViewModel(
         getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
         movieItemToUiStateMapper: MovieItemToUiStateMapper,
-        genreToUiStateMapper: GenreToUiStateMapper,
     ): UpComingViewModel {
         return UpComingViewModel(
             getUpcomingMoviesUseCase,
             movieItemToUiStateMapper,
-            genreToUiStateMapper
         )
     }
 }

@@ -25,7 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.app.jetpack.mvvm.R
 import com.app.jetpack.mvvm.common.domain.DataState
-import com.app.jetpack.mvvm.common.domain.model.moviedetail.Genre
 import com.app.jetpack.mvvm.common.navigation.Screen
 import com.app.jetpack.mvvm.common.navigation.currentRoute
 import com.app.jetpack.mvvm.common.navigation.navigationTitle
@@ -63,7 +62,8 @@ fun MainScreen() {
     }
 
     if (mainViewModel.genreStateList.value is DataState.Success<List<GenreState>>) {
-        genreList.value = (mainViewModel.genreStateList.value as DataState.Success<ArrayList<GenreState>>).data
+        genreList.value =
+            (mainViewModel.genreStateList.value as DataState.Success<ArrayList<GenreState>>).data
 
         // All first value as all
         if (genreList.value.first().name != DEFAULT_GENRE_ITEM) {
@@ -77,7 +77,7 @@ fun MainScreen() {
             AppDrawer(
                 modifier = Modifier,
                 navController = navController,
-                genres = genreList.value ,
+                genres = genreList.value,
             ) {
                 genreName.value = it
                 scope.launch {
@@ -132,7 +132,11 @@ fun MainScreen() {
                 Box(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    AppNavigation(navController, Modifier.padding(innerPadding))
+                    AppNavigation(
+                        modifier = Modifier.padding(innerPadding),
+                        navController = navController,
+                        genresStateList = genreList.value,
+                    )
                 }
             }
         })

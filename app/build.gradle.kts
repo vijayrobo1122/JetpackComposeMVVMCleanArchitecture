@@ -72,10 +72,10 @@ dependencies {
     implementation(project(":common:ui:theme"))
     implementation(project(":common:ui:widgets"))
 
-    //implementation(project(":features:nowplaying"))
-    //implementation(project(":features:popular"))
-    //implementation(project(":features:toprated"))
-    //implementation(project(":features:upcoming"))
+    implementation(project(":features:nowplaying"))
+    implementation(project(":features:popular"))
+    implementation(project(":features:toprated"))
+    implementation(project(":features:upcoming"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)

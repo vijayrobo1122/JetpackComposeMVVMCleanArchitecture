@@ -24,7 +24,6 @@ const val DEFAULT_GENRE_ITEM = "All"
 class PopularViewModel @Inject constructor(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val movieItemToUiStateMapper: MovieItemToUiStateMapper,
-    internal val genreToUiStateMapper: GenreToUiStateMapper,
 ) :
     ViewModel() {
     var selectedGenre: MutableState<GenreState> =

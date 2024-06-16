@@ -1,7 +1,6 @@
 package com.app.jetpack.mvvm.features.nowplaying.di
 
 import com.app.jetpack.mvvm.common.domain.usecase.GetNowPlayingMoviesUseCase
-import com.app.jetpack.mvvm.common.ui.widgets.mapper.GenreToUiStateMapper
 import com.app.jetpack.mvvm.common.ui.widgets.mapper.MovieItemToUiStateMapper
 import com.app.jetpack.mvvm.features.nowplaying.NowPlayingViewModel
 import dagger.Module
@@ -18,12 +17,10 @@ class NowPlayingModule {
     fun provideNowPlayingViewModel(
         getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
         movieItemToUiStateMapper: MovieItemToUiStateMapper,
-        genreToUiStateMapper: GenreToUiStateMapper,
     ): NowPlayingViewModel {
         return NowPlayingViewModel(
             getNowPlayingMoviesUseCase,
             movieItemToUiStateMapper,
-            genreToUiStateMapper,
         )
     }
 }

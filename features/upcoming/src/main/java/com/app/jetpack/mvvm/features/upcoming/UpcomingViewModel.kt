@@ -9,7 +9,6 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.app.jetpack.mvvm.common.domain.model.GenreId
 import com.app.jetpack.mvvm.common.domain.usecase.GetUpcomingMoviesUseCase
-import com.app.jetpack.mvvm.common.ui.widgets.mapper.GenreToUiStateMapper
 import com.app.jetpack.mvvm.common.ui.widgets.mapper.MovieItemToUiStateMapper
 import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,7 +24,6 @@ const val DEFAULT_GENRE_ITEM = "All"
 class UpComingViewModel @Inject constructor(
     private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
     private val movieItemToUiStateMapper: MovieItemToUiStateMapper,
-    internal val genreToUiStateMapper: GenreToUiStateMapper,
 ) : ViewModel() {
     var selectedGenre: MutableState<GenreState> =
         mutableStateOf(GenreState(genreId = null, name = DEFAULT_GENRE_ITEM))

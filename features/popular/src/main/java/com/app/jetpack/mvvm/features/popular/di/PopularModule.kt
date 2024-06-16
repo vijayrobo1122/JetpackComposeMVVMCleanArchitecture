@@ -17,12 +17,10 @@ class PopularModule {
     fun providePopularViewModel(
         getPopularMoviesUseCase: GetPopularMoviesUseCase,
         movieItemToUiStateMapper: MovieItemToUiStateMapper,
-        genreToUiStateMapper: GenreToUiStateMapper,
     ): PopularViewModel {
         return PopularViewModel(
             getPopularMoviesUseCase,
             movieItemToUiStateMapper,
-            genreToUiStateMapper
         )
     }
 }

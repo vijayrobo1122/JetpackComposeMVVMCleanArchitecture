@@ -29,7 +29,7 @@ class MainViewModel @Inject constructor(
                 if (it is DataState.Success<Genres>) {
                     genreStateList.value = DataState.Success(it.data.genres.map { genre ->
                         genreToUiStateMapper.map(genre)
-                    }.toMutableList())
+                    })
                 }
             }.launchIn(viewModelScope)
         }

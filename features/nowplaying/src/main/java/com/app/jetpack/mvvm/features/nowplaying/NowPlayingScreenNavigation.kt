@@ -2,18 +2,18 @@ package com.app.jetpack.mvvm.features.nowplaying
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.app.jetpack.mvvm.common.domain.model.moviedetail.Genre
 import com.app.jetpack.mvvm.common.navigation.Screen
+import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
 
 fun NavGraphBuilder.nowPlayingMovieScreen(
     onMovieItemClick: (String) -> Unit,
-    genres: ArrayList<Genre>? = null,
+    genresStateList: ArrayList<GenreState>? = null,
 ) {
     composable(route = Screen.Home.route) {
         NowPlayingScreen(
             isShowExitAppDialog = true,
             onMovieItemClick = onMovieItemClick,
-            genres = genres,
+            genresStateList = genresStateList,
         )
     }
 }
