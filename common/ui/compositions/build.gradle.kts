@@ -48,15 +48,14 @@ dependencies {
 
     implementation(libs.androidx.material3)
 
-    implementation("androidx.activity:activity-compose:1.9.0")
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.paging.compose)
 
-    implementation("androidx.paging:paging-compose:3.3.0")
+    implementation(libs.androidx.constraintlayout.compose)
 
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-
-    implementation("com.github.skydoves:landscapist-coil:2.2.13")
-    implementation("com.github.skydoves:landscapist-animation:2.2.13")
-    implementation("com.github.skydoves:landscapist-placeholder:2.2.13")
+    implementation(libs.landscapist.coil)
+    implementation(libs.landscapist.animation)
+    implementation(libs.landscapist.placeholder)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
