@@ -36,3 +36,4 @@ include(":common:ui:widgets")
 
 include(":features:nowplaying")
 include(":features:popular")
+include(":features:toprated")
