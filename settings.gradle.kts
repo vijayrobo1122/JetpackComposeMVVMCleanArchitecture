@@ -35,3 +35,4 @@ include(":common:ui:theme")
 include(":common:ui:widgets")
 
 include(":features:nowplaying")
+include(":features:popular")
