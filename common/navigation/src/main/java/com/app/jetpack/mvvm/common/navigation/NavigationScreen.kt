@@ -26,6 +26,7 @@ sealed class Screen(
     val objectName: String = "",
     val objectPath: String = ""
 ) {
+    object Genre : Screen("genre_screen")
     object Home : Screen("home_screen")
     object Popular : Screen("popular_screen")
     object TopRated : Screen("top_rated_screen")

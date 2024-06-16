@@ -65,6 +65,8 @@ dependencies {
     implementation(project(":common:domain"))
     implementation(project(":common:navigation"))
     implementation(project(":common:ui:compositions"))
+    implementation(project(":common:ui:resources:drawables"))
+    implementation(project(":common:ui:resources:strings"))
     implementation(project(":common:ui:theme"))
 
     implementation(platform(libs.androidx.compose.bom))

@@ -9,7 +9,6 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -25,8 +24,8 @@ import com.app.jetpack.mvvm.common.navigation.navigationTitle
 import com.app.jetpack.mvvm.common.ui.compositions.AppBarWithArrow
 import com.app.jetpack.mvvm.common.ui.compositions.HomeAppBar
 import com.app.jetpack.mvvm.navigation.AppNavigation
+import com.app.jetpack.mvvm.ui.components.AppDrawer
 import com.app.jetpack.mvvm.ui.components.BottomNavigationUI
-import com.app.jetpack.mvvm.ui.components.DrawerUI
 import kotlinx.coroutines.launch
 
 @Composable
@@ -53,7 +52,11 @@ fun MainScreen() {
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            DrawerUI(navController, genreList.value as List<String>) {
+            AppDrawer(
+                modifier = Modifier,
+                navController = navController,
+                genres = genreList.value as List<String>,
+            ) {
                 genreName.value = it
                 scope.launch {
                     drawerState.close()
@@ -101,5 +104,4 @@ fun MainScreen() {
                 }
             }
         })
-
 }
