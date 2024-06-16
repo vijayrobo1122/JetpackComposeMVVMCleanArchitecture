@@ -11,7 +11,6 @@ val properties = Properties().apply {
     load(project.rootProject.file("local.properties").inputStream())
 }
 
-
 android {
     namespace = "com.app.jetpack.mvvm"
     compileSdk = 34
@@ -28,10 +27,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
-        buildConfigField("String", "BASE_URL", properties.getProperty("movie_base_url"))
-        buildConfigField("String", "IMAGE_BASE_URL", properties.getProperty("movie_image_url"))
-        buildConfigField("String", "API_KEY", properties.getProperty("movie_api_key"))
     }
 
     buildTypes {
@@ -66,6 +61,8 @@ android {
 
 dependencies {
 
+    implementation(project(":common:data"))
+    implementation(project(":common:domain"))
     implementation(project(":common:navigation"))
     implementation(project(":common:ui:compositions"))
     implementation(project(":common:ui:theme"))
