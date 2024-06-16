@@ -76,6 +76,7 @@ dependencies {
     implementation(project(":features:popular"))
     implementation(project(":features:toprated"))
     implementation(project(":features:upcoming"))
+    implementation(project(":features:moviedetail"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)

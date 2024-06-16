@@ -7,6 +7,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.app.jetpack.mvvm.common.navigation.Screen
 import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
+import com.app.jetpack.mvvm.features.moviedetail.movieDetailsMovieScreen
+import com.app.jetpack.mvvm.features.moviedetail.navigateToMovieDetailScreen
 import com.app.jetpack.mvvm.features.nowplaying.nowPlayingMovieScreen
 import com.app.jetpack.mvvm.features.popular.popularMovieScreen
 import com.app.jetpack.mvvm.features.toprated.topRatedMovieScreen
@@ -20,20 +22,24 @@ fun AppNavigation(
 ) {
     NavHost(navController, startDestination = Screen.Home.route, modifier) {
         nowPlayingMovieScreen(
-            onMovieItemClick = {},
+            onMovieItemClick = navController::navigateToMovieDetailScreen,
             genresStateList = genresStateList,
         )
         popularMovieScreen(
-            onMovieItemClick = { },
+            onMovieItemClick = navController::navigateToMovieDetailScreen,
             genresStateList = genresStateList,
         )
         topRatedMovieScreen(
-            onMovieItemClick = {},
+            onMovieItemClick = navController::navigateToMovieDetailScreen,
             genresStateList = genresStateList,
         )
         upcomingMovieScreen(
-            onMovieItemClick = {},
+            onMovieItemClick = navController::navigateToMovieDetailScreen,
             genresStateList = genresStateList,
+        )
+        movieDetailsMovieScreen(
+            onMovieItemClick = navController::navigateToMovieDetailScreen,
+            onArtistItemClick = {},
         )
     }
 }
