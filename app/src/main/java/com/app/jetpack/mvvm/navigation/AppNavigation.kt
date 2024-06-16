@@ -9,6 +9,7 @@ import com.app.jetpack.mvvm.common.navigation.Screen
 import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
 import com.app.jetpack.mvvm.features.artistdetail.artistDetailsScreen
 import com.app.jetpack.mvvm.features.artistdetail.navigateToArtistDetailScreen
+import com.app.jetpack.mvvm.features.genredetail.genreDetailScreen
 import com.app.jetpack.mvvm.features.moviedetail.movieDetailsMovieScreen
 import com.app.jetpack.mvvm.features.moviedetail.navigateToMovieDetailScreen
 import com.app.jetpack.mvvm.features.nowplaying.nowPlayingMovieScreen
@@ -44,5 +45,8 @@ fun AppNavigation(
             onArtistItemClick = navController::navigateToArtistDetailScreen,
         )
         artistDetailsScreen()
+        genreDetailScreen(
+            onMovieItemClick = navController::navigateToMovieDetailScreen,
+        )
     }
 }

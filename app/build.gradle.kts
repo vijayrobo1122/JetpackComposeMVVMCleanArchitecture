@@ -78,6 +78,7 @@ dependencies {
     implementation(project(":features:upcoming"))
     implementation(project(":features:moviedetail"))
     implementation(project(":features:artistdetail"))
+    implementation(project(":features:genredetail"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
