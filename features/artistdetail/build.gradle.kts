@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.app.jetpack.mvvm.features.moviedetail"
+    namespace = "com.app.jetpack.mvvm.features.artistdetail"
     compileSdk = 34
 
     compileOptions {

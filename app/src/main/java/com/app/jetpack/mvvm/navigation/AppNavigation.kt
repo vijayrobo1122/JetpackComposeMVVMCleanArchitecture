@@ -7,6 +7,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.app.jetpack.mvvm.common.navigation.Screen
 import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
+import com.app.jetpack.mvvm.features.artistdetail.artistDetailsScreen
+import com.app.jetpack.mvvm.features.artistdetail.navigateToArtistDetailScreen
 import com.app.jetpack.mvvm.features.moviedetail.movieDetailsMovieScreen
 import com.app.jetpack.mvvm.features.moviedetail.navigateToMovieDetailScreen
 import com.app.jetpack.mvvm.features.nowplaying.nowPlayingMovieScreen
@@ -39,7 +41,8 @@ fun AppNavigation(
         )
         movieDetailsMovieScreen(
             onMovieItemClick = navController::navigateToMovieDetailScreen,
-            onArtistItemClick = {},
+            onArtistItemClick = navController::navigateToArtistDetailScreen,
         )
+        artistDetailsScreen()
     }
 }
