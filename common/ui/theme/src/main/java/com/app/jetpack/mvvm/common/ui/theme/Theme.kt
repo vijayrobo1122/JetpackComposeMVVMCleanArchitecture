@@ -51,7 +51,8 @@ fun JetpackComposeMVVMCleanArchitectureTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = typography,
-        content = content
+        typography = Typography,
+        shapes = Shapes,
+        content = content,
     )
 }

@@ -7,4 +7,21 @@
     <string name="tab_popular">Popular</string>
     <string name="tab_top_rate">Top rated</string>
     <string name="tab_up_coming">Up coming</string>
+    <string name="close_the_app">Close the app</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="do_you_want_to_exit_the_app">Do you want to exit the app?</string>
+    <string name="label_similar">Similar</string>
+    <string name="label_cast">Cast</string>
+    <string name="label_rating">Rating</string>
+    <string name="label_language">Language</string>
+    <string name="label_duration">Duration</string>
+    <string name="label_release_date">Release Date</string>
+    <string name="label_description">Description</string>
+    <string name="label_know_for">Known for</string>
+    <string name="label_gender">Gender</string>
+    <string name="label_birth_day">Birthday</string>
+    <string name="label_place_of_birth">Place of Birth</string>
+    <string name="label_biography">Biography</string>
+    <string name="there_is_no_internet">There is no internet!</string>
 </resources>
