@@ -1,4 +1,4 @@
-package com.app.jetpack.mvvm.common.data.di
+package com.app.jetpack.mvvm.common.domain.di
 
 import com.app.jetpack.mvvm.common.domain.repository.MovieRepository
 import com.app.jetpack.mvvm.common.domain.usecase.GetArtistDetailUseCase

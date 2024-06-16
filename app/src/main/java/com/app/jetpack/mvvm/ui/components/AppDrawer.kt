@@ -35,12 +35,13 @@ import androidx.navigation.NavController
 import com.app.jetpack.mvvm.R
 import com.app.jetpack.mvvm.common.navigation.Screen
 import com.app.jetpack.mvvm.common.ui.resources.drawables.DrawableResources
+import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
 
 @Composable
 fun AppDrawer(
     modifier: Modifier = Modifier,
     navController: NavController,
-    genres: List<String>,
+    genres: ArrayList<GenreState>,
     closeDrawer: (genreName: String) -> Unit
 ) {
     ModalDrawerSheet(modifier = Modifier) {
@@ -49,18 +50,24 @@ fun AppDrawer(
             modifier = Modifier
                 .fillMaxHeight()
         ) {
-            items(items = genres, itemContent = { menuItem ->
+            items(items = genres, itemContent = { genre ->
                 NavigationDrawerItem(
                     label = {
                         Text(
-                            text = menuItem,
+                            text = genre.name,
                             style = MaterialTheme.typography.labelSmall,
                             fontSize = 18.sp
                         )
                     },
                     onClick = {
-                        navController.navigate(Screen.Genre.route)
-                        closeDrawer(menuItem)
+                        if (genre.genreId != null && genre.genreId!! >= 0) {
+                            navController.navigate(Screen.NavigationDrawer.route.plus("/${genre.genreId}")) {
+                                launchSingleTop = true
+                            }
+                        } else {
+                            navController.navigate(Screen.HomeNav.route)
+                        }
+                        closeDrawer(genre.name)
                     },
                     icon = {
                         Icon(
@@ -68,7 +75,7 @@ fun AppDrawer(
                                 .height(24.dp)
                                 .width(24.dp),
                             imageVector = Icons.Default.Movie,
-                            contentDescription = menuItem,
+                            contentDescription = genre.name,
                         )
                     },
                     shape = MaterialTheme.shapes.small,

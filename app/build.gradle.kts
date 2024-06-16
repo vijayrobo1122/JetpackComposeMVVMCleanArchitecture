@@ -63,11 +63,19 @@ dependencies {
 
     implementation(project(":common:data"))
     implementation(project(":common:domain"))
+    implementation(project(":common:general:extensions"))
+    implementation(project(":common:general:models"))
     implementation(project(":common:navigation"))
     implementation(project(":common:ui:compositions"))
     implementation(project(":common:ui:resources:drawables"))
     implementation(project(":common:ui:resources:strings"))
     implementation(project(":common:ui:theme"))
+    implementation(project(":common:ui:widgets"))
+
+    //implementation(project(":features:nowplaying"))
+    //implementation(project(":features:popular"))
+    //implementation(project(":features:toprated"))
+    //implementation(project(":features:upcoming"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)

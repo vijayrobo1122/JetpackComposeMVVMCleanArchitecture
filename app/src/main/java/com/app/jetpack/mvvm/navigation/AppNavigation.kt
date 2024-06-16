@@ -84,21 +84,5 @@ fun AppNavigation(
                 )
             }
         }
-        composable(route = Screen.Genre.route) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "${Screen.Genre.route} Details Screen",
-                    modifier = Modifier
-                        .align(alignment = Alignment.CenterHorizontally),
-                    fontSize = 32.sp,
-                    textAlign = TextAlign.Center,
-                )
-            }
-        }
     }
 }
