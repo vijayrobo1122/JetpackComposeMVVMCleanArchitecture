@@ -13,7 +13,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,14 +32,14 @@ fun AppBarWithArrow(
                     .padding(8.dp),
                 text = title ?: "",
                 style = MaterialTheme.typography.titleLarge,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.secondary,
                 textAlign = TextAlign.Center
             )
         },
         navigationIcon = {
             Image(
                 imageVector = Icons.Filled.ArrowBack,
-                colorFilter = ColorFilter.tint(Color.White),
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.secondary),
                 contentDescription = null,
                 modifier = Modifier
                     .clickable {
@@ -48,6 +47,7 @@ fun AppBarWithArrow(
                     }
             )
         },
-        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primary),
+        colors = TopAppBarDefaults.topAppBarColors()
+            .copy(containerColor = MaterialTheme.colorScheme.primaryContainer),
     )
 }
