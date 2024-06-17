@@ -1,6 +1,6 @@
 package com.app.jetpack.mvvm.common.ui.widgets.mapper
 
-import com.app.jetpack.mvvm.common.domain.model.moviedetail.BelongsToCollection
+import com.app.jetpack.mvvm.business.moviedetail.domain.model.BelongsToCollection
 import com.app.jetpack.mvvm.common.ui.widgets.model.BelongsToCollectionState
 import javax.inject.Inject
 

@@ -21,7 +21,9 @@ android {
 
 dependencies {
 
-    implementation(project(":common:domain"))
+    implementation(project(":business:artistdetail:domain:model"))
+    implementation(project(":business:moviedetail:domain:model"))
+
     implementation(project(":common:general:models"))
 
     implementation(libs.hilt.android)

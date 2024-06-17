@@ -14,8 +14,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.app.jetpack.mvvm.common.domain.api.pagingLoadingState
 import com.app.jetpack.mvvm.common.domain.models.DataState
-import com.app.jetpack.mvvm.common.domain.pagingLoadingState
 import com.app.jetpack.mvvm.common.ui.compositions.ArtistAndCrewCard
 import com.app.jetpack.mvvm.common.ui.compositions.CircularIndeterminateProgressBar
 import com.app.jetpack.mvvm.common.ui.compositions.MovieDetailCard

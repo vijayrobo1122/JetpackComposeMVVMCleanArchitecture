@@ -1,6 +1,6 @@
 package com.app.jetpack.mvvm.features.toprated.di
 
-import com.app.jetpack.mvvm.common.domain.usecase.GetTopRatedMoviesUseCase
+import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetTopRatedMoviesUseCase
 import com.app.jetpack.mvvm.common.ui.widgets.mapper.MovieItemToUiStateMapper
 import com.app.jetpack.mvvm.features.toprated.TopRatedViewModel
 import dagger.Module

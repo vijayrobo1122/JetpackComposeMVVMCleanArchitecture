@@ -1,6 +1,6 @@
 package com.app.jetpack.mvvm.di
 
-import com.app.jetpack.mvvm.common.domain.usecase.GetGenresListUseCase
+import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetGenresListUseCase
 import com.app.jetpack.mvvm.common.ui.widgets.mapper.GenreToUiStateMapper
 import com.app.jetpack.mvvm.ui.main.MainViewModel
 import dagger.Module

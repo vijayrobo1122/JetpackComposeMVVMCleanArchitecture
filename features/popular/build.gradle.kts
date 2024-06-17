@@ -29,7 +29,10 @@ android {
 
 dependencies {
 
-    implementation(project(":common:domain"))
+    implementation(project(":business:moviedetail:di"))
+    implementation(project(":business:moviedetail:domain:main"))
+    implementation(project(":business:moviedetail:domain:model"))
+
     implementation(project(":common:domain:api"))
     implementation(project(":common:general:extensions"))
     implementation(project(":common:general:models"))

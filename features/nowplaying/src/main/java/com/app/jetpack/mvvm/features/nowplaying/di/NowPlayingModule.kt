@@ -1,6 +1,6 @@
 package com.app.jetpack.mvvm.features.nowplaying.di
 
-import com.app.jetpack.mvvm.common.domain.usecase.GetNowPlayingMoviesUseCase
+import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetNowPlayingMoviesUseCase
 import com.app.jetpack.mvvm.common.ui.widgets.mapper.MovieItemToUiStateMapper
 import com.app.jetpack.mvvm.features.nowplaying.NowPlayingViewModel
 import dagger.Module

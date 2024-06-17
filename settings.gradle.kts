@@ -22,8 +22,6 @@ dependencyResolutionManagement {
 rootProject.name = "JetpackComposeMVVMCleanArchitecture"
 include(":app")
 
-include(":common:data")
-include(":common:domain")
 include(":common:domain:api")
 include(":common:domain:models")
 include(":common:general:extensions")

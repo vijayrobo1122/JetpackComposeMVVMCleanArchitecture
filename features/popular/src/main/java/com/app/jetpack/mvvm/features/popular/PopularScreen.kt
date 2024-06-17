@@ -3,7 +3,7 @@ package com.app.jetpack.mvvm.features.popular
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.app.jetpack.mvvm.common.domain.model.GenreId
+import com.app.jetpack.mvvm.business.moviedetail.domain.model.GenreId
 import com.app.jetpack.mvvm.common.ui.compositions.MoviesListWidget
 import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
 

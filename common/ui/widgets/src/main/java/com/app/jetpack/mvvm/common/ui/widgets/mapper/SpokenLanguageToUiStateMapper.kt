@@ -1,6 +1,6 @@
 package com.app.jetpack.mvvm.common.ui.widgets.mapper
 
-import com.app.jetpack.mvvm.common.domain.model.moviedetail.SpokenLanguage
+import com.app.jetpack.mvvm.business.moviedetail.domain.model.SpokenLanguage
 import com.app.jetpack.mvvm.common.ui.widgets.model.SpokenLanguageState
 import javax.inject.Inject
 

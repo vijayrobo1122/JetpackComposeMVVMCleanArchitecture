@@ -4,9 +4,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.app.jetpack.mvvm.common.domain.model.Genres
+import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetGenresListUseCase
+import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genres
 import com.app.jetpack.mvvm.common.domain.models.DataState
-import com.app.jetpack.mvvm.common.domain.usecase.GetGenresListUseCase
 import com.app.jetpack.mvvm.common.ui.widgets.mapper.GenreToUiStateMapper
 import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
 import dagger.hilt.android.lifecycle.HiltViewModel

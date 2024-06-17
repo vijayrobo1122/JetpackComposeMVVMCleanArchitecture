@@ -29,7 +29,10 @@ android {
 
 dependencies {
 
-    implementation(project(":common:domain"))
+    implementation(project(":business:artistdetail:di"))
+    implementation(project(":business:artistdetail:domain:main"))
+    implementation(project(":business:artistdetail:domain:model"))
+
     implementation(project(":common:domain:api"))
     implementation(project(":common:domain:models"))
     implementation(project(":common:general:extensions"))

@@ -6,9 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.app.jetpack.mvvm.common.domain.model.GenreId
-import com.app.jetpack.mvvm.common.domain.usecase.GetPopularMoviesUseCase
-import com.app.jetpack.mvvm.common.ui.widgets.mapper.GenreToUiStateMapper
+import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetPopularMoviesUseCase
+import com.app.jetpack.mvvm.business.moviedetail.domain.model.GenreId
 import com.app.jetpack.mvvm.common.ui.widgets.mapper.MovieItemToUiStateMapper
 import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
 import dagger.hilt.android.lifecycle.HiltViewModel

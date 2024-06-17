@@ -1,7 +1,7 @@
 package com.app.jetpack.mvvm.common.ui.widgets.mapper
 
 
-import com.app.jetpack.mvvm.common.domain.model.moviedetail.Genre
+import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genre
 import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
 import javax.inject.Inject
 

@@ -1,6 +1,6 @@
 package com.app.jetpack.mvvm.common.ui.widgets.mapper
 
-import com.app.jetpack.mvvm.common.domain.model.MovieItem
+import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieItem
 import com.app.jetpack.mvvm.common.ui.widgets.model.MovieItemState
 import javax.inject.Inject
 

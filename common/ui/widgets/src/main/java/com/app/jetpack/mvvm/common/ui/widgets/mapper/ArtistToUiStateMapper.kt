@@ -1,6 +1,6 @@
 package com.app.jetpack.mvvm.common.ui.widgets.mapper
 
-import com.app.jetpack.mvvm.common.domain.model.artist.Artist
+import com.app.jetpack.mvvm.business.artistdetail.domain.model.Artist
 import com.app.jetpack.mvvm.common.ui.widgets.model.ArtistState
 import javax.inject.Inject
 
