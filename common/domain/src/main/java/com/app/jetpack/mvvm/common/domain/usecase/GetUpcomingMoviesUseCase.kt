@@ -1,7 +1,7 @@
 package com.app.jetpack.mvvm.common.domain.usecase
 
 import androidx.paging.PagingData
-import com.app.jetpack.mvvm.common.domain.UseCase
+import com.app.jetpack.mvvm.common.domain.api.UseCase
 import com.app.jetpack.mvvm.common.domain.model.MovieItem
 import com.app.jetpack.mvvm.common.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow

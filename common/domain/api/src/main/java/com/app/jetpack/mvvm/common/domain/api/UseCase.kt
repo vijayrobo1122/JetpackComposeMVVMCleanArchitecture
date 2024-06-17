@@ -1,4 +1,4 @@
-package com.app.jetpack.mvvm.common.domain
+package com.app.jetpack.mvvm.common.domain.api
 
 import kotlinx.coroutines.flow.Flow
 

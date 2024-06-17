@@ -1,8 +1,8 @@
 package com.app.jetpack.mvvm.common.domain.usecase
 
-import com.app.jetpack.mvvm.common.domain.DataState
-import com.app.jetpack.mvvm.common.domain.UseCase
+import com.app.jetpack.mvvm.common.domain.api.UseCase
 import com.app.jetpack.mvvm.common.domain.model.BaseModel
+import com.app.jetpack.mvvm.common.domain.models.DataState
 import com.app.jetpack.mvvm.common.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 

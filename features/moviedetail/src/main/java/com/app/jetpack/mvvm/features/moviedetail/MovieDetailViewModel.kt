@@ -5,10 +5,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.app.jetpack.mvvm.common.domain.DataState
 import com.app.jetpack.mvvm.common.domain.model.BaseModel
 import com.app.jetpack.mvvm.common.domain.model.artist.Artist
 import com.app.jetpack.mvvm.common.domain.model.moviedetail.MovieDetail
+import com.app.jetpack.mvvm.common.domain.models.DataState
 import com.app.jetpack.mvvm.common.domain.usecase.GetMovieCreditUseCase
 import com.app.jetpack.mvvm.common.domain.usecase.GetMovieDetailUseCase
 import com.app.jetpack.mvvm.common.domain.usecase.GetRecommendedMovieUseCase

@@ -24,6 +24,8 @@ include(":app")
 
 include(":common:data")
 include(":common:domain")
+include(":common:domain:api")
+include(":common:domain:models")
 include(":common:general:extensions")
 include(":common:general:models")
 include(":common:navigation")
@@ -41,3 +43,5 @@ include(":features:upcoming")
 include(":features:moviedetail")
 include(":features:artistdetail")
 include(":features:genredetail")
+
+

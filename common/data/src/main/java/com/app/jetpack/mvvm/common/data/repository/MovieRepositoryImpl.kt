@@ -15,13 +15,13 @@ import com.app.jetpack.mvvm.common.data.mapper.GenresMapper
 import com.app.jetpack.mvvm.common.data.mapper.artist.ArtistDetailMapper
 import com.app.jetpack.mvvm.common.data.mapper.artist.ArtistMapper
 import com.app.jetpack.mvvm.common.data.mapper.moviesdetail.MovieDetailMapper
-import com.app.jetpack.mvvm.common.domain.DataState
 import com.app.jetpack.mvvm.common.domain.model.BaseModel
 import com.app.jetpack.mvvm.common.domain.model.Genres
 import com.app.jetpack.mvvm.common.domain.model.MovieItem
 import com.app.jetpack.mvvm.common.domain.model.artist.Artist
 import com.app.jetpack.mvvm.common.domain.model.artist.ArtistDetail
 import com.app.jetpack.mvvm.common.domain.model.moviedetail.MovieDetail
+import com.app.jetpack.mvvm.common.domain.models.DataState
 import com.app.jetpack.mvvm.common.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.app.jetpack.mvvm.R
-import com.app.jetpack.mvvm.common.domain.DataState
+import com.app.jetpack.mvvm.common.domain.models.DataState
 import com.app.jetpack.mvvm.common.navigation.Screen
 import com.app.jetpack.mvvm.common.navigation.currentRoute
 import com.app.jetpack.mvvm.common.navigation.navigationTitle

@@ -30,6 +30,7 @@ android {
 dependencies {
 
     implementation(project(":common:domain"))
+    implementation(project(":common:domain:api"))
     implementation(project(":common:general:extensions"))
     implementation(project(":common:general:models"))
     implementation(project(":common:navigation"))

@@ -40,6 +40,7 @@ dependencies {
 
     implementation(project(":common:general:extensions"))
     implementation(project(":common:domain"))
+    implementation(project(":common:domain:models"))
 
     implementation(libs.androidx.paging.compose)
 

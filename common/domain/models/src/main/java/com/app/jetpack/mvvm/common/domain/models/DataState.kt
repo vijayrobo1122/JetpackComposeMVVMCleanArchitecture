@@ -1,4 +1,4 @@
-package com.app.jetpack.mvvm.common.domain
+package com.app.jetpack.mvvm.common.domain.models
 
 sealed class DataState<out R> {
     data object Loading : DataState<Nothing>()

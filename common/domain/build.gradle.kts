@@ -21,6 +21,9 @@ android {
 
 dependencies {
 
+    implementation(project(":common:domain:api"))
+    implementation(project(":common:domain:models"))
+
     implementation(libs.androidx.paging.compose)
 
     implementation(libs.hilt.android)
