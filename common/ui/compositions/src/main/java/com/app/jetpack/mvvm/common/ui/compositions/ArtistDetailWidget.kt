@@ -35,7 +35,7 @@ fun ArtistDetailWidget(
                     .padding(bottom = 8.dp)
                     .height(250.dp)
                     .width(190.dp)
-                    .cornerRadius(10),
+                    .cornerRadius(10.dp),
                 imagePath = BuildConfig.IMAGE_BASE_URL.plus(artistDetailState.profilePath)
             )
             Column {

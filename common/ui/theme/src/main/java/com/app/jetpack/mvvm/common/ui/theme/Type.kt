@@ -48,3 +48,4 @@ val Typography.bioGrapyText: TextStyle
             fontSize = 14.sp,
         )
     }
+

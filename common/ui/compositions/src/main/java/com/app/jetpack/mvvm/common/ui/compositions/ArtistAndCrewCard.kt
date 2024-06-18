@@ -51,10 +51,11 @@ fun ArtistAndCrewCard(
                             .padding(bottom = 5.dp)
                             .height(80.dp)
                             .width(80.dp)
-                            .cornerRadius(40)
+                            .cornerRadius(40.dp)
                             .clickable {
-                                onArtistItemClick(item.id.toString())
-                            }, imagePath = BuildConfig.IMAGE_BASE_URL.plus(item.profilePath)
+                                onArtistItemClick(item.id)
+                            },
+                        imagePath = BuildConfig.IMAGE_BASE_URL.plus(item.profilePath)
                     )
                     SubtitleSecondary(text = item.name)
                 }

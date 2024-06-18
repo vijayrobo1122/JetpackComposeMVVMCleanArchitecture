@@ -64,7 +64,7 @@ fun MoviesListWidget(
                 }
             }
         }
-        CircularIndeterminateProgressBar(isDisplayed = progressBar.value, 0.4f)
+        CircularIndeterminateProgressBar(isDisplayed = progressBar.value)
         LazyVerticalGrid(columns = GridCells.Fixed(2),
             modifier = Modifier
                 .padding(start = 5.dp, end = 5.dp)

@@ -8,8 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.constraintlayout.compose.ConstraintLayout
 
+private const val DEFAULT_FRACTION = 0.4f
+
 @Composable
-fun CircularIndeterminateProgressBar(isDisplayed: Boolean, verticalBias: Float) {
+fun CircularIndeterminateProgressBar(isDisplayed: Boolean, verticalBias: Float = DEFAULT_FRACTION) {
     if (isDisplayed) {
         ConstraintLayout(
             modifier = Modifier.fillMaxSize(),

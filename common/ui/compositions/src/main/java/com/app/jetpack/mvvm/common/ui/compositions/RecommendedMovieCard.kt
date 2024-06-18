@@ -46,9 +46,9 @@ fun RecommendedMovieCard(
                         modifier = Modifier
                             .height(190.dp)
                             .width(140.dp)
-                            .cornerRadius(10)
+                            .cornerRadius(10.dp)
                             .clickable {
-                                onItemClick(item.id.toString())
+                                onItemClick(item.id)
                             },
                         imagePath = BuildConfig.IMAGE_BASE_URL.plus(item.posterPath)
                     )

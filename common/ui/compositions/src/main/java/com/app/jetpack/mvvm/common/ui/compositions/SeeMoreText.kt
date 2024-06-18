@@ -116,7 +116,7 @@ fun ExpandingText(
                 }
             }
 
-            !isExpanded && textLayoutResult.hasVisualOverflow -> {//Returns true if either vertical overflow or horizontal overflow happens.
+            !isExpanded && textLayoutResult.hasVisualOverflow -> {
                 val lastCharIndex = textLayoutResult.getLineEnd(MINIMIZED_MAX_LINES - 1)
                 val showMoreString = "...See more"
                 val adjustedText = textWithLinks
@@ -134,8 +134,6 @@ fun ExpandingText(
                 }
 
                 isClickable = true
-                //We basically need to assign this here so that the Text is only clickable if the state is not expanded,
-                // but there is visual overflow. Otherwise, it means that the text given to the composable is not exceeding the max lines.
             }
         }
     }

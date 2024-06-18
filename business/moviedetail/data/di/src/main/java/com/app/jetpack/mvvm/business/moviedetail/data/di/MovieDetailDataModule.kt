@@ -25,6 +25,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object MovieDetailDataModule {
 
+    private const val DEFAULT_TIMEOUT = 60L
+
     /**
      * Provides BaseUrl as string
      */
@@ -54,10 +56,10 @@ object MovieDetailDataModule {
     fun provideOkHttpClient(@Named("movie_logger_interceptor") loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         val okHttpClient = OkHttpClient().newBuilder()
 
-        okHttpClient.callTimeout(40, TimeUnit.SECONDS)
-        okHttpClient.connectTimeout(40, TimeUnit.SECONDS)
-        okHttpClient.readTimeout(40, TimeUnit.SECONDS)
-        okHttpClient.writeTimeout(40, TimeUnit.SECONDS)
+        okHttpClient.callTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+        okHttpClient.connectTimeout( DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+        okHttpClient.readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+        okHttpClient.writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
         okHttpClient.addInterceptor(loggingInterceptor)
         okHttpClient.build()
         return okHttpClient.build()

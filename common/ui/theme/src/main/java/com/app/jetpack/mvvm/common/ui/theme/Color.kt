@@ -15,3 +15,5 @@ val FontColor = Color(0xFF212121)
 val SecondaryFontColor = Color(0xFF757575)
 val LinkColor = Color(0xff64B5F6)
 val DefaultBackgroundColor = Color(0xFFFAFAFA)
+
+

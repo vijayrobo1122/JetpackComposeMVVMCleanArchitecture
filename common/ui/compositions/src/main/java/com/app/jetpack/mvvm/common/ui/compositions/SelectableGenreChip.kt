@@ -44,7 +44,7 @@ fun SelectableGenreChip(
     Box(
         modifier = Modifier
             .padding(end = 8.dp)
-            .cornerRadius(16)
+            .cornerRadius(16.dp)
             .background(
                 color = animateChipBackgroundColor
             )

@@ -21,7 +21,7 @@ fun MovieCard(
         CustomImage(
             modifier = Modifier
                 .size(250.dp)
-                .cornerRadius(10)
+                .cornerRadius(10.dp)
                 .clickable {
                     onMovieItemClick(state.movieId.toString())
                 },

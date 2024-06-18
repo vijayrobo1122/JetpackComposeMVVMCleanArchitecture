@@ -50,7 +50,7 @@ fun MovieDetailScreen(
                 DefaultBackgroundColor
             )
     ) {
-        CircularIndeterminateProgressBar(isDisplayed = progressBar.value, 0.4f)
+        CircularIndeterminateProgressBar(isDisplayed = progressBar.value)
         movieDetail.value?.let { it ->
             if (it is DataState.Success<MovieDetailState>) {
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())) {

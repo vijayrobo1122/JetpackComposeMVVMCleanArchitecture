@@ -40,7 +40,7 @@ fun ArtistDetailScreen(personId: Int) {
             .padding(start = 8.dp, top = 8.dp, end = 8.dp)
     ) {
 
-        CircularIndeterminateProgressBar(isDisplayed = progressBar.value, 0.4f)
+        CircularIndeterminateProgressBar(isDisplayed = progressBar.value)
 
         artistDetail.value.let {
             if (it is DataState.Success<ArtistDetailState>) {

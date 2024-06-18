@@ -90,7 +90,9 @@ fun MainScreen() {
                 modifier = Modifier.fillMaxSize(),
                 topBar = {
                     when (navController.currentRoute()) {
-                        Screen.Home.route, Screen.Popular.route, Screen.TopRated.route, Screen.Upcoming.route, Screen.NavigationDrawer.route -> {
+                        Screen.Home.route, Screen.Popular.route,
+                        Screen.TopRated.route, Screen.Upcoming.route,
+                        Screen.NavigationDrawer.route -> {
                             val appTitle: String =
                                 if (navController.currentRoute() == Screen.NavigationDrawer.route) genreName.value
                                 else stringResource(R.string.app_title)
