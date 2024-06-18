@@ -34,10 +34,10 @@ class GenrePagingDataSource @Inject constructor(
             )
         } catch (exception: IOException) {
             Timber.e("exception ${exception.message}")
-            return LoadResult.Error(exception)
+            LoadResult.Error(exception)
         } catch (httpException: HttpException) {
             Timber.e("httpException ${httpException.message}")
-            return LoadResult.Error(httpException)
+            LoadResult.Error(httpException)
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.app.jetpack.mvvm.ui.main
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,9 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.app.jetpack.mvvm.R
-import com.app.jetpack.mvvm.common.domain.models.DataState
 import com.app.jetpack.mvvm.common.navigation.Screen
 import com.app.jetpack.mvvm.common.navigation.currentRoute
 import com.app.jetpack.mvvm.common.navigation.navigationTitle
@@ -46,11 +48,7 @@ fun MainScreen() {
     val mainViewModel = hiltViewModel<MainViewModel>()
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-
-    val genreName = remember { mutableStateOf("") }
-    val genreList = remember { mutableStateOf(arrayListOf<GenreState>()) }
 
     // internet connection
     val connection by connectivityState()
@@ -61,15 +59,9 @@ fun MainScreen() {
         mainViewModel.genreList()
     }
 
-    if (mainViewModel.genreStateList.value is DataState.Success<List<GenreState>>) {
-        genreList.value =
-            (mainViewModel.genreStateList.value as DataState.Success<ArrayList<GenreState>>).data
-
-        // All first value as all
-        if (genreList.value.first().name != DEFAULT_GENRE_ITEM) {
-            genreList.value.add(0, GenreState(genreId = null, name = DEFAULT_GENRE_ITEM))
-        }
-    }
+    val genreName = remember { mutableStateOf("") }
+    val genreList = remember { mutableStateOf(arrayListOf<GenreState>()) }
+    genreList.value = mainViewModel.genreStateList.value as ArrayList<GenreState>
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -86,60 +78,91 @@ fun MainScreen() {
             }
         },
         content = {
-            Scaffold(
-                modifier = Modifier.fillMaxSize(),
-                topBar = {
-                    when (navController.currentRoute()) {
-                        Screen.Home.route, Screen.Popular.route,
-                        Screen.TopRated.route, Screen.Upcoming.route,
-                        Screen.NavigationDrawer.route -> {
-                            val appTitle: String =
-                                if (navController.currentRoute() == Screen.NavigationDrawer.route) genreName.value
-                                else stringResource(R.string.app_title)
-                            HomeAppBar(title = appTitle, openDrawer = {
-                                scope.launch {
-                                    drawerState.apply {
-                                        if (isClosed) open() else close()
-                                    }
-                                }
-                            })
-                        }
-
-                        else -> {
-                            AppBarWithArrow(navController.navigationTitle()) {
-                                navController.popBackStack()
-                            }
-                        }
+            CustomScaffoldView(navController, genreList, genreName.value, isConnected) {
+                scope.launch {
+                    drawerState.apply {
+                        if (isClosed) open() else close()
                     }
-                },
-                bottomBar = {
-                    when (navController.currentRoute()) {
-                        Screen.Home.route, Screen.Popular.route, Screen.TopRated.route, Screen.Upcoming.route -> {
-                            BottomNavigationUI(navController)
-                        }
-                    }
-                },
-                snackbarHost = {
-                    if (isConnected.not()) {
-                        SnackbarHost(snackbarHostState, snackbar = {
-                            Snackbar(
-                                action = {}, modifier = Modifier.padding(8.dp)
-                            ) {
-                                Text(text = stringResource(StringResources.thereIsNoInternet))
-                            }
-                        })
-                    }
-                },
-            ) { innerPadding ->
-                Box(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    AppNavigation(
-                        modifier = Modifier.padding(innerPadding),
-                        navController = navController,
-                        genresStateList = genreList.value,
-                    )
                 }
             }
         })
+}
+
+@Composable
+fun CustomScaffoldView(
+    navController: NavHostController,
+    genreList: MutableState<ArrayList<GenreState>>,
+    genreName: String,
+    isConnected: Boolean,
+    openDrawer: () -> Unit
+) {
+    val snackbarHostState = remember { SnackbarHostState() }
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            ScaffoldTopBar(navController, genreName, openDrawer = openDrawer)
+        },
+        bottomBar = {
+            when (navController.currentRoute()) {
+                Screen.Home.route, Screen.Popular.route, Screen.TopRated.route, Screen.Upcoming.route -> {
+                    BottomNavigationUI(navController)
+                }
+            }
+        },
+        snackbarHost = {
+            CustomSnackBarView(isShow = isConnected.not(), snackbarHostState)
+        },
+    ) { innerPadding ->
+        ScaffoldContent(innerPadding, navController, genreList.value)
+    }
+}
+
+@Composable
+fun CustomSnackBarView(isShow: Boolean = false, snackbarHostState: SnackbarHostState) {
+    if (isShow) {
+        SnackbarHost(snackbarHostState, snackbar = {
+            Snackbar(
+                action = {}, modifier = Modifier.padding(8.dp)
+            ) {
+                Text(text = stringResource(StringResources.thereIsNoInternet))
+            }
+        })
+    }
+}
+
+@Composable
+fun ScaffoldTopBar(navController: NavHostController, genreName: String, openDrawer: () -> Unit) {
+    when (navController.currentRoute()) {
+        Screen.Home.route, Screen.Popular.route,
+        Screen.TopRated.route, Screen.Upcoming.route,
+        Screen.NavigationDrawer.route -> {
+            val appTitle: String =
+                if (navController.currentRoute() == Screen.NavigationDrawer.route) genreName
+                else stringResource(R.string.app_title)
+            HomeAppBar(title = appTitle, openDrawer = openDrawer)
+        }
+
+        else -> {
+            AppBarWithArrow(navController.navigationTitle()) {
+                navController.popBackStack()
+            }
+        }
+    }
+}
+
+@Composable
+fun ScaffoldContent(
+    innerPadding: PaddingValues,
+    navController: NavHostController,
+    genreList: ArrayList<GenreState>,
+) {
+    Box(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        AppNavigation(
+            modifier = Modifier.padding(innerPadding),
+            navController = navController,
+            genresStateList = genreList,
+        )
+    }
 }

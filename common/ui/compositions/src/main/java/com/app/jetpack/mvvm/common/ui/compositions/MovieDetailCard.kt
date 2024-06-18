@@ -54,39 +54,26 @@ fun MovieDetailCard(
                     .fillMaxWidth()
                     .padding(bottom = 10.dp, top = 10.dp)
             ) {
-
-                Column(Modifier.weight(1f)) {
-                    SubtitlePrimary(
-                        text = movieDetailState.originalLanguage,
-                    )
-                    SubtitleSecondary(
-                        text = stringResource(StringResources.labelLanguage)
-                    )
-                }
-                Column(Modifier.weight(1f)) {
-                    SubtitlePrimary(
-                        text = movieDetailState.voteAverage.roundTo(1).toString(),
-                    )
-                    SubtitleSecondary(
-                        text = stringResource(StringResources.labelRating)
-                    )
-                }
-                Column(Modifier.weight(1f)) {
-                    SubtitlePrimary(
-                        text = movieDetailState.runtime.hourMinutes()
-                    )
-                    SubtitleSecondary(
-                        text = stringResource(StringResources.labelDuration)
-                    )
-                }
-                Column(Modifier.weight(1f)) {
-                    SubtitlePrimary(
-                        text = movieDetailState.releaseDate
-                    )
-                    SubtitleSecondary(
-                        text = stringResource(StringResources.labelReleaseDate)
-                    )
-                }
+                DisplayRowItemContent(
+                    Modifier.weight(1f),
+                    movieDetailState.originalLanguage,
+                    StringResources.labelLanguage
+                )
+                DisplayRowItemContent(
+                    Modifier.weight(1f),
+                    movieDetailState.voteAverage.roundTo(1).toString(),
+                    StringResources.labelRating,
+                )
+                DisplayRowItemContent(
+                    Modifier.weight(1f),
+                    movieDetailState.runtime.hourMinutes(),
+                    StringResources.labelDuration,
+                )
+                DisplayRowItemContent(
+                    Modifier.weight(1f),
+                    movieDetailState.releaseDate,
+                    StringResources.labelReleaseDate,
+                )
             }
             Text(
                 text = stringResource(StringResources.labelDescription),
@@ -96,5 +83,17 @@ fun MovieDetailCard(
             )
             ExpandingText(text = movieDetailState.overview)
         }
+    }
+}
+
+@Composable
+fun DisplayRowItemContent(modifier: Modifier, title: String, iconId: Int) {
+    Column(modifier = modifier) {
+        SubtitlePrimary(
+            text = title,
+        )
+        SubtitleSecondary(
+            text = stringResource(iconId)
+        )
     }
 }
