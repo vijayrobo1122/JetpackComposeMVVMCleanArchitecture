@@ -1,10 +1,13 @@
 import java.util.Properties
 
+apply(from = "$rootDir/config/analytics/jacoco.gradle")
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.google.dagger.hilt)
+    id("jacoco")
 }
 
 val properties = Properties().apply {
@@ -30,6 +33,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
