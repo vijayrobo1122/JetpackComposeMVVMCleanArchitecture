@@ -18,7 +18,7 @@ fun <T : Any> MutableState<DataState<T>?>.pagingLoadingState(isLoaded: (pagingSt
         }
 
         else -> {
-
+            //DO_NOTHING
         }
     }
 }

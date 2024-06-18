@@ -12,12 +12,12 @@ interface ArtistApiService {
     @GET("person/{personId}")
     suspend fun artistDetail(
         @Path("personId") personId: Int,
-        @Query("api_key") api_key: String = BuildConfig.API_KEY
+        @Query("api_key") apiKey: String = BuildConfig.API_KEY
     ): ArtistDetailEntity
 
     @GET("movie/{movieId}/credits")
     suspend fun movieCredit(
         @Path("movieId") movieId: Int,
-        @Query("api_key") api_key: String = BuildConfig.API_KEY
+        @Query("api_key") apiKey: String = BuildConfig.API_KEY
     ): ArtistEntity
 }

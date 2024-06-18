@@ -16,7 +16,7 @@ class ProductionCountryMapperTest {
 
         // Given
         val productionCountryEntity = ProductionCountryEntity(
-            iso_3166_1 = "iso_3166_1",
+            isoName = "isoName",
             name = "name",
         )
 
@@ -24,7 +24,7 @@ class ProductionCountryMapperTest {
         val productionCountry: ProductionCountry = sut.mapTo(productionCountryEntity)
 
         // Then
-        assertEquals(productionCountryEntity.iso_3166_1, productionCountry.iso_3166_1)
+        assertEquals(productionCountryEntity.isoName, productionCountry.isoName)
         assertEquals(productionCountryEntity.name, productionCountry.name)
     }
 

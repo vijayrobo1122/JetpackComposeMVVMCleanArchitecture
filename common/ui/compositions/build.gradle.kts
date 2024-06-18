@@ -10,7 +10,7 @@ val properties = Properties().apply {
 
 android {
     namespace = "com.app.jetpack.mvvm.common.ui.compositions"
-    compileSdk = 34
+    compileSdk = rootProject.ext.get("compileSdkVersion") as Int
 
     defaultConfig {
 
@@ -33,7 +33,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.5"
+        kotlinCompilerExtensionVersion = rootProject.ext.get("kotlinCompilerVersion") as String
     }
 }
 
@@ -52,10 +52,6 @@ dependencies {
     implementation(libs.androidx.paging.compose)
 
     implementation(libs.androidx.constraintlayout.compose)
-
-    implementation(libs.landscapist.coil)
-    implementation(libs.landscapist.animation)
-    implementation(libs.landscapist.placeholder)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

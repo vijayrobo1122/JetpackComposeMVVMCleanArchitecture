@@ -10,7 +10,7 @@ class ProductionCountryMapper @Inject constructor() :
 
     override fun mapTo(type: ProductionCountryEntity?): ProductionCountry {
         return ProductionCountry(
-            iso_3166_1 = type?.iso_3166_1.orEmpty(),
+            isoName = type?.isoName.orEmpty(),
             name = type?.name.orEmpty(),
         )
     }

@@ -35,15 +35,15 @@ class MovieDetailMapperTest {
         // Given
         val belongsToCollectionEntity = BelongsToCollectionEntity(
             id = 123,
-            backdrop_path = "backdrop_path",
+            backdropPath = "backdropPath",
             name = "name",
-            poster_path = "poster_path",
+            posterPath = "posterPath",
         )
         val belongsToCollection = mockk<BelongsToCollection>(relaxed = true) {
             every { id } returns belongsToCollectionEntity.id
-            every { backdropPath } returns belongsToCollectionEntity.backdrop_path
+            every { backdropPath } returns belongsToCollectionEntity.backdropPath
             every { name } returns belongsToCollectionEntity.name
-            every { posterPath } returns belongsToCollectionEntity.poster_path
+            every { posterPath } returns belongsToCollectionEntity.posterPath
         }
         every { belongsToCollectionMapper.mapTo(belongsToCollectionEntity) } returns belongsToCollection
 
@@ -61,14 +61,14 @@ class MovieDetailMapperTest {
 
         val productionCompanyEntity = ProductionCompanyEntity(
             id = 234,
-            logo_path = "logo_path",
-            origin_country = "origin_country",
+            logoPath = "logoPath",
+            originCountry = "originCountry",
             name = "name",
         )
         val productionCompany = mockk<ProductionCompany>(relaxed = true) {
             every { id } returns productionCompanyEntity.id
-            every { logoPath } returns productionCompanyEntity.logo_path
-            every { originCountry } returns productionCompanyEntity.origin_country
+            every { logoPath } returns productionCompanyEntity.logoPath
+            every { originCountry } returns productionCompanyEntity.originCountry
             every { name } returns productionCompanyEntity.name
         }
         every { productionCompanyMapper.mapTo(productionCompanyEntity) } returns productionCompany
@@ -76,24 +76,24 @@ class MovieDetailMapperTest {
 
 
         val productionCountryEntity = ProductionCountryEntity(
-            iso_3166_1 = "iso_3166_1",
+            isoName = "isoName",
             name = "name",
         )
         val productionCountry = mockk<ProductionCountry>(relaxed = true) {
-            every { iso_3166_1 } returns productionCountryEntity.iso_3166_1
+            every { isoName } returns productionCountryEntity.isoName
             every { name } returns productionCountryEntity.name
         }
         every { productionCountryMapper.mapTo(productionCountryEntity) } returns productionCountry
         val productionCountries = listOf(productionCountryEntity)
 
         val spokenLanguageEntity = SpokenLanguageEntity(
-            english_name = "english_name",
-            iso_639_1 = "iso_639_1",
+            englishName = "englishName",
+            isoName = "isoName",
             name = "name",
         )
         val spokenLanguage = mockk<SpokenLanguage>(relaxed = true) {
-            every { englishName } returns spokenLanguageEntity.english_name
-            every { iso_639_1 } returns spokenLanguageEntity.iso_639_1
+            every { englishName } returns spokenLanguageEntity.englishName
+            every { isoName } returns spokenLanguageEntity.isoName
             every { name } returns spokenLanguageEntity.name
         }
         every { spokenLanguageMapper.mapTo(spokenLanguageEntity) } returns spokenLanguage
@@ -102,30 +102,30 @@ class MovieDetailMapperTest {
 
         val movieDetailEntity = MovieDetailEntity(
             id = 123,
-            adult = true,
-            backdrop_path = "backdrop_path",
-            belongs_to_collection = belongsToCollectionEntity,
+            isAdult = true,
+            backdropPath = "backdropPath",
+            belongsToCollection = belongsToCollectionEntity,
             budget = 85,
-            genres = genres,
+            genresList = genres,
             homepage = "homepage",
-            imdb_id = "imdb_id",
-            original_language = "original_language",
-            original_title = "original_title",
+            imdbId = "imdbId",
+            originalLanguage = "originalLanguage",
+            originalTitle = "originalTitle",
             overview = "overview",
             popularity = 15.67,
-            poster_path = "poster_path",
-            production_companies = productionCompanies,
-            production_countries = productionCountries,
-            release_date = "release_date",
+            posterPath = "posterPath",
+            productionCompaniesList = productionCompanies,
+            productionCountriesList = productionCountries,
+            releaseDate = "releaseDate",
             revenue = 9,
             runtime = 923,
-            spoken_languages = spokenLanguages,
+            spokenLanguagesList = spokenLanguages,
             status = "status",
             tagline = "tagline",
             title = "title",
-            video = true,
-            vote_average = 89.23,
-            vote_count = 89,
+            isVideo = true,
+            voteAverage = 89.23,
+            voteCount = 89,
         )
 
 
@@ -136,30 +136,30 @@ class MovieDetailMapperTest {
 
 
         assertEquals(movieDetailEntity.id, movieDetailModel.id)
-        assertEquals(movieDetailEntity.adult, movieDetailModel.isAdult)
-        assertEquals(movieDetailEntity.backdrop_path, movieDetailModel.backdropPath)
+        assertEquals(movieDetailEntity.isAdult, movieDetailModel.isAdult)
+        assertEquals(movieDetailEntity.backdropPath, movieDetailModel.backdropPath)
         assertEquals(movieDetailEntity.budget, movieDetailModel.budget)
         assertEquals(movieDetailEntity.homepage, movieDetailModel.homepage)
-        assertEquals(movieDetailEntity.imdb_id, movieDetailModel.imdbId)
-        assertEquals(movieDetailEntity.original_language, movieDetailModel.originalLanguage)
-        assertEquals(movieDetailEntity.original_title, movieDetailModel.originalTitle)
+        assertEquals(movieDetailEntity.imdbId, movieDetailModel.imdbId)
+        assertEquals(movieDetailEntity.originalLanguage, movieDetailModel.originalLanguage)
+        assertEquals(movieDetailEntity.originalTitle, movieDetailModel.originalTitle)
         assertEquals(movieDetailEntity.overview, movieDetailModel.overview)
-        assertEquals(movieDetailEntity.poster_path, movieDetailModel.posterPath)
-        assertEquals(movieDetailEntity.release_date, movieDetailModel.releaseDate)
+        assertEquals(movieDetailEntity.posterPath, movieDetailModel.posterPath)
+        assertEquals(movieDetailEntity.releaseDate, movieDetailModel.releaseDate)
         assertEquals(movieDetailEntity.revenue, movieDetailModel.revenue)
         assertEquals(movieDetailEntity.runtime, movieDetailModel.runtime)
         assertEquals(movieDetailEntity.status, movieDetailModel.status)
         assertEquals(movieDetailEntity.tagline, movieDetailModel.tagline)
         assertEquals(movieDetailEntity.title, movieDetailModel.title)
-        assertEquals(movieDetailEntity.video, movieDetailModel.isVideo)
-        assertEquals(movieDetailEntity.vote_count, movieDetailModel.voteCount)
+        assertEquals(movieDetailEntity.isVideo, movieDetailModel.isVideo)
+        assertEquals(movieDetailEntity.voteCount, movieDetailModel.voteCount)
 
 
         val belongsToCollectionModel = movieDetailModel.belongsToCollection
         assertEquals(belongsToCollectionEntity.id, belongsToCollectionModel.id)
-        assertEquals(belongsToCollectionEntity.backdrop_path, belongsToCollectionModel.backdropPath)
+        assertEquals(belongsToCollectionEntity.backdropPath, belongsToCollectionModel.backdropPath)
         assertEquals(belongsToCollectionEntity.name, belongsToCollectionModel.name)
-        assertEquals(belongsToCollectionEntity.poster_path, belongsToCollectionModel.posterPath)
+        assertEquals(belongsToCollectionEntity.posterPath, belongsToCollectionModel.posterPath)
 
         val genreModel = movieDetailModel.genresList.first()
         assertEquals(genre.id, genreModel.id)
@@ -167,17 +167,17 @@ class MovieDetailMapperTest {
 
         val productionCompanyModel = movieDetailModel.productionCompaniesList.first()
         assertEquals(productionCompanyEntity.id, productionCompanyModel.id)
-        assertEquals(productionCompanyEntity.logo_path, productionCompanyModel.logoPath)
-        assertEquals(productionCompanyEntity.origin_country, productionCompanyModel.originCountry)
+        assertEquals(productionCompanyEntity.logoPath, productionCompanyModel.logoPath)
+        assertEquals(productionCompanyEntity.originCountry, productionCompanyModel.originCountry)
         assertEquals(productionCompanyEntity.name, productionCompanyModel.name)
 
         val productionCountryModel = movieDetailModel.productionCountriesList.first()
-        assertEquals(productionCountryEntity.iso_3166_1, productionCountryModel.iso_3166_1)
+        assertEquals(productionCountryEntity.isoName, productionCountryModel.isoName)
         assertEquals(productionCountryEntity.name, productionCountryModel.name)
 
         val spokenLanguageModel: SpokenLanguage = movieDetailModel.spokenLanguagesList.first()
-        assertEquals(spokenLanguageEntity.english_name, spokenLanguageModel.englishName)
-        assertEquals(spokenLanguageEntity.iso_639_1, spokenLanguageModel.iso_639_1)
+        assertEquals(spokenLanguageEntity.englishName, spokenLanguageModel.englishName)
+        assertEquals(spokenLanguageEntity.isoName, spokenLanguageModel.isoName)
         assertEquals(spokenLanguageEntity.name, spokenLanguageModel.name)
     }
 

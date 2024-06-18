@@ -10,10 +10,10 @@ class BelongsToCollectionMapper @Inject constructor() :
 
     override fun mapTo(type: BelongsToCollectionEntity?): BelongsToCollection {
         return BelongsToCollection(
-            backdropPath = type?.backdrop_path.orEmpty(),
+            backdropPath = type?.backdropPath.orEmpty(),
             id = type?.id ?: 0,
             name = type?.name.orEmpty(),
-            posterPath = type?.poster_path.orEmpty(),
+            posterPath = type?.posterPath.orEmpty(),
         )
     }
 }

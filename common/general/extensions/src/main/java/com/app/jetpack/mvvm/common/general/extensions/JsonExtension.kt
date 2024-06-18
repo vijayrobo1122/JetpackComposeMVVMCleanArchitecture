@@ -27,3 +27,4 @@ inline fun <reified T : Any> String.fromPrettyJsonList(): MutableList<T> =
 // Read json file from assets
 fun AssetManager.readAssetsFile(fileName: String): String =
     open(fileName).bufferedReader().use { it.readText() }
+

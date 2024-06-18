@@ -8,8 +8,8 @@ class ProductionCountryToUiStateMapper @Inject constructor() {
 
     fun map(param: ProductionCountry): ProductionCountryState {
         return ProductionCountryState(
-            id = param.iso_3166_1,
-            iso_3166_1 = param.iso_3166_1,
+            id = param.isoName,
+            isoName = param.isoName,
             name = param.name,
         )
     }

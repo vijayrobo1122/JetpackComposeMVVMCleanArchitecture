@@ -5,6 +5,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 val Shapes = Shapes(
@@ -13,6 +14,7 @@ val Shapes = Shapes(
     large = RoundedCornerShape(0.dp)
 )
 
-fun Modifier.cornerRadius(radius: Int): Modifier {
-    return this.graphicsLayer(shape = RoundedCornerShape(radius.dp), clip = true)
+fun Modifier.cornerRadius(radius: Dp): Modifier {
+    return this.graphicsLayer(shape = RoundedCornerShape(radius), clip = true)
 }
+

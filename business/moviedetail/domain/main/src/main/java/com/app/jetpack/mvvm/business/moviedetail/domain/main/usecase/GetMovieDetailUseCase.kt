@@ -14,5 +14,4 @@ class GetMovieDetailUseCase @Inject constructor(
     override suspend fun invoke(param: Int): Flow<DataState<MovieDetail>> {
         return repository.movieDetail(param)
     }
-
 }

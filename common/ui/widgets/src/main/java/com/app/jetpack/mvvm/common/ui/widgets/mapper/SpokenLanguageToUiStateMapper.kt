@@ -8,9 +8,9 @@ class SpokenLanguageToUiStateMapper @Inject constructor() {
 
     fun map(param: SpokenLanguage): SpokenLanguageState {
         return SpokenLanguageState(
-            id = param.iso_639_1,
+            id = param.isoName,
             englishName = param.englishName,
-            iso_639_1 = param.iso_639_1,
+            isoName = param.isoName,
             name = param.name,
         )
     }

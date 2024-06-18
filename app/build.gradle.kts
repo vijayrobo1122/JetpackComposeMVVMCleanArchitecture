@@ -16,12 +16,12 @@ val properties = Properties().apply {
 
 android {
     namespace = "com.app.jetpack.mvvm"
-    compileSdk = 34
+    compileSdk = rootProject.ext.get("compileSdkVersion") as Int
 
     defaultConfig {
         applicationId = "com.app.jetpack.mvvm"
-        minSdk = 24
-        targetSdk = 34
+        minSdk = rootProject.ext.get("minSdkVersion") as Int
+        targetSdk = rootProject.ext.get("targetSdkVersion") as Int
         versionCode = 1
         versionName = "1.0"
         multiDexEnabled = true
@@ -57,7 +57,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.5"
+        kotlinCompilerExtensionVersion = rootProject.ext.get("kotlinCompilerVersion") as String
     }
     packaging {
         resources {

@@ -14,50 +14,50 @@ interface MovieApiService {
     suspend fun nowPlayingMovieList(
         @Query("page") page: Int,
         @Query("with_genres") genreId: String?,
-        @Query("api_key") api_key: String = BuildConfig.API_KEY
+        @Query("api_key") apiKey: String = BuildConfig.API_KEY
     ): BaseModelEntity
 
     @GET("movie/popular")
     suspend fun popularMovieList(
         @Query("page") page: Int,
         @Query("with_genres") genreId: String?,
-        @Query("api_key") api_key: String = BuildConfig.API_KEY
+        @Query("api_key") apiKey: String = BuildConfig.API_KEY
     ): BaseModelEntity
 
     @GET("movie/top_rated")
     suspend fun topRatedMovieList(
         @Query("page") page: Int,
         @Query("with_genres") genreId: String?,
-        @Query("api_key") api_key: String = BuildConfig.API_KEY
+        @Query("api_key") apiKey: String = BuildConfig.API_KEY
     ): BaseModelEntity
 
     @GET("movie/upcoming")
     suspend fun upcomingMovieList(
         @Query("page") page: Int,
         @Query("with_genres") genreId: String?,
-        @Query("api_key") api_key: String = BuildConfig.API_KEY
+        @Query("api_key") apiKey: String = BuildConfig.API_KEY
     ): BaseModelEntity
 
     @GET("movie/{movieId}")
     suspend fun movieDetail(
         @Path("movieId") movieId: Int,
-        @Query("api_key") api_key: String = BuildConfig.API_KEY
+        @Query("api_key") apiKey: String = BuildConfig.API_KEY
     ): MovieDetailEntity
 
     @GET("movie/{movieId}/recommendations")
     suspend fun recommendedMovie(
         @Path("movieId") movieId: Int,
         @Query("page") one: Int,
-        @Query("api_key") api_key: String = BuildConfig.API_KEY
+        @Query("api_key") apiKey: String = BuildConfig.API_KEY
     ): BaseModelEntity
 
     @GET("genre/movie/list")
-    suspend fun genreList(@Query("api_key") api_key: String = BuildConfig.API_KEY): GenresEntity
+    suspend fun genreList(@Query("api_key") apiKey: String = BuildConfig.API_KEY): GenresEntity
 
     @GET("discover/movie")
     suspend fun moviesByGenre(
         @Query("page") page: Int,
         @Query("with_genres") genreId: String?,
-        @Query("api_key") api_key: String = BuildConfig.API_KEY
+        @Query("api_key") apiKey: String = BuildConfig.API_KEY
     ): BaseModelEntity
 }

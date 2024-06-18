@@ -21,15 +21,22 @@ class MainViewModel @Inject constructor(
     private val genreToUiStateMapper: GenreToUiStateMapper,
 ) : ViewModel() {
 
-    val genreStateList: MutableState<DataState<List<GenreState>>?> = mutableStateOf(null)
+    val genreStateList: MutableState<List<GenreState>> = mutableStateOf(arrayListOf())
 
     fun genreList() {
         viewModelScope.launch {
             getGenresListUseCase.invoke().onEach {
                 if (it is DataState.Success<Genres>) {
-                    genreStateList.value = DataState.Success(it.data.genres.map { genre ->
+                    val genresStateList: ArrayList<GenreState> = it.data.genres.map { genre ->
                         genreToUiStateMapper.map(genre)
-                    })
+                    } as ArrayList<GenreState>
+                    if (genresStateList.first().name != DEFAULT_GENRE_ITEM) {
+                        genresStateList.add(
+                            0,
+                            GenreState(genreId = null, name = DEFAULT_GENRE_ITEM)
+                        )
+                    }
+                    genreStateList.value = genresStateList
                 }
             }.launchIn(viewModelScope)
         }

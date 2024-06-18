@@ -28,6 +28,7 @@ import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
 import com.app.jetpack.mvvm.common.ui.widgets.model.MovieItemState
 import kotlinx.coroutines.flow.Flow
 
+@SuppressWarnings("LongParameterList")
 @Composable
 fun MoviesListWidget(
     isShowExitAppDialog: Boolean = false,
@@ -63,7 +64,7 @@ fun MoviesListWidget(
                 }
             }
         }
-        CircularIndeterminateProgressBar(isDisplayed = progressBar.value, 0.4f)
+        CircularIndeterminateProgressBar(isDisplayed = progressBar.value)
         LazyVerticalGrid(columns = GridCells.Fixed(2),
             modifier = Modifier
                 .padding(start = 5.dp, end = 5.dp)

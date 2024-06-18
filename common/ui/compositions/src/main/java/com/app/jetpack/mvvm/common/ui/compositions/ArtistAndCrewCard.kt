@@ -13,23 +13,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.app.jetpack.mvvm.common.ui.components.CustomImage
 import com.app.jetpack.mvvm.common.ui.components.SubtitleSecondary
 import com.app.jetpack.mvvm.common.ui.resources.strings.StringResources
-import com.app.jetpack.mvvm.common.ui.theme.DefaultBackgroundColor
 import com.app.jetpack.mvvm.common.ui.theme.FontColor
-import com.app.jetpack.mvvm.common.ui.theme.SecondaryFontColor
 import com.app.jetpack.mvvm.common.ui.theme.cornerRadius
 import com.app.jetpack.mvvm.common.ui.widgets.model.CastState
-import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.animation.circular.CircularRevealPlugin
-import com.skydoves.landscapist.coil.CoilImage
-import com.skydoves.landscapist.components.rememberImageComponent
-import com.skydoves.landscapist.placeholder.shimmer.ShimmerPlugin
 
 @Composable
 fun ArtistAndCrewCard(
@@ -53,31 +46,16 @@ fun ArtistAndCrewCard(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    CoilImage(
+                    CustomImage(
                         modifier = Modifier
                             .padding(bottom = 5.dp)
                             .height(80.dp)
                             .width(80.dp)
-                            .cornerRadius(40)
+                            .cornerRadius(40.dp)
                             .clickable {
-                                onArtistItemClick(item.id.toString())
+                                onArtistItemClick(item.id)
                             },
-                        imageModel = { BuildConfig.IMAGE_BASE_URL.plus(item.profilePath) },
-                        imageOptions = ImageOptions(
-                            contentScale = ContentScale.Crop,
-                            alignment = Alignment.Center,
-                            contentDescription = "artist and crew",
-                            colorFilter = null,
-                        ),
-                        component = rememberImageComponent {
-                            +CircularRevealPlugin(
-                                duration = 800
-                            )
-                            +ShimmerPlugin(
-                                baseColor = SecondaryFontColor,
-                                highlightColor = DefaultBackgroundColor
-                            )
-                        },
+                        imagePath = BuildConfig.IMAGE_BASE_URL.plus(item.profilePath)
                     )
                     SubtitleSecondary(text = item.name)
                 }

@@ -9,4 +9,5 @@ import dagger.hilt.components.SingletonComponent
 @Module(includes = [ArtistDetailDataModule::class, ArtistDetailDomainModule::class])
 @InstallIn(SingletonComponent::class)
 object ArtistDetailModule {
+    //DO NOTHING
 }

@@ -10,6 +10,5 @@ import dagger.hilt.components.SingletonComponent
 @Module(includes = [MovieDetailDomainModule::class, MovieDetailDataModule::class])
 @InstallIn(SingletonComponent::class)
 object MovieDetailModule {
-
-
+    //DO NOTHING
 }
