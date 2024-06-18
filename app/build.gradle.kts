@@ -57,7 +57,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.5"
+        kotlinCompilerExtensionVersion = rootProject.ext.get("kotlinCompilerVersion") as String
     }
     packaging {
         resources {

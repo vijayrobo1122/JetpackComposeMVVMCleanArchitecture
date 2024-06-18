@@ -23,6 +23,7 @@ buildscript {
         set("compileSdkVersion", 34)
         set("minSdkVersion", 24)
         set("targetSdkVersion", 34)
+        set("kotlinCompilerVersion", "1.5.10")
     }
 }
 

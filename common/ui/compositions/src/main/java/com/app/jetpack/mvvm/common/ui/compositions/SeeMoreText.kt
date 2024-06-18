@@ -26,6 +26,7 @@ import java.util.regex.Pattern
 
 const val MINIMIZED_MAX_LINES = 2
 
+@SuppressWarnings("LongMethod")
 @Composable
 fun ExpandingText(
     modifier: Modifier = Modifier,
