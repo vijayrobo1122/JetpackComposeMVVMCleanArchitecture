@@ -1,3 +1,8 @@
 package com.app.jetpack.mvvm.business.moviedetail.data.entity
 
-data class GenresEntity(val genres: List<GenreEntity>)
+import com.google.gson.annotations.SerializedName
+
+data class GenresEntity(
+    @SerializedName("genres")
+    val genres: List<GenreEntity>
+)

@@ -8,9 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -18,18 +16,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.app.jetpack.mvvm.common.general.extensions.hourMinutes
 import com.app.jetpack.mvvm.common.general.extensions.roundTo
+import com.app.jetpack.mvvm.common.ui.components.CustomImage
 import com.app.jetpack.mvvm.common.ui.components.SubtitlePrimary
 import com.app.jetpack.mvvm.common.ui.components.SubtitleSecondary
 import com.app.jetpack.mvvm.common.ui.resources.strings.StringResources
-import com.app.jetpack.mvvm.common.ui.theme.DefaultBackgroundColor
 import com.app.jetpack.mvvm.common.ui.theme.FontColor
-import com.app.jetpack.mvvm.common.ui.theme.SecondaryFontColor
 import com.app.jetpack.mvvm.common.ui.widgets.model.MovieDetailState
-import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.animation.circular.CircularRevealPlugin
-import com.skydoves.landscapist.coil.CoilImage
-import com.skydoves.landscapist.components.rememberImageComponent
-import com.skydoves.landscapist.placeholder.shimmer.ShimmerPlugin
 
 @Composable
 fun MovieDetailCard(
@@ -37,26 +29,11 @@ fun MovieDetailCard(
     movieDetailState: MovieDetailState,
 ) {
     Column(modifier = modifier) {
-        CoilImage(
+        CustomImage(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp),
-            imageModel = { BuildConfig.IMAGE_BASE_URL.plus(movieDetailState.posterPath) },
-            imageOptions = ImageOptions(
-                contentScale = ContentScale.Crop,
-                alignment = Alignment.Center,
-                contentDescription = "Movie detail",
-                colorFilter = null,
-            ),
-            component = rememberImageComponent {
-                +CircularRevealPlugin(
-                    duration = 800
-                )
-                +ShimmerPlugin(
-                    baseColor = SecondaryFontColor,
-                    highlightColor = DefaultBackgroundColor
-                )
-            },
+            imagePath = BuildConfig.IMAGE_BASE_URL.plus(movieDetailState.posterPath)
         )
         Column(
             modifier = Modifier

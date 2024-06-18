@@ -28,6 +28,7 @@ import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
 import com.app.jetpack.mvvm.common.ui.widgets.model.MovieItemState
 import kotlinx.coroutines.flow.Flow
 
+@SuppressWarnings("LongParameterList")
 @Composable
 fun MoviesListWidget(
     isShowExitAppDialog: Boolean = false,

@@ -13,7 +13,7 @@ val properties = Properties().apply {
 
 android {
     namespace = "com.app.jetpack.mvvm.business.moviedetail.data.main"
-    compileSdk = 34
+    compileSdk = rootProject.ext.get("compileSdkVersion") as Int
 
     defaultConfig {
 

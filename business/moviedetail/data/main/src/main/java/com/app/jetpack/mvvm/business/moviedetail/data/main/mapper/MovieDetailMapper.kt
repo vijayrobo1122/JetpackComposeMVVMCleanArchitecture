@@ -17,33 +17,33 @@ class MovieDetailMapper @Inject constructor(
 
     override fun mapTo(type: MovieDetailEntity?): MovieDetail {
         return MovieDetail(
-            isAdult = type?.adult.orFalse(),
-            backdropPath = type?.backdrop_path.orEmpty(),
-            belongsToCollection = belongsToCollectionMapper.mapTo(type?.belongs_to_collection),
+            isAdult = type?.isAdult.orFalse(),
+            backdropPath = type?.backdropPath.orEmpty(),
+            belongsToCollection = belongsToCollectionMapper.mapTo(type?.belongsToCollection),
             budget = type?.budget ?: 0,
-            genresList = type?.genres?.map { _genre -> genreMapper.mapTo(_genre) } ?: emptyList(),
+            genresList = type?.genresList?.map { _genre -> genreMapper.mapTo(_genre) } ?: emptyList(),
             homepage = type?.homepage.orEmpty(),
             id = type?.id ?: 0,
-            imdbId = type?.imdb_id.orEmpty(),
-            originalLanguage = type?.original_language.orEmpty(),
-            originalTitle = type?.original_title.orEmpty(),
+            imdbId = type?.imdbId.orEmpty(),
+            originalLanguage = type?.originalLanguage.orEmpty(),
+            originalTitle = type?.originalTitle.orEmpty(),
             overview = type?.overview.orEmpty(),
             popularity = type?.popularity ?: 0.0,
-            posterPath = type?.poster_path.orEmpty(),
-            productionCompaniesList = type?.production_companies?.map { _company ->
+            posterPath = type?.posterPath.orEmpty(),
+            productionCompaniesList = type?.productionCompaniesList?.map { _company ->
                 productionCompanyMapper.mapTo(
                     _company
                 )
             } ?: emptyList(),
-            productionCountriesList = type?.production_countries?.map { _country ->
+            productionCountriesList = type?.productionCountriesList?.map { _country ->
                 productionCountryMapper.mapTo(
                     _country
                 )
             } ?: emptyList(),
-            releaseDate = type?.release_date.orEmpty(),
+            releaseDate = type?.releaseDate.orEmpty(),
             revenue = type?.revenue ?: 0,
             runtime = type?.runtime ?: 0,
-            spokenLanguagesList = type?.spoken_languages?.map { _language ->
+            spokenLanguagesList = type?.spokenLanguagesList?.map { _language ->
                 spokenLanguageMapper.mapTo(
                     _language
                 )
@@ -51,9 +51,9 @@ class MovieDetailMapper @Inject constructor(
             status = type?.status.orEmpty(),
             tagline = type?.tagline.orEmpty(),
             title = type?.title.orEmpty(),
-            isVideo = type?.video.orFalse(),
-            voteAverage = type?.vote_average ?: 0.0,
-            voteCount = type?.vote_count ?: 0,
+            isVideo = type?.isVideo.orFalse(),
+            voteAverage = type?.voteAverage ?: 0.0,
+            voteCount = type?.voteCount ?: 0,
         )
     }
 }

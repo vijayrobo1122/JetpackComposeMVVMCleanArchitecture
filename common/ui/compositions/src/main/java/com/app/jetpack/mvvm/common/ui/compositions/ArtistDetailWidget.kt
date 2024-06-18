@@ -7,26 +7,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.app.jetpack.mvvm.common.general.extensions.genderInString
 import com.app.jetpack.mvvm.common.ui.components.BioGraphyText
+import com.app.jetpack.mvvm.common.ui.components.CustomImage
 import com.app.jetpack.mvvm.common.ui.resources.strings.StringResources
-import com.app.jetpack.mvvm.common.ui.theme.DefaultBackgroundColor
 import com.app.jetpack.mvvm.common.ui.theme.FontColor
 import com.app.jetpack.mvvm.common.ui.theme.SecondaryFontColor
 import com.app.jetpack.mvvm.common.ui.theme.cornerRadius
 import com.app.jetpack.mvvm.common.ui.widgets.model.ArtistDetailState
-import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.animation.circular.CircularRevealPlugin
-import com.skydoves.landscapist.coil.CoilImage
-import com.skydoves.landscapist.components.rememberImageComponent
-import com.skydoves.landscapist.placeholder.shimmer.ShimmerPlugin
 
 @Composable
 fun ArtistDetailWidget(
@@ -37,28 +30,13 @@ fun ArtistDetailWidget(
         modifier = modifier
     ) {
         Row {
-            CoilImage(
+            CustomImage(
                 modifier = Modifier
                     .padding(bottom = 8.dp)
                     .height(250.dp)
                     .width(190.dp)
                     .cornerRadius(10),
-                imageModel = { BuildConfig.IMAGE_BASE_URL.plus(artistDetailState.profilePath) },
-                imageOptions = ImageOptions(
-                    contentScale = ContentScale.Crop,
-                    alignment = Alignment.Center,
-                    contentDescription = "artist image",
-                    colorFilter = null,
-                ),
-                component = rememberImageComponent {
-                    +CircularRevealPlugin(
-                        duration = 800
-                    )
-                    +ShimmerPlugin(
-                        baseColor = SecondaryFontColor,
-                        highlightColor = DefaultBackgroundColor
-                    )
-                },
+                imagePath = BuildConfig.IMAGE_BASE_URL.plus(artistDetailState.profilePath)
             )
             Column {
                 Text(

@@ -18,6 +18,7 @@ import dagger.hilt.components.SingletonComponent
 object MovieDetailModule {
 
     @Provides
+    @SuppressWarnings("LongParameterList")
     fun provideMovieDetailViewModel(
         getMovieCreditUseCase: GetMovieCreditUseCase,
         getRecommendedMovieUseCase: GetRecommendedMovieUseCase,

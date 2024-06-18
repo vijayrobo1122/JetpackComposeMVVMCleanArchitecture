@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.app.jetpack.mvvm.business.artistdetail.data.di"
-    compileSdk = 34
+    compileSdk = rootProject.ext.get("compileSdkVersion") as Int
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

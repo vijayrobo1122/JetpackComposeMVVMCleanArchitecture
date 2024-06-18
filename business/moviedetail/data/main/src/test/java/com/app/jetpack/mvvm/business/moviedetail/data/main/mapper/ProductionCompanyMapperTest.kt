@@ -17,8 +17,8 @@ class ProductionCompanyMapperTest {
         // Given
         val productionCompanyEntity = ProductionCompanyEntity(
             id = 234,
-            logo_path = "logo_path",
-            origin_country = "origin_country",
+            logoPath = "logoPath",
+            originCountry = "originCountry",
             name = "name",
         )
 
@@ -27,8 +27,8 @@ class ProductionCompanyMapperTest {
 
         // Then
         assertEquals(productionCompanyEntity.id, productionCompany.id)
-        assertEquals(productionCompanyEntity.logo_path, productionCompany.logoPath)
-        assertEquals(productionCompanyEntity.origin_country, productionCompany.originCountry)
+        assertEquals(productionCompanyEntity.logoPath, productionCompany.logoPath)
+        assertEquals(productionCompanyEntity.originCountry, productionCompany.originCountry)
         assertEquals(productionCompanyEntity.name, productionCompany.name)
     }
 

@@ -14,9 +14,9 @@ class BelongsToCollectionMapperTest {
         // Given
         val belongsToCollectionEntity = BelongsToCollectionEntity(
             id = 123,
-            backdrop_path = "backdrop_path",
+            backdropPath = "backdropPath",
             name = "name",
-            poster_path = "poster_path",
+            posterPath = "posterPath",
         )
 
         // When
@@ -24,8 +24,8 @@ class BelongsToCollectionMapperTest {
 
         // Then
         assertEquals(belongsToCollectionEntity.id, belongsToCollectionModel.id)
-        assertEquals(belongsToCollectionEntity.backdrop_path, belongsToCollectionModel.backdropPath)
+        assertEquals(belongsToCollectionEntity.backdropPath, belongsToCollectionModel.backdropPath)
         assertEquals(belongsToCollectionEntity.name, belongsToCollectionModel.name)
-        assertEquals(belongsToCollectionEntity.poster_path, belongsToCollectionModel.posterPath)
+        assertEquals(belongsToCollectionEntity.posterPath, belongsToCollectionModel.posterPath)
     }
 }

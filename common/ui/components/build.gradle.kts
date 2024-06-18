@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.app.jetpack.mvvm.common.ui.components"
-    compileSdk = 34
+    compileSdk = rootProject.ext.get("compileSdkVersion") as Int
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -30,6 +30,10 @@ dependencies {
     implementation(project(":common:ui:theme"))
 
     implementation(libs.androidx.material3)
+
+    implementation(libs.landscapist.coil)
+    implementation(libs.landscapist.animation)
+    implementation(libs.landscapist.placeholder)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

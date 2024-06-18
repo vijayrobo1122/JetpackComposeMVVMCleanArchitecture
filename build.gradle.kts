@@ -18,6 +18,14 @@ plugins {
     id("jacoco")
 }
 
+buildscript {
+    extra.apply {
+        set("compileSdkVersion", 34)
+        set("minSdkVersion", 24)
+        set("targetSdkVersion", 34)
+    }
+}
+
 allprojects {
 
     tasks.register("printAllDependencies") {

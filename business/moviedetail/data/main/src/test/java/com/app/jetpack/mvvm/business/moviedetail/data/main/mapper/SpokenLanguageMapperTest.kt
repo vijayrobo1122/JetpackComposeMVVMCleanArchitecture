@@ -13,8 +13,8 @@ class SpokenLanguageMapperTest {
 
         // Given
         val spokenLanguageEntity = SpokenLanguageEntity(
-            english_name = "english_name",
-            iso_639_1 = "iso_639_1",
+            englishName = "englishName",
+            isoName = "isoName",
             name = "name",
         )
 
@@ -22,8 +22,8 @@ class SpokenLanguageMapperTest {
         val spokenLanguageModel: SpokenLanguage = sut.mapTo(spokenLanguageEntity)
 
         // Then
-        assertEquals(spokenLanguageEntity.english_name, spokenLanguageModel.englishName)
-        assertEquals(spokenLanguageEntity.iso_639_1, spokenLanguageModel.iso_639_1)
+        assertEquals(spokenLanguageEntity.englishName, spokenLanguageModel.englishName)
+        assertEquals(spokenLanguageEntity.isoName, spokenLanguageModel.isoName)
         assertEquals(spokenLanguageEntity.name, spokenLanguageModel.name)
     }
 }

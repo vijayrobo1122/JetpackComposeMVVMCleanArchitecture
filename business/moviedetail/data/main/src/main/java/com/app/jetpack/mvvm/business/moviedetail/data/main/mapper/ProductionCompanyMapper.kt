@@ -11,9 +11,9 @@ class ProductionCompanyMapper @Inject constructor() :
     override fun mapTo(type: ProductionCompanyEntity?): ProductionCompany {
         return ProductionCompany(
             id = type?.id ?: 0,
-            logoPath = type?.logo_path.orEmpty(),
+            logoPath = type?.logoPath.orEmpty(),
             name = type?.name.orEmpty(),
-            originCountry = type?.origin_country.orEmpty(),
+            originCountry = type?.originCountry.orEmpty(),
         )
     }
 }

@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.app.jetpack.mvvm.common.ui.resources.strings"
-    compileSdk = 34
+    compileSdk = rootProject.ext.get("compileSdkVersion") as Int
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
