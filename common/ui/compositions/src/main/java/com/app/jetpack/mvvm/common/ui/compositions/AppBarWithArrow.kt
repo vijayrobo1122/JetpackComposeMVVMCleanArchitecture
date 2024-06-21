@@ -23,8 +23,6 @@ fun AppBarWithArrow(
     title: String?,
     pressOnBack: () -> Unit
 ) {
-    //val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-
     TopAppBar(
         title = {
             Text(

@@ -22,13 +22,11 @@ composeBom = "2024.06.00"
 google-dagger-hilt = "2.49"
 google-ksp = "1.9.22-1.0.17"
 loggingInterceptor = "5.0.0-alpha.2"
-material = "1.12.0"
 material3 = "1.2.1"
 materialVersion = "1.6.8"
 mockkAgent = "1.13.8"
 mockkAndroid = "1.13.8"
 multidex = "2.0.1"
-appcompat = "1.7.0"
 navigationCompose = "2.7.7"
 pagingCompose = "3.3.0"
 retrofit = "2.9.0"
@@ -39,7 +37,6 @@ detekt = "1.23.3"
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
-androidx-material = { module = "androidx.compose.material:material", version.ref = "materialVersion" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialVersion" }
 androidx-multidex = { module = "androidx.multidex:multidex", version.ref = "multidex" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
@@ -67,8 +64,6 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 landscapist-animation = { module = "com.github.skydoves:landscapist-animation", version.ref = "landscapistAnimation" }
 landscapist-coil = { module = "com.github.skydoves:landscapist-coil", version.ref = "landscapistCoil" }
 landscapist-placeholder = { module = "com.github.skydoves:landscapist-placeholder", version.ref = "landscapistPlaceholder" }
-material = { module = "com.google.android.material:material", version.ref = "material" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 mockk-agent = { module = "io.mockk:mockk-agent", version.ref = "mockkAgent" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockkAndroid" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }

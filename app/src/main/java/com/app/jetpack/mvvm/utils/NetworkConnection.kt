@@ -80,4 +80,3 @@ fun connectivityState(): State<ConnectionState> {
         }
     }
 }
-
