@@ -3,8 +3,8 @@ package com.app.jetpack.mvvm.features.nowplaying
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.GenreId
+import com.app.jetpack.mvvm.common.presentation.widgets.model.GenreState
 import com.app.jetpack.mvvm.common.ui.compositions.MoviesListWidget
-import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
 
 @Composable
 fun NowPlayingScreen(

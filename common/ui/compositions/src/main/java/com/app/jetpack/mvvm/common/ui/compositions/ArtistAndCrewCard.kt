@@ -17,12 +17,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.app.jetpack.mvvm.common.presentation.widgets.model.CastState
 import com.app.jetpack.mvvm.common.ui.components.CustomImage
 import com.app.jetpack.mvvm.common.ui.components.SubtitleSecondary
 import com.app.jetpack.mvvm.common.ui.resources.strings.StringResources
 import com.app.jetpack.mvvm.common.ui.theme.FontColor
 import com.app.jetpack.mvvm.common.ui.theme.cornerRadius
-import com.app.jetpack.mvvm.common.ui.widgets.model.CastState
 
 @Composable
 fun ArtistAndCrewCard(

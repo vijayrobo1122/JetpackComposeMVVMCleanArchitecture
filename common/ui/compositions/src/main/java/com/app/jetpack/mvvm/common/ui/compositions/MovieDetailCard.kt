@@ -16,12 +16,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.app.jetpack.mvvm.common.general.extensions.hourMinutes
 import com.app.jetpack.mvvm.common.general.extensions.roundTo
+import com.app.jetpack.mvvm.common.presentation.widgets.model.MovieDetailState
 import com.app.jetpack.mvvm.common.ui.components.CustomImage
 import com.app.jetpack.mvvm.common.ui.components.SubtitlePrimary
 import com.app.jetpack.mvvm.common.ui.components.SubtitleSecondary
 import com.app.jetpack.mvvm.common.ui.resources.strings.StringResources
 import com.app.jetpack.mvvm.common.ui.theme.FontColor
-import com.app.jetpack.mvvm.common.ui.widgets.model.MovieDetailState
 
 @Composable
 fun MovieDetailCard(

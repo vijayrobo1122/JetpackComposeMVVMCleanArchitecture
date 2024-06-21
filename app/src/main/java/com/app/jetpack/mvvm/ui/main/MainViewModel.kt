@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetGenresListUseCase
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genres
 import com.app.jetpack.mvvm.common.domain.models.DataState
-import com.app.jetpack.mvvm.common.ui.widgets.mapper.GenreToUiStateMapper
-import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
+import com.app.jetpack.mvvm.common.presentation.widgets.mapper.GenreToUiStateMapper
+import com.app.jetpack.mvvm.common.presentation.widgets.model.GenreState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

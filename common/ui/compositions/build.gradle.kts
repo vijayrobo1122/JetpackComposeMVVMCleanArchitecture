@@ -41,10 +41,10 @@ dependencies {
 
     implementation(project(":common:general:extensions"))
     implementation(project(":common:general:models"))
+    implementation(project(":common:layers:presentation:widgets"))
     implementation(project(":common:ui:resources:strings"))
     implementation(project(":common:ui:components"))
     implementation(project(":common:ui:theme"))
-    implementation(project(":common:ui:widgets"))
 
     implementation(libs.androidx.material3)
 

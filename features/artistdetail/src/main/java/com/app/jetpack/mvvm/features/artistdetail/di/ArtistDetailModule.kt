@@ -1,7 +1,7 @@
 package com.app.jetpack.mvvm.features.artistdetail.di
 
 import com.app.jetpack.mvvm.business.artistdetail.domain.main.usecase.GetArtistDetailUseCase
-import com.app.jetpack.mvvm.common.ui.widgets.mapper.ArtistDetailToUiStateMapper
+import com.app.jetpack.mvvm.common.presentation.widgets.mapper.ArtistDetailToUiStateMapper
 import com.app.jetpack.mvvm.features.artistdetail.ArtistDetailViewModel
 import dagger.Module
 import dagger.Provides

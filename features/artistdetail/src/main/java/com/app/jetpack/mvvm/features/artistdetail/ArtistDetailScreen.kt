@@ -16,10 +16,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.app.jetpack.mvvm.common.domain.api.pagingLoadingState
 import com.app.jetpack.mvvm.common.domain.models.DataState
+import com.app.jetpack.mvvm.common.presentation.widgets.model.ArtistDetailState
 import com.app.jetpack.mvvm.common.ui.compositions.ArtistDetailWidget
 import com.app.jetpack.mvvm.common.ui.compositions.CircularIndeterminateProgressBar
 import com.app.jetpack.mvvm.common.ui.theme.DefaultBackgroundColor
-import com.app.jetpack.mvvm.common.ui.widgets.model.ArtistDetailState
 
 @Composable
 fun ArtistDetailScreen(personId: Int) {

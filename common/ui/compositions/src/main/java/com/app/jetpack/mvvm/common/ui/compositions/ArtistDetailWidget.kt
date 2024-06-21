@@ -13,13 +13,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.app.jetpack.mvvm.common.general.extensions.genderInString
+import com.app.jetpack.mvvm.common.presentation.widgets.model.ArtistDetailState
 import com.app.jetpack.mvvm.common.ui.components.BioGraphyText
 import com.app.jetpack.mvvm.common.ui.components.CustomImage
 import com.app.jetpack.mvvm.common.ui.resources.strings.StringResources
 import com.app.jetpack.mvvm.common.ui.theme.FontColor
 import com.app.jetpack.mvvm.common.ui.theme.SecondaryFontColor
 import com.app.jetpack.mvvm.common.ui.theme.cornerRadius
-import com.app.jetpack.mvvm.common.ui.widgets.model.ArtistDetailState
 
 @Composable
 fun ArtistDetailWidget(

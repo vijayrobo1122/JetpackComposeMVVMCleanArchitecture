@@ -1,0 +1,18 @@
+package com.app.jetpack.mvvm.common.presentation.widgets.mapper
+
+import com.app.jetpack.mvvm.business.moviedetail.domain.model.ProductionCompany
+import com.app.jetpack.mvvm.common.presentation.widgets.model.ProductionCompanyState
+import javax.inject.Inject
+
+class ProductionCompanyToUiStateMapper @Inject constructor() {
+
+    fun map(param: ProductionCompany): ProductionCompanyState {
+        return ProductionCompanyState(
+            id = param.id.toString(),
+            productionCompanyId = param.id,
+            logoPath = param.logoPath,
+            name = param.name,
+            originCountry = param.originCountry,
+        )
+    }
+}

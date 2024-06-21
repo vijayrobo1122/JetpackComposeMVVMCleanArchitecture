@@ -3,9 +3,9 @@ package com.app.jetpack.mvvm.features.moviedetail.di
 import com.app.jetpack.mvvm.business.artistdetail.domain.main.usecase.GetMovieCreditUseCase
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetMovieDetailUseCase
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetRecommendedMovieUseCase
-import com.app.jetpack.mvvm.common.ui.widgets.mapper.ArtistToUiStateMapper
-import com.app.jetpack.mvvm.common.ui.widgets.mapper.BaseModelToUiStateMapper
-import com.app.jetpack.mvvm.common.ui.widgets.mapper.MovieDetailToUiStateMapper
+import com.app.jetpack.mvvm.common.presentation.widgets.mapper.ArtistToUiStateMapper
+import com.app.jetpack.mvvm.common.presentation.widgets.mapper.BaseModelToUiStateMapper
+import com.app.jetpack.mvvm.common.presentation.widgets.mapper.MovieDetailToUiStateMapper
 import com.app.jetpack.mvvm.features.moviedetail.MovieDetailViewModel
 import dagger.Module
 import dagger.Provides

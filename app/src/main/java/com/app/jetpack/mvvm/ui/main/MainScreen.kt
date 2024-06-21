@@ -30,10 +30,10 @@ import com.app.jetpack.mvvm.R
 import com.app.jetpack.mvvm.common.navigation.Screen
 import com.app.jetpack.mvvm.common.navigation.currentRoute
 import com.app.jetpack.mvvm.common.navigation.navigationTitle
+import com.app.jetpack.mvvm.common.presentation.widgets.model.GenreState
 import com.app.jetpack.mvvm.common.ui.compositions.AppBarWithArrow
 import com.app.jetpack.mvvm.common.ui.compositions.HomeAppBar
 import com.app.jetpack.mvvm.common.ui.resources.strings.StringResources
-import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
 import com.app.jetpack.mvvm.navigation.AppNavigation
 import com.app.jetpack.mvvm.ui.components.AppDrawer
 import com.app.jetpack.mvvm.ui.components.BottomNavigationUI

@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.app.jetpack.mvvm.common.presentation.widgets.model.MovieItemState
 import com.app.jetpack.mvvm.common.ui.components.CustomImage
 import com.app.jetpack.mvvm.common.ui.theme.cornerRadius
-import com.app.jetpack.mvvm.common.ui.widgets.model.MovieItemState
 
 @Composable
 fun MovieCard(

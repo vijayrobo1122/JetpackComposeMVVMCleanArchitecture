@@ -9,8 +9,8 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetTopRatedMoviesUseCase
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.GenreId
-import com.app.jetpack.mvvm.common.ui.widgets.mapper.MovieItemToUiStateMapper
-import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
+import com.app.jetpack.mvvm.common.presentation.widgets.mapper.MovieItemToUiStateMapper
+import com.app.jetpack.mvvm.common.presentation.widgets.model.GenreState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow

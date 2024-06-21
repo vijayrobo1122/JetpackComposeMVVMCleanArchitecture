@@ -34,8 +34,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.app.jetpack.mvvm.R
 import com.app.jetpack.mvvm.common.navigation.Screen
+import com.app.jetpack.mvvm.common.presentation.widgets.model.GenreState
 import com.app.jetpack.mvvm.common.ui.resources.drawables.DrawableResources
-import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
 
 @Composable
 fun AppDrawer(

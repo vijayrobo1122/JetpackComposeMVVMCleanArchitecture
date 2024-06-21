@@ -16,14 +16,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.app.jetpack.mvvm.common.domain.api.pagingLoadingState
 import com.app.jetpack.mvvm.common.domain.models.DataState
+import com.app.jetpack.mvvm.common.presentation.widgets.model.ArtistState
+import com.app.jetpack.mvvm.common.presentation.widgets.model.BaseModelState
+import com.app.jetpack.mvvm.common.presentation.widgets.model.MovieDetailState
 import com.app.jetpack.mvvm.common.ui.compositions.ArtistAndCrewCard
 import com.app.jetpack.mvvm.common.ui.compositions.CircularIndeterminateProgressBar
 import com.app.jetpack.mvvm.common.ui.compositions.MovieDetailCard
 import com.app.jetpack.mvvm.common.ui.compositions.RecommendedMovieCard
 import com.app.jetpack.mvvm.common.ui.theme.DefaultBackgroundColor
-import com.app.jetpack.mvvm.common.ui.widgets.model.ArtistState
-import com.app.jetpack.mvvm.common.ui.widgets.model.BaseModelState
-import com.app.jetpack.mvvm.common.ui.widgets.model.MovieDetailState
 
 @Composable
 fun MovieDetailScreen(

@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.app.jetpack.mvvm.common.navigation.Screen
-import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
+import com.app.jetpack.mvvm.common.presentation.widgets.model.GenreState
 import com.app.jetpack.mvvm.features.artistdetail.artistDetailsScreen
 import com.app.jetpack.mvvm.features.artistdetail.navigateToArtistDetailScreen
 import com.app.jetpack.mvvm.features.genredetail.genreDetailScreen

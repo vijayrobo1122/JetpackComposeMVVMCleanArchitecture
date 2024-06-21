@@ -7,8 +7,8 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetGenreMoviesUseCase
-import com.app.jetpack.mvvm.common.ui.widgets.mapper.MovieItemToUiStateMapper
-import com.app.jetpack.mvvm.common.ui.widgets.model.MovieItemState
+import com.app.jetpack.mvvm.common.presentation.widgets.mapper.MovieItemToUiStateMapper
+import com.app.jetpack.mvvm.common.presentation.widgets.model.MovieItemState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

@@ -1,7 +1,7 @@
 package com.app.jetpack.mvvm.features.genredetail.di
 
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetGenreMoviesUseCase
-import com.app.jetpack.mvvm.common.ui.widgets.mapper.MovieItemToUiStateMapper
+import com.app.jetpack.mvvm.common.presentation.widgets.mapper.MovieItemToUiStateMapper
 import com.app.jetpack.mvvm.features.genredetail.GenreDetailViewModel
 import dagger.Module
 import dagger.Provides

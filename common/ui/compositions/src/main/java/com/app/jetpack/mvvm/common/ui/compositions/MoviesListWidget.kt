@@ -23,9 +23,9 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.app.jetpack.mvvm.common.general.extensions.conditional
 import com.app.jetpack.mvvm.common.general.extensions.items
 import com.app.jetpack.mvvm.common.general.extensions.pagingLoadingState
+import com.app.jetpack.mvvm.common.presentation.widgets.model.GenreState
+import com.app.jetpack.mvvm.common.presentation.widgets.model.MovieItemState
 import com.app.jetpack.mvvm.common.ui.theme.DefaultBackgroundColor
-import com.app.jetpack.mvvm.common.ui.widgets.model.GenreState
-import com.app.jetpack.mvvm.common.ui.widgets.model.MovieItemState
 import kotlinx.coroutines.flow.Flow
 
 @SuppressWarnings("LongParameterList")

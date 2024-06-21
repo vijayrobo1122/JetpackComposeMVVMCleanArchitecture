@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.app.jetpack.mvvm.business.artistdetail.domain.main.usecase.GetArtistDetailUseCase
 import com.app.jetpack.mvvm.business.artistdetail.domain.model.ArtistDetail
 import com.app.jetpack.mvvm.common.domain.models.DataState
-import com.app.jetpack.mvvm.common.ui.widgets.mapper.ArtistDetailToUiStateMapper
-import com.app.jetpack.mvvm.common.ui.widgets.model.ArtistDetailState
+import com.app.jetpack.mvvm.common.presentation.widgets.mapper.ArtistDetailToUiStateMapper
+import com.app.jetpack.mvvm.common.presentation.widgets.model.ArtistDetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
