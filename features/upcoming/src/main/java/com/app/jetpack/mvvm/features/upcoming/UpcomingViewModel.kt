@@ -25,6 +25,7 @@ class UpComingViewModel @Inject constructor(
     private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
     private val movieItemToUiStateMapper: MovieItemToUiStateMapper,
 ) : ViewModel() {
+
     var selectedGenre: MutableState<GenreState> =
         mutableStateOf(GenreState(genreId = null, name = DEFAULT_GENRE_ITEM))
     val filterData = MutableStateFlow<GenreId?>(null)
