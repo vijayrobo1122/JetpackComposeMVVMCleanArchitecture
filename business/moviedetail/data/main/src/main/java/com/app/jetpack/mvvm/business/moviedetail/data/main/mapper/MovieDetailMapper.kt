@@ -21,7 +21,8 @@ class MovieDetailMapper @Inject constructor(
             backdropPath = type?.backdropPath.orEmpty(),
             belongsToCollection = belongsToCollectionMapper.mapTo(type?.belongsToCollection),
             budget = type?.budget ?: 0,
-            genresList = type?.genresList?.map { _genre -> genreMapper.mapTo(_genre) } ?: emptyList(),
+            genresList = type?.genresList?.map { _genre -> genreMapper.mapTo(_genre) }
+                ?: emptyList(),
             homepage = type?.homepage.orEmpty(),
             id = type?.id ?: 0,
             imdbId = type?.imdbId.orEmpty(),
@@ -52,6 +53,7 @@ class MovieDetailMapper @Inject constructor(
             tagline = type?.tagline.orEmpty(),
             title = type?.title.orEmpty(),
             isVideo = type?.isVideo.orFalse(),
+            isFavorite = type?.isFavorite.orFalse(),
             voteAverage = type?.voteAverage ?: 0.0,
             voteCount = type?.voteCount ?: 0,
         )

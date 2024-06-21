@@ -49,8 +49,10 @@ data class MovieDetailEntity(
     val title: String,
     @SerializedName("video")
     val isVideo: Boolean,
+    @SerializedName("favorite")
+    val isFavorite: Boolean,
     @SerializedName("vote_average")
     val voteAverage: Double,
     @SerializedName("vote_count")
-    val voteCount: Int
+    val voteCount: Int,
 )

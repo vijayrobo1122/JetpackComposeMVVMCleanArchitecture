@@ -24,6 +24,7 @@ data class MovieDetailState(
     val voteAverage: Double = 0.0,
     val isAdult: Boolean = false,
     val isVideo: Boolean = false,
+    var isFavorite: Boolean = false,
     val belongsToCollection: BelongsToCollectionState = BelongsToCollectionState.EMPTY,
     val genresList: List<GenreState> = emptyList(),
     val productionCompaniesList: List<ProductionCompanyState> = emptyList(),

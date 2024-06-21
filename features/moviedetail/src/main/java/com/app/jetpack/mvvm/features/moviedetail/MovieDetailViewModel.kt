@@ -9,6 +9,9 @@ import com.app.jetpack.mvvm.business.artistdetail.domain.main.usecase.GetMovieCr
 import com.app.jetpack.mvvm.business.artistdetail.domain.model.Artist
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetMovieDetailUseCase
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetRecommendedMovieUseCase
+import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.IsMovieFavoriteUseCase
+import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.LikeMovieUseCase
+import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.UnlikeMovieUseCase
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.BaseModel
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieDetail
 import com.app.jetpack.mvvm.common.domain.models.DataState
@@ -29,10 +32,24 @@ class MovieDetailViewModel @Inject constructor(
     private val getMovieCreditUseCase: GetMovieCreditUseCase,
     private val getRecommendedMovieUseCase: GetRecommendedMovieUseCase,
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
+    private val likeMovieUseCase: LikeMovieUseCase,
+    private val unlikeMovieUseCase: UnlikeMovieUseCase,
+    private val isMovieFavoriteUseCase: IsMovieFavoriteUseCase,
     private val movieDetailToUiStateMapper: MovieDetailToUiStateMapper,
     private val artistToUiStateMapper: ArtistToUiStateMapper,
     private val baseModelToUiStateMapper: BaseModelToUiStateMapper,
 ) : ViewModel() {
+
+    fun toggleFavorite(movieId: Int, isFavorite: Boolean) {
+        viewModelScope.launch {
+            if (isFavorite) {
+                likeMovieUseCase.invoke(movieId)
+            } else {
+                unlikeMovieUseCase.invoke(movieId)
+            }
+        }
+    }
+
     val movieDetail: MutableState<DataState<MovieDetailState>?> = mutableStateOf(null)
     val recommendedMovie: MutableState<DataState<BaseModelState>?> = mutableStateOf(null)
     val artist: MutableState<DataState<ArtistState>?> = mutableStateOf(null)
@@ -41,7 +58,10 @@ class MovieDetailViewModel @Inject constructor(
         viewModelScope.launch {
             getMovieDetailUseCase.invoke(movieId).onEach {
                 if (it is DataState.Success<MovieDetail>) {
-                    movieDetail.value = DataState.Success(movieDetailToUiStateMapper.map(it.data))
+                    movieDetail.value =
+                        DataState.Success(movieDetailToUiStateMapper.map(it.data).also {
+                            it.isFavorite = isMovieFavoriteUseCase.invoke(movieId)
+                        })
                 }
             }.launchIn(viewModelScope)
         }

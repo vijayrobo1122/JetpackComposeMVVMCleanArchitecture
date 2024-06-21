@@ -21,6 +21,10 @@ dependencies {
     implementation(project(":common:domain:models"))
 
     implementation(libs.androidx.paging.compose)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.androidx.lifecycle.livedata.core.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

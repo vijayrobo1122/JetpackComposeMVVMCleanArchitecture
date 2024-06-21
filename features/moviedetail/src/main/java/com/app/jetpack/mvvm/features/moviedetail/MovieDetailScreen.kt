@@ -56,7 +56,10 @@ fun MovieDetailScreen(
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
 
                     MovieDetailCard(
-                        movieDetailState = it.data
+                        movieDetailState = it.data,
+                        toggleFavorite = { isFavorite ->
+                            movieDetailViewModel.toggleFavorite(it.data.movieId, isFavorite)
+                        }
                     )
 
                     recommendedMovie.value?.let {

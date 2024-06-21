@@ -20,4 +20,5 @@ android {
 dependencies {
 
     implementation(libs.gson)
+    implementation(libs.androidx.room.runtime)
 }

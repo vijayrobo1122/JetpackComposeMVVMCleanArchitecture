@@ -3,6 +3,9 @@ package com.app.jetpack.mvvm.features.moviedetail.di
 import com.app.jetpack.mvvm.business.artistdetail.domain.main.usecase.GetMovieCreditUseCase
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetMovieDetailUseCase
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetRecommendedMovieUseCase
+import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.IsMovieFavoriteUseCase
+import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.LikeMovieUseCase
+import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.UnlikeMovieUseCase
 import com.app.jetpack.mvvm.common.presentation.widgets.mapper.ArtistToUiStateMapper
 import com.app.jetpack.mvvm.common.presentation.widgets.mapper.BaseModelToUiStateMapper
 import com.app.jetpack.mvvm.common.presentation.widgets.mapper.MovieDetailToUiStateMapper
@@ -23,6 +26,9 @@ object MovieDetailModule {
         getMovieCreditUseCase: GetMovieCreditUseCase,
         getRecommendedMovieUseCase: GetRecommendedMovieUseCase,
         getMovieDetailUseCase: GetMovieDetailUseCase,
+        likeMovieUseCase: LikeMovieUseCase,
+        unlikeMovieUseCase: UnlikeMovieUseCase,
+        isMovieFavoriteUseCase: IsMovieFavoriteUseCase,
         movieDetailToUiStateMapper: MovieDetailToUiStateMapper,
         artistToUiStateMapper: ArtistToUiStateMapper,
         baseModelToUiStateMapper: BaseModelToUiStateMapper,
@@ -31,6 +37,9 @@ object MovieDetailModule {
             getMovieCreditUseCase = getMovieCreditUseCase,
             getRecommendedMovieUseCase = getRecommendedMovieUseCase,
             getMovieDetailUseCase = getMovieDetailUseCase,
+            likeMovieUseCase = likeMovieUseCase,
+            unlikeMovieUseCase = unlikeMovieUseCase,
+            isMovieFavoriteUseCase = isMovieFavoriteUseCase,
             movieDetailToUiStateMapper = movieDetailToUiStateMapper,
             artistToUiStateMapper = artistToUiStateMapper,
             baseModelToUiStateMapper = baseModelToUiStateMapper,

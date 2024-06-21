@@ -35,6 +35,7 @@ class MovieDetailToUiStateMapper @Inject constructor(
             voteAverage = param.voteAverage,
             isAdult = param.isAdult,
             isVideo = param.isVideo,
+            isFavorite = param.isFavorite,
             belongsToCollection = belongsToCollectionToUiStateMapper.map(param.belongsToCollection),
             genresList = param.genresList.map { genreToUiStateMapper.map(it) },
             productionCompaniesList = param.productionCompaniesList.map {

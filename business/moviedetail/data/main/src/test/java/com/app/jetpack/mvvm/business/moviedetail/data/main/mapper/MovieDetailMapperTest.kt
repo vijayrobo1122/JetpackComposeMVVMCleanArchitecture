@@ -124,6 +124,7 @@ class MovieDetailMapperTest {
             tagline = "tagline",
             title = "title",
             isVideo = true,
+            isFavorite = false,
             voteAverage = 89.23,
             voteCount = 89,
         )
@@ -152,6 +153,7 @@ class MovieDetailMapperTest {
         assertEquals(movieDetailEntity.tagline, movieDetailModel.tagline)
         assertEquals(movieDetailEntity.title, movieDetailModel.title)
         assertEquals(movieDetailEntity.isVideo, movieDetailModel.isVideo)
+        assertEquals(movieDetailEntity.isFavorite, movieDetailModel.isFavorite)
         assertEquals(movieDetailEntity.voteCount, movieDetailModel.voteCount)
 
 

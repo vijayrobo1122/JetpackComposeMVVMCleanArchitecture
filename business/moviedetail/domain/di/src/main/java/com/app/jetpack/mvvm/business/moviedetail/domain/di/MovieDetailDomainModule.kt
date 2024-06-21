@@ -9,6 +9,9 @@ import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetPopularM
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetRecommendedMovieUseCase
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetTopRatedMoviesUseCase
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetUpcomingMoviesUseCase
+import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.IsMovieFavoriteUseCase
+import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.LikeMovieUseCase
+import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.UnlikeMovieUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -50,5 +53,17 @@ object MovieDetailDomainModule {
     @Provides
     fun provideGetUpcomingMoviesUseCase(repository: MovieRepository) =
         GetUpcomingMoviesUseCase(repository)
+
+    @Provides
+    fun provideLikeMovieUseCase(repository: MovieRepository) =
+        LikeMovieUseCase(repository)
+
+    @Provides
+    fun provideUnlikeMovieUseCase(repository: MovieRepository) =
+        UnlikeMovieUseCase(repository)
+
+    @Provides
+    fun provideIsMovieFavoriteUseCase(repository: MovieRepository) =
+        IsMovieFavoriteUseCase(repository)
 
 }

@@ -21,6 +21,7 @@ data class MovieDetail(
     val voteAverage: Double,
     val isAdult: Boolean,
     val isVideo: Boolean,
+    val isFavorite: Boolean = false,
     val belongsToCollection: BelongsToCollection,
     val genresList: List<Genre>,
     val productionCompaniesList: List<ProductionCompany>,

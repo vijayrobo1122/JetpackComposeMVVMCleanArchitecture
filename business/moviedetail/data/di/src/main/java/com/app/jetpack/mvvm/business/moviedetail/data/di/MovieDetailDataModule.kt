@@ -1,13 +1,20 @@
 package com.app.jetpack.mvvm.business.moviedetail.data.di
 
+import android.app.Application
+import androidx.room.Room
 import com.app.jetpack.mvvm.business.moviedetail.data.main.BuildConfig
+import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.MovieLocalDataSource
+import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.MovieRemoteDataSource
+import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.local.MovieLocalDataSourceImpl
+import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.local.dao.FavoriteDao
+import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.local.database.FavoriteAppDatabase
 import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.remote.MovieApiService
+import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.remote.MovieRemoteDataSourceImpl
 import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.BaseModelMapper
 import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.GenresMapper
 import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.MovieDetailMapper
 import com.app.jetpack.mvvm.business.moviedetail.data.main.repository.MovieRepositoryImpl
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.repository.MovieRepository
-import dagger.Component
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -57,7 +64,7 @@ object MovieDetailDataModule {
         val okHttpClient = OkHttpClient().newBuilder()
 
         okHttpClient.callTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-        okHttpClient.connectTimeout( DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+        okHttpClient.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
         okHttpClient.readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
         okHttpClient.writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
         okHttpClient.addInterceptor(loggingInterceptor)
@@ -106,16 +113,51 @@ object MovieDetailDataModule {
     @Singleton
     @Provides
     fun provideArtistRepository(
+        movieLocalDataSource: MovieLocalDataSource,
+        movieRemoteDataSource: MovieRemoteDataSource,
+    ): MovieRepository {
+        return MovieRepositoryImpl(
+            movieLocalDataSource = movieLocalDataSource,
+            movieRemoteDataSource = movieRemoteDataSource,
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideFavoriteAppDatabase(app: Application): FavoriteAppDatabase {
+        return Room.databaseBuilder(
+            app,
+            FavoriteAppDatabase::class.java,
+            FavoriteAppDatabase.DATABASE_NAME
+        ).build()
+    }
+
+
+    @Provides
+    fun provideFavoriteDao(database: FavoriteAppDatabase): FavoriteDao = database.favoriteDao()
+
+    @Singleton
+    @Provides
+    fun provideMovieLocalDataSource(
+        favoriteDao: FavoriteDao
+    ): MovieLocalDataSource {
+        return MovieLocalDataSourceImpl(favoriteDao = favoriteDao)
+    }
+
+    @Singleton
+    @Provides
+    fun provideMovieRemoteDataSource(
         @Named("movie_api_service") apiService: MovieApiService,
         baseModelMapper: BaseModelMapper,
         movieDetailMapper: MovieDetailMapper,
         genresMapper: GenresMapper,
-    ): MovieRepository {
-        return MovieRepositoryImpl(
+    ): MovieRemoteDataSource {
+        return MovieRemoteDataSourceImpl(
             apiService = apiService,
             baseModelMapper = baseModelMapper,
             movieDetailMapper = movieDetailMapper,
             genresMapper = genresMapper,
         )
     }
+
 }

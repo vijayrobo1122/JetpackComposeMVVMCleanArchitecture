@@ -11,7 +11,7 @@ interface ArtistApiService {
 
     @GET("person/{personId}")
     suspend fun artistDetail(
-        @Path("personId") personId: Int,
+        @Path("personId") artistId: Int,
         @Query("api_key") apiKey: String = BuildConfig.API_KEY
     ): ArtistDetailEntity
 

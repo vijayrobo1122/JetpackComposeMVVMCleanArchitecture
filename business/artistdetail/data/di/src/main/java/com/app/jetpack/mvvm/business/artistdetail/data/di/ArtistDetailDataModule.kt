@@ -1,7 +1,9 @@
 package com.app.jetpack.mvvm.business.artistdetail.data.di
 
 import com.app.jetpack.mvvm.business.artistdetail.data.main.BuildConfig
+import com.app.jetpack.mvvm.business.artistdetail.data.main.datasource.ArtistRemoteDataSource
 import com.app.jetpack.mvvm.business.artistdetail.data.main.datasource.remote.ArtistApiService
+import com.app.jetpack.mvvm.business.artistdetail.data.main.datasource.remote.ArtistRemoteDataSourceImpl
 import com.app.jetpack.mvvm.business.artistdetail.data.main.mapper.ArtistDetailMapper
 import com.app.jetpack.mvvm.business.artistdetail.data.main.mapper.ArtistMapper
 import com.app.jetpack.mvvm.business.artistdetail.data.main.repository.ArtistRepositoryImpl
@@ -103,14 +105,24 @@ object ArtistDetailDataModule {
     @Singleton
     @Provides
     fun provideArtistRepository(
+        artistRemoteDataSource: ArtistRemoteDataSource,
+    ): ArtistRepository {
+        return ArtistRepositoryImpl(
+            artistRemoteDataSource = artistRemoteDataSource,
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideArtistRemoteDataSource(
         @Named("artist_api_service") artistApiService: ArtistApiService,
         artistDetailMapper: ArtistDetailMapper,
         artistMapper: ArtistMapper,
-    ): ArtistRepository {
-        return ArtistRepositoryImpl(
+    ): ArtistRemoteDataSource {
+        return ArtistRemoteDataSourceImpl(
             artistApiService = artistApiService,
             artistDetailMapper = artistDetailMapper,
-            artistMapper = artistMapper
+            artistMapper = artistMapper,
         )
     }
 }

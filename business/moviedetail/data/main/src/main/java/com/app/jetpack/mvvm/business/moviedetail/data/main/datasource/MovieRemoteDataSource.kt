@@ -1,5 +1,4 @@
-package com.app.jetpack.mvvm.business.moviedetail.domain.main.repository
-
+package com.app.jetpack.mvvm.business.moviedetail.data.main.datasource
 
 import androidx.paging.PagingData
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.BaseModel
@@ -9,14 +8,7 @@ import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieItem
 import com.app.jetpack.mvvm.common.domain.models.DataState
 import kotlinx.coroutines.flow.Flow
 
-interface MovieRepository {
-
-    suspend fun likeMovie(movieId: Int)
-
-    suspend fun unlikeMovie(movieId: Int)
-
-    suspend fun isMovieLiked(movieId: Int): Boolean
-
+interface MovieRemoteDataSource {
     suspend fun movieDetail(movieId: Int): Flow<DataState<MovieDetail>>
 
     suspend fun recommendedMovie(movieId: Int, page: Int): Flow<DataState<BaseModel>>
