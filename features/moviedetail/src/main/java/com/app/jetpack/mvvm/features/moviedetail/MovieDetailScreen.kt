@@ -25,6 +25,7 @@ import com.app.jetpack.mvvm.common.ui.compositions.MovieDetailCard
 import com.app.jetpack.mvvm.common.ui.compositions.RecommendedMovieCard
 import com.app.jetpack.mvvm.common.ui.theme.DefaultBackgroundColor
 
+@SuppressWarnings("LongMethod")
 @Composable
 fun MovieDetailScreen(
     onMovieItemClick: (String) -> Unit,

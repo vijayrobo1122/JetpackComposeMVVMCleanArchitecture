@@ -18,6 +18,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
 
+@SuppressWarnings("TooManyFunctions")
 @Module
 @InstallIn(SingletonComponent::class)
 object MovieDetailDomainModule {

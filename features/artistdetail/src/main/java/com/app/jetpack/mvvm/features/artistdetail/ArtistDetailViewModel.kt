@@ -22,9 +22,9 @@ class ArtistDetailViewModel @Inject constructor(
 ) : ViewModel() {
     val artistDetail: MutableState<DataState<ArtistDetailState>?> = mutableStateOf(null)
 
-    fun artistDetail(personId: Int) {
+    fun artistDetail(artistId: Int) {
         viewModelScope.launch {
-            getArtistDetailUseCase.invoke(personId).onEach {
+            getArtistDetailUseCase.invoke(artistId).onEach {
                 if (it is DataState.Success<ArtistDetail>) {
                     artistDetail.value = DataState.Success(artistDetailToUiStateMapper.map(it.data))
                 }

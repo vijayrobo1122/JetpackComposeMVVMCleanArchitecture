@@ -22,12 +22,12 @@ android {
 
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
     buildFeatures {
@@ -61,11 +61,18 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
-    testImplementation(libs.androidx.room.testing)
-    testImplementation(libs.mockk.android)
-    testImplementation(libs.mockk.agent)
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    testImplementation(libs.androidx.ui.test.junit4)
+    testImplementation(libs.kotlinx.coroutines.test)
+
+    testImplementation(libs.mockk.agent)
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.androidx.junit.ktx)
+    testImplementation(libs.turbine)
 }

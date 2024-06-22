@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@SuppressWarnings("LongParameterList")
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(
     private val getMovieCreditUseCase: GetMovieCreditUseCase,

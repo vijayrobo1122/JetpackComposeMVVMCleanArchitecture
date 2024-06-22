@@ -44,6 +44,7 @@ import com.app.jetpack.mvvm.common.ui.components.SubtitleSecondary
 import com.app.jetpack.mvvm.common.ui.resources.strings.StringResources
 import com.app.jetpack.mvvm.common.ui.theme.FontColor
 
+@SuppressWarnings("LongMethod")
 @Composable
 fun MovieDetailCard(
     modifier: Modifier = Modifier,

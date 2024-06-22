@@ -23,10 +23,6 @@ fun NavGraphBuilder.artistDetailsScreen() {
     ) {
         label = stringResource(StringResources.titleArtistDetail)
         val artistId = it.arguments?.getInt(Screen.ArtistDetail.objectName)
-        artistId?.let {
-            ArtistDetailScreen(
-                artistId
-            )
-        }
+        artistId?.let { ArtistDetailScreen(artistId) }
     }
 }

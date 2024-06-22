@@ -9,6 +9,7 @@ import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieItem
 import com.app.jetpack.mvvm.common.domain.models.DataState
 import kotlinx.coroutines.flow.Flow
 
+@SuppressWarnings("TooManyFunctions")
 interface MovieRepository {
 
     suspend fun likeMovie(movieId: Int)

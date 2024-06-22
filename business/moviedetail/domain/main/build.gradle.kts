@@ -10,12 +10,12 @@ android {
     compileSdk = rootProject.ext.get("compileSdkVersion") as Int
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 }
 
@@ -33,4 +33,16 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    testImplementation(libs.androidx.ui.test.junit4)
+    testImplementation(libs.kotlinx.coroutines.test)
+
+    testImplementation(libs.mockk.agent)
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.androidx.junit.ktx)
+    testImplementation(libs.turbine)
+    testImplementation(libs.androidx.paging.runtime)
 }

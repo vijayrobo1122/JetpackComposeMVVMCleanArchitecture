@@ -22,12 +22,12 @@ import com.app.jetpack.mvvm.common.ui.compositions.CircularIndeterminateProgress
 import com.app.jetpack.mvvm.common.ui.theme.DefaultBackgroundColor
 
 @Composable
-fun ArtistDetailScreen(personId: Int) {
+fun ArtistDetailScreen(artistId: Int) {
     val artistDetailViewModel = hiltViewModel<ArtistDetailViewModel>()
     val artistDetail = artistDetailViewModel.artistDetail
     val progressBar = remember { mutableStateOf(false) }
     LaunchedEffect(true) {
-        artistDetailViewModel.artistDetail(personId)
+        artistDetailViewModel.artistDetail(artistId)
     }
 
     Column(

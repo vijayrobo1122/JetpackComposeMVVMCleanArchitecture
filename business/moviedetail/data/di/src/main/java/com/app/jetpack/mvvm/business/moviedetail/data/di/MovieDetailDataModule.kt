@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
 
+@SuppressWarnings("TooManyFunctions")
 @Module
 @InstallIn(SingletonComponent::class)
 object MovieDetailDataModule {

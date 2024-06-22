@@ -1,5 +1,6 @@
 package com.app.jetpack.mvvm.business.moviedetail.data.main.repository
 
+import androidx.paging.PagingData
 import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.MovieLocalDataSource
 import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.MovieRemoteDataSource
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.repository.MovieRepository
@@ -40,23 +41,23 @@ class MovieRepositoryImpl @Inject constructor(
         return movieRemoteDataSource.genreList()
     }
 
-    override fun nowPlayingPagingDataSource(genreId: String?): Flow<androidx.paging.PagingData<MovieItem>> {
+    override fun nowPlayingPagingDataSource(genreId: String?): Flow<PagingData<MovieItem>> {
         return movieRemoteDataSource.nowPlayingPagingDataSource(genreId)
     }
 
-    override fun popularPagingDataSource(genreId: String?): Flow<androidx.paging.PagingData<MovieItem>> {
+    override fun popularPagingDataSource(genreId: String?): Flow<PagingData<MovieItem>> {
         return movieRemoteDataSource.popularPagingDataSource(genreId)
     }
 
-    override fun topRatedPagingDataSource(genreId: String?): Flow<androidx.paging.PagingData<MovieItem>> {
+    override fun topRatedPagingDataSource(genreId: String?): Flow<PagingData<MovieItem>> {
         return movieRemoteDataSource.topRatedPagingDataSource(genreId)
     }
 
-    override fun upcomingPagingDataSource(genreId: String?): Flow<androidx.paging.PagingData<MovieItem>> {
+    override fun upcomingPagingDataSource(genreId: String?): Flow<PagingData<MovieItem>> {
         return movieRemoteDataSource.upcomingPagingDataSource(genreId)
     }
 
-    override fun genrePagingDataSource(genreId: String): Flow<androidx.paging.PagingData<MovieItem>> {
+    override fun genrePagingDataSource(genreId: String): Flow<PagingData<MovieItem>> {
         return movieRemoteDataSource.genrePagingDataSource(genreId)
     }
 }
