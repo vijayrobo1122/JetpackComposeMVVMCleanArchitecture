@@ -106,9 +106,13 @@ object ArtistDetailDataModule {
     @Provides
     fun provideArtistRepository(
         artistRemoteDataSource: ArtistRemoteDataSource,
+        artistDetailMapper: ArtistDetailMapper,
+        artistMapper: ArtistMapper,
     ): ArtistRepository {
         return ArtistRepositoryImpl(
             artistRemoteDataSource = artistRemoteDataSource,
+            artistDetailMapper = artistDetailMapper,
+            artistMapper = artistMapper
         )
     }
 

@@ -5,6 +5,8 @@
 
 ./gradlew createDebugCoverageReport
 
+./gradlew tasks
+
 ## Technologies Used
 
 * Kotlin - Main programming language.

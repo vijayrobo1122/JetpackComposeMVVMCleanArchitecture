@@ -116,10 +116,16 @@ object MovieDetailDataModule {
     fun provideArtistRepository(
         movieLocalDataSource: MovieLocalDataSource,
         movieRemoteDataSource: MovieRemoteDataSource,
+        baseModelMapper: BaseModelMapper,
+        movieDetailMapper: MovieDetailMapper,
+        genresMapper: GenresMapper,
     ): MovieRepository {
         return MovieRepositoryImpl(
             movieLocalDataSource = movieLocalDataSource,
             movieRemoteDataSource = movieRemoteDataSource,
+            baseModelMapper = baseModelMapper,
+            movieDetailMapper = movieDetailMapper,
+            genresMapper = genresMapper,
         )
     }
 
@@ -150,14 +156,10 @@ object MovieDetailDataModule {
     fun provideMovieRemoteDataSource(
         @Named("movie_api_service") apiService: MovieApiService,
         baseModelMapper: BaseModelMapper,
-        movieDetailMapper: MovieDetailMapper,
-        genresMapper: GenresMapper,
     ): MovieRemoteDataSource {
         return MovieRemoteDataSourceImpl(
             apiService = apiService,
             baseModelMapper = baseModelMapper,
-            movieDetailMapper = movieDetailMapper,
-            genresMapper = genresMapper,
         )
     }
 

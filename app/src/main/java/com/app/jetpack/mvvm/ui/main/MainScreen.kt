@@ -15,7 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -60,8 +60,7 @@ fun MainScreen() {
     }
 
     val genreName = remember { mutableStateOf("") }
-    val genreList = remember { mutableStateOf(arrayListOf<GenreState>()) }
-    genreList.value = mainViewModel.genreStateList.value as ArrayList<GenreState>
+    val genreList = mainViewModel.genreStateList.collectAsState()
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -69,7 +68,7 @@ fun MainScreen() {
             AppDrawer(
                 modifier = Modifier,
                 navController = navController,
-                genres = genreList.value,
+                genres = genreList.value ?: emptyList(),
             ) {
                 genreName.value = it
                 scope.launch {
@@ -78,10 +77,17 @@ fun MainScreen() {
             }
         },
         content = {
-            CustomScaffoldView(navController, genreList, genreName.value, isConnected) {
-                scope.launch {
-                    drawerState.apply {
-                        if (isClosed) open() else close()
+            genreList.value?.let { list ->
+                CustomScaffoldView(
+                    navController,
+                    list,
+                    genreName.value,
+                    isConnected
+                ) {
+                    scope.launch {
+                        drawerState.apply {
+                            if (isClosed) open() else close()
+                        }
                     }
                 }
             }
@@ -91,7 +97,7 @@ fun MainScreen() {
 @Composable
 fun CustomScaffoldView(
     navController: NavHostController,
-    genreList: MutableState<ArrayList<GenreState>>,
+    genreList: List<GenreState>,
     genreName: String,
     isConnected: Boolean,
     openDrawer: () -> Unit
@@ -113,7 +119,7 @@ fun CustomScaffoldView(
             CustomSnackBarView(isShow = isConnected.not(), snackbarHostState)
         },
     ) { innerPadding ->
-        ScaffoldContent(innerPadding, navController, genreList.value)
+        ScaffoldContent(innerPadding, navController, genreList)
     }
 }
 
@@ -154,7 +160,7 @@ fun ScaffoldTopBar(navController: NavHostController, genreName: String, openDraw
 fun ScaffoldContent(
     innerPadding: PaddingValues,
     navController: NavHostController,
-    genreList: ArrayList<GenreState>,
+    genreList: List<GenreState>,
 ) {
     Box(
         modifier = Modifier.fillMaxWidth()
@@ -162,7 +168,7 @@ fun ScaffoldContent(
         AppNavigation(
             modifier = Modifier.padding(innerPadding),
             navController = navController,
-            genresStateList = genreList,
+            genresStateList = genreList as ArrayList<GenreState>?,
         )
     }
 }

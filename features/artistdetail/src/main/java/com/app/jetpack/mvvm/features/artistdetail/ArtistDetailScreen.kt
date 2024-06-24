@@ -9,25 +9,26 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.app.jetpack.mvvm.common.domain.api.pagingLoadingState
-import com.app.jetpack.mvvm.common.domain.models.DataState
-import com.app.jetpack.mvvm.common.presentation.widgets.model.ArtistDetailState
 import com.app.jetpack.mvvm.common.ui.compositions.ArtistDetailWidget
 import com.app.jetpack.mvvm.common.ui.compositions.CircularIndeterminateProgressBar
 import com.app.jetpack.mvvm.common.ui.theme.DefaultBackgroundColor
 
 @Composable
 fun ArtistDetailScreen(artistId: Int) {
-    val artistDetailViewModel = hiltViewModel<ArtistDetailViewModel>()
-    val artistDetail = artistDetailViewModel.artistDetail
+    val viewModel = hiltViewModel<ArtistDetailViewModel>()
+    val artistDetail = viewModel.artistDetail.collectAsState()
     val progressBar = remember { mutableStateOf(false) }
+    val isLoading by viewModel.isLoading
+
     LaunchedEffect(true) {
-        artistDetailViewModel.artistDetail(artistId)
+        viewModel.artistDetail(artistId)
     }
 
     Column(
@@ -42,17 +43,13 @@ fun ArtistDetailScreen(artistId: Int) {
 
         CircularIndeterminateProgressBar(isDisplayed = progressBar.value)
 
-        artistDetail.value.let {
-            if (it is DataState.Success<ArtistDetailState>) {
-                ArtistDetailWidget(
-                    modifier = Modifier,
-                    artistDetailState = it.data
-                )
-            }
+        artistDetail.value?.let {
+            ArtistDetailWidget(
+                modifier = Modifier,
+                artistDetailState = it
+            )
         }
     }
 
-    artistDetail.pagingLoadingState {
-        progressBar.value = it
-    }
+    progressBar.value = isLoading
 }

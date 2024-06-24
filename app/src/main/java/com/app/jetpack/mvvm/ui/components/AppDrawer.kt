@@ -41,7 +41,7 @@ import com.app.jetpack.mvvm.common.ui.resources.drawables.DrawableResources
 fun AppDrawer(
     modifier: Modifier = Modifier,
     navController: NavController,
-    genres: ArrayList<GenreState>,
+    genres: List<GenreState>,
     closeDrawer: (genreName: String) -> Unit
 ) {
     ModalDrawerSheet(modifier = Modifier) {

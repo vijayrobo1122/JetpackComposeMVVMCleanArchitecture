@@ -6,7 +6,6 @@ import com.app.jetpack.mvvm.business.moviedetail.domain.model.BaseModel
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genres
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieDetail
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieItem
-import com.app.jetpack.mvvm.common.domain.models.DataState
 import kotlinx.coroutines.flow.Flow
 
 @SuppressWarnings("TooManyFunctions")
@@ -18,11 +17,11 @@ interface MovieRepository {
 
     suspend fun isMovieLiked(movieId: Int): Boolean
 
-    suspend fun movieDetail(movieId: Int): Flow<DataState<MovieDetail>>
+    suspend fun movieDetail(movieId: Int): Result<MovieDetail>
 
-    suspend fun recommendedMovie(movieId: Int, page: Int): Flow<DataState<BaseModel>>
+    suspend fun recommendedMovie(movieId: Int, page: Int): Result<BaseModel>
 
-    suspend fun genreList(): Flow<DataState<Genres>>
+    suspend fun genreList(): Result<Genres>
 
     fun nowPlayingPagingDataSource(genreId: String?): Flow<PagingData<MovieItem>>
 

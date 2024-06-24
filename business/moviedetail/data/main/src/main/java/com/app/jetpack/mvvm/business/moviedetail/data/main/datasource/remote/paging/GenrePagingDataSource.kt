@@ -5,9 +5,7 @@ import androidx.paging.PagingState
 import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.remote.MovieApiService
 import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.BaseModelMapper
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieItem
-import retrofit2.HttpException
-import timber.log.Timber
-import java.io.IOException
+import com.app.jetpack.mvvm.common.network.safeApiCall
 import javax.inject.Inject
 
 
@@ -22,22 +20,21 @@ class GenrePagingDataSource @Inject constructor(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieItem> {
-        return try {
-            val nextPage = params.key ?: 1
-            val baseModelEntity =
-                apiService.moviesByGenre(nextPage, if (genreId.isNullOrEmpty()) null else genreId)
-            val baseModel = baseModelMapper.mapTo(baseModelEntity)
-            LoadResult.Page(
-                data = baseModel.moviesList,
-                prevKey = if (nextPage == 1) null else nextPage - 1,
-                nextKey = if (baseModel.moviesList.isNotEmpty()) baseModel.page + 1 else null
-            )
-        } catch (exception: IOException) {
-            Timber.e("exception ${exception.message}")
-            LoadResult.Error(exception)
-        } catch (httpException: HttpException) {
-            Timber.e("httpException ${httpException.message}")
-            LoadResult.Error(httpException)
-        }
+        val nextPage = params.key ?: 1
+        return safeApiCall {
+            apiService.moviesByGenre(nextPage, if (genreId.isNullOrEmpty()) null else genreId)
+        }.fold(
+            onSuccess = { data ->
+                val baseModel = baseModelMapper.mapTo(data)
+                LoadResult.Page(
+                    data = baseModel.moviesList,
+                    prevKey = if (nextPage == 1) null else nextPage - 1,
+                    nextKey = if (baseModel.moviesList.isNotEmpty()) baseModel.page + 1 else null
+                )
+            },
+            onFailure = {
+                LoadResult.Error(it)
+            }
+        )
     }
 }

@@ -9,16 +9,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.app.jetpack.mvvm.common.domain.api.pagingLoadingState
-import com.app.jetpack.mvvm.common.domain.models.DataState
-import com.app.jetpack.mvvm.common.presentation.widgets.model.ArtistState
-import com.app.jetpack.mvvm.common.presentation.widgets.model.BaseModelState
-import com.app.jetpack.mvvm.common.presentation.widgets.model.MovieDetailState
 import com.app.jetpack.mvvm.common.ui.compositions.ArtistAndCrewCard
 import com.app.jetpack.mvvm.common.ui.compositions.CircularIndeterminateProgressBar
 import com.app.jetpack.mvvm.common.ui.compositions.MovieDetailCard
@@ -32,16 +28,17 @@ fun MovieDetailScreen(
     onArtistItemClick: (String) -> Unit,
     movieId: Int,
 ) {
-    val movieDetailViewModel = hiltViewModel<MovieDetailViewModel>()
+    val viewModel = hiltViewModel<MovieDetailViewModel>()
     val progressBar = remember { mutableStateOf(false) }
-    val movieDetail = movieDetailViewModel.movieDetail
-    val recommendedMovie = movieDetailViewModel.recommendedMovie
-    val artist = movieDetailViewModel.artist
+    val movieDetail = viewModel.movieDetail.collectAsState()
+    val recommendedMovie = viewModel.recommendedMovie.collectAsState()
+    val artist = viewModel.artist.collectAsState()
+    val isLoading = viewModel.isLoading.value
 
     LaunchedEffect(true) {
-        movieDetailViewModel.movieDetailApi(movieId)
-        movieDetailViewModel.recommendedMovieApi(movieId, 1)
-        movieDetailViewModel.movieCredit(movieId)
+        viewModel.movieDetailApi(movieId)
+        viewModel.recommendedMovieApi(movieId, 1)
+        viewModel.movieCredit(movieId)
     }
 
     Column(
@@ -53,47 +50,36 @@ fun MovieDetailScreen(
     ) {
         CircularIndeterminateProgressBar(isDisplayed = progressBar.value)
         movieDetail.value?.let { it ->
-            if (it is DataState.Success<MovieDetailState>) {
-                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
 
-                    MovieDetailCard(
-                        movieDetailState = it.data,
-                        toggleFavorite = { isFavorite ->
-                            movieDetailViewModel.toggleFavorite(it.data.movieId, isFavorite)
-                        }
+                MovieDetailCard(
+                    movieDetailState = it,
+                    toggleFavorite = { isFavorite ->
+                        viewModel.toggleFavorite(it.movieId, isFavorite)
+                    }
+                )
+
+                recommendedMovie.value?.let {
+                    RecommendedMovieCard(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(start = 10.dp, end = 10.dp),
+                        recommendedMovie = it.moviesList,
+                        onItemClick = onMovieItemClick,
                     )
+                }
 
-                    recommendedMovie.value?.let {
-                        if (it is DataState.Success<BaseModelState>) {
-                            RecommendedMovieCard(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(start = 10.dp, end = 10.dp),
-                                recommendedMovie = it.data.moviesList,
-                                onItemClick = onMovieItemClick,
-                            )
-                        }
-                    }
-
-                    artist.value?.let {
-                        if (it is DataState.Success<ArtistState>) {
-                            ArtistAndCrewCard(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(start = 10.dp, end = 10.dp),
-                                castStates = it.data.castList,
-                                onArtistItemClick = onArtistItemClick,
-                            )
-                        }
-                    }
+                artist.value?.let {
+                    ArtistAndCrewCard(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(start = 10.dp, end = 10.dp),
+                        castStates = it.castList,
+                        onArtistItemClick = onArtistItemClick,
+                    )
                 }
             }
         }
-        recommendedMovie.pagingLoadingState {
-            progressBar.value = it
-        }
-        movieDetail.pagingLoadingState {
-            progressBar.value = it
-        }
+        progressBar.value = isLoading
     }
 }

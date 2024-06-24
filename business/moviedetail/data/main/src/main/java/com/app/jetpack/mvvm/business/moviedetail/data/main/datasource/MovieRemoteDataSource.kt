@@ -1,19 +1,18 @@
 package com.app.jetpack.mvvm.business.moviedetail.data.main.datasource
 
 import androidx.paging.PagingData
-import com.app.jetpack.mvvm.business.moviedetail.domain.model.BaseModel
-import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genres
-import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieDetail
+import com.app.jetpack.mvvm.business.moviedetail.data.entity.BaseModelEntity
+import com.app.jetpack.mvvm.business.moviedetail.data.entity.GenresEntity
+import com.app.jetpack.mvvm.business.moviedetail.data.entity.MovieDetailEntity
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieItem
-import com.app.jetpack.mvvm.common.domain.models.DataState
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRemoteDataSource {
-    suspend fun movieDetail(movieId: Int): Flow<DataState<MovieDetail>>
+    suspend fun movieDetail(movieId: Int): Result<MovieDetailEntity>
 
-    suspend fun recommendedMovie(movieId: Int, page: Int): Flow<DataState<BaseModel>>
+    suspend fun recommendedMovie(movieId: Int, page: Int): Result<BaseModelEntity>
 
-    suspend fun genreList(): Flow<DataState<Genres>>
+    suspend fun genreList(): Result<GenresEntity>
 
     fun nowPlayingPagingDataSource(genreId: String?): Flow<PagingData<MovieItem>>
 

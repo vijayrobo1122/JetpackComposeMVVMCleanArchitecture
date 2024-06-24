@@ -1,13 +1,11 @@
 package com.app.jetpack.mvvm.business.artistdetail.data.main.datasource.remote
 
+import com.app.jetpack.mvvm.business.artistdetail.data.entity.ArtistDetailEntity
+import com.app.jetpack.mvvm.business.artistdetail.data.entity.ArtistEntity
 import com.app.jetpack.mvvm.business.artistdetail.data.main.datasource.ArtistRemoteDataSource
 import com.app.jetpack.mvvm.business.artistdetail.data.main.mapper.ArtistDetailMapper
 import com.app.jetpack.mvvm.business.artistdetail.data.main.mapper.ArtistMapper
-import com.app.jetpack.mvvm.business.artistdetail.domain.model.Artist
-import com.app.jetpack.mvvm.business.artistdetail.domain.model.ArtistDetail
-import com.app.jetpack.mvvm.common.domain.models.DataState
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import com.app.jetpack.mvvm.common.network.safeApiCall
 import javax.inject.Inject
 
 class ArtistRemoteDataSourceImpl @Inject constructor(
@@ -16,30 +14,11 @@ class ArtistRemoteDataSourceImpl @Inject constructor(
     private val artistMapper: ArtistMapper,
 ) : ArtistRemoteDataSource {
 
-    override suspend fun artistDetail(artistId: Int): Flow<DataState<ArtistDetail>> {
-        return flow {
-            emit(DataState.Loading)
-            try {
-                val artistDetailResult = artistApiService.artistDetail(artistId)
-                emit(DataState.Success(artistDetailMapper.mapTo(artistDetailResult)))
-
-            } catch (e: Exception) {
-                emit(DataState.Error(e))
-            }
-        }
+    override suspend fun artistDetail(artistId: Int): Result<ArtistDetailEntity> {
+        return safeApiCall { artistApiService.artistDetail(artistId) }
     }
 
-    override suspend fun movieCredit(movieId: Int): Flow<DataState<Artist>> {
-        return flow {
-            emit(DataState.Loading)
-            try {
-                val artistResult = artistApiService.movieCredit(movieId)
-                emit(DataState.Success(artistMapper.mapTo(artistResult)))
-
-            } catch (e: Exception) {
-                emit(DataState.Error(e))
-            }
-        }
+    override suspend fun movieCredit(movieId: Int): Result<ArtistEntity> {
+        return safeApiCall { artistApiService.movieCredit(movieId) }
     }
-
 }

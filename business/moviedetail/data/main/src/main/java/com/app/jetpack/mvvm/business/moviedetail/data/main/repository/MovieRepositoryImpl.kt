@@ -3,18 +3,23 @@ package com.app.jetpack.mvvm.business.moviedetail.data.main.repository
 import androidx.paging.PagingData
 import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.MovieLocalDataSource
 import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.MovieRemoteDataSource
+import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.BaseModelMapper
+import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.GenresMapper
+import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.MovieDetailMapper
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.repository.MovieRepository
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.BaseModel
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genres
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieDetail
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieItem
-import com.app.jetpack.mvvm.common.domain.models.DataState
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
     private val movieLocalDataSource: MovieLocalDataSource,
     private val movieRemoteDataSource: MovieRemoteDataSource,
+    private val baseModelMapper: BaseModelMapper,
+    private val movieDetailMapper: MovieDetailMapper,
+    private val genresMapper: GenresMapper,
 ) : MovieRepository {
 
     override suspend fun likeMovie(movieId: Int) {
@@ -29,16 +34,17 @@ class MovieRepositoryImpl @Inject constructor(
         return movieLocalDataSource.isMovieLiked(movieId)
     }
 
-    override suspend fun movieDetail(movieId: Int): Flow<DataState<MovieDetail>> {
-        return movieRemoteDataSource.movieDetail(movieId)
+    override suspend fun movieDetail(movieId: Int): Result<MovieDetail> {
+        return movieRemoteDataSource.movieDetail(movieId).map { movieDetailMapper.mapTo(it) }
     }
 
-    override suspend fun recommendedMovie(movieId: Int, page: Int): Flow<DataState<BaseModel>> {
+    override suspend fun recommendedMovie(movieId: Int, page: Int): Result<BaseModel> {
         return movieRemoteDataSource.recommendedMovie(movieId, page)
+            .map { baseModelMapper.mapTo(it) }
     }
 
-    override suspend fun genreList(): Flow<DataState<Genres>> {
-        return movieRemoteDataSource.genreList()
+    override suspend fun genreList(): Result<Genres> {
+        return movieRemoteDataSource.genreList().map { genresMapper.mapTo(it) }
     }
 
     override fun nowPlayingPagingDataSource(genreId: String?): Flow<PagingData<MovieItem>> {

@@ -40,7 +40,7 @@ dependencies {
     implementation(project(":common:domain:api"))
     implementation(project(":common:domain:models"))
     implementation(project(":common:general:extensions"))
-
+    implementation(project(":common:network"))
     implementation(project(":business:artistdetail:data:entity"))
     implementation(project(":business:artistdetail:domain:main"))
     implementation(project(":business:artistdetail:domain:model"))
