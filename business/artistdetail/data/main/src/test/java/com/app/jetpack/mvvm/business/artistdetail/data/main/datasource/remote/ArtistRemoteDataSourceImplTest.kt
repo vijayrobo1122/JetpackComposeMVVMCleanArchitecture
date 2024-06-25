@@ -1,18 +1,11 @@
 package com.app.jetpack.mvvm.business.artistdetail.data.main.datasource.remote
 
-import app.cash.turbine.test
 import com.app.jetpack.mvvm.business.artistdetail.data.entity.ArtistDetailEntity
 import com.app.jetpack.mvvm.business.artistdetail.data.entity.ArtistEntity
-import com.app.jetpack.mvvm.business.artistdetail.data.main.mapper.ArtistDetailMapper
-import com.app.jetpack.mvvm.business.artistdetail.data.main.mapper.ArtistMapper
-import com.app.jetpack.mvvm.business.artistdetail.domain.model.Artist
-import com.app.jetpack.mvvm.business.artistdetail.domain.model.ArtistDetail
-import com.app.jetpack.mvvm.common.domain.models.DataState
+import com.app.jetpack.mvvm.common.network.safeApiCall
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -24,18 +17,12 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.verifyNoInteractions
 
 class ArtistRemoteDataSourceImplTest {
 
     private lateinit var sut: ArtistRemoteDataSourceImpl
 
-    private val artistApiService: ArtistApiService =
-        mockk<ArtistApiService>(relaxed = true)
-
-    private val artistDetailMapper: ArtistDetailMapper = mockk<ArtistDetailMapper>(relaxed = true)
-
-    private val artistMapper: ArtistMapper = mockk<ArtistMapper>(relaxed = true)
+    private val artistApiService = mockk<ArtistApiService>(relaxed = true)
 
     private val testDispatcher = StandardTestDispatcher()
 
@@ -45,7 +32,7 @@ class ArtistRemoteDataSourceImplTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        sut = ArtistRemoteDataSourceImpl(artistApiService, artistDetailMapper, artistMapper)
+        sut = ArtistRemoteDataSourceImpl(artistApiService)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -59,26 +46,18 @@ class ArtistRemoteDataSourceImplTest {
         testScope.launch {
             // Given
             val artistId = 123
-            val mockArtistDetail = mockk<ArtistDetail>(relaxed = true)
             val mockArtistDetailEntity = mockk<ArtistDetailEntity>(relaxed = true)
-
-            // Mock dependencies
+            val mockDataStateSuccess = Result.success(mockArtistDetailEntity)
             coEvery { artistApiService.artistDetail(artistId) } returns mockArtistDetailEntity
-            every { artistDetailMapper.mapTo(mockArtistDetailEntity) } returns mockArtistDetail
+            coEvery { safeApiCall { artistApiService.artistDetail(artistId) } } returns mockDataStateSuccess
 
             // When
-            val artistDetailFlow = sut.artistDetail(artistId)
+            val result = sut.artistDetail(artistId)
 
             // Then
             coVerify(exactly = 1) { artistApiService.artistDetail(artistId) }
-            verify { artistDetailMapper.mapTo(mockArtistDetailEntity) }
-
-            artistDetailFlow.test {
-                val expectedEmissions =
-                    listOf(DataState.Loading, DataState.Success(mockArtistDetail))
-
-                assertEquals(expectedEmissions, awaitItem())
-            }
+            assertEquals(true, result.isSuccess)
+            assertEquals(mockArtistDetailEntity, result.getOrNull())
         }
     }
 
@@ -88,19 +67,17 @@ class ArtistRemoteDataSourceImplTest {
             // Given
             val artistId = 123
             val mockException = mockk<Exception>(relaxed = true)
+            val mockDataStateError = Result.failure<ArtistDetailEntity>(mockException)
             coEvery { artistApiService.artistDetail(artistId) } throws mockException
+            coEvery { safeApiCall { artistApiService.artistDetail(artistId) } } returns mockDataStateError
 
-            // Trigger artist detail fetch
-            val artistDetailFlow = sut.artistDetail(artistId)
+            // When
+            val result = sut.artistDetail(artistId)
 
             // Then
             coVerify { artistApiService.artistDetail(artistId) }
-            verifyNoInteractions(artistDetailMapper)
-            artistDetailFlow.test {
-                val expectedEmissions = listOf(DataState.Loading, DataState.Error(mockException))
-
-                assertEquals(expectedEmissions, awaitItem())
-            }
+            assertEquals(true, result.isFailure)
+            assertEquals(mockException, result.exceptionOrNull())
         }
     }
 
@@ -109,25 +86,18 @@ class ArtistRemoteDataSourceImplTest {
         testScope.launch {
             // Given
             val movieId = 123
-            val mockArtist = mockk<Artist>(relaxed = true)
             val mockArtistEntity = mockk<ArtistEntity>(relaxed = true)
-
-            // Mock dependencies
+            val mockDataStateSuccess = Result.success(mockArtistEntity)
             coEvery { artistApiService.movieCredit(movieId) } returns mockArtistEntity
-            every { artistMapper.mapTo(mockArtistEntity) } returns mockArtist
+            coEvery { safeApiCall { artistApiService.movieCredit(movieId) } } returns mockDataStateSuccess
 
             // When
-            val movieCreditFlow = sut.movieCredit(movieId)
+            val result = sut.movieCredit(movieId)
 
             // Then
             coVerify { artistApiService.movieCredit(movieId) }
-            verify { artistMapper.mapTo(mockArtistEntity) }
-            movieCreditFlow.test {
-                val expectedEmissions =
-                    listOf(DataState.Loading, DataState.Success(mockArtist))
-
-                assertEquals(expectedEmissions, awaitItem())
-            }
+            assertEquals(true, result.isSuccess)
+            assertEquals(mockArtistEntity, result.getOrNull())
         }
     }
 
@@ -137,19 +107,17 @@ class ArtistRemoteDataSourceImplTest {
             // Given
             val movieId = 123
             val mockException = mockk<Exception>(relaxed = true)
+            val mockDataStateError = Result.failure<ArtistEntity>(mockException)
             coEvery { artistApiService.movieCredit(movieId) } throws mockException
+            coEvery { safeApiCall { artistApiService.movieCredit(movieId) } } returns mockDataStateError
 
-            // Trigger artist detail fetch
-            val movieCreditFlow = sut.movieCredit(movieId)
+            // When
+            val result = sut.movieCredit(movieId)
 
             // Then
             coVerify { artistApiService.movieCredit(movieId) }
-            verifyNoInteractions(artistMapper)
-            movieCreditFlow.test {
-                val expectedEmissions = listOf(DataState.Loading, DataState.Error(mockException))
-
-                assertEquals(expectedEmissions, awaitItem())
-            }
+            assertEquals(true, result.isFailure)
+            assertEquals(mockException, result.exceptionOrNull())
         }
     }
 }

@@ -7,6 +7,8 @@
 
 ./gradlew tasks
 
+./gradlew testDebugUnitTestCoverage
+
 ## Technologies Used
 
 * Kotlin - Main programming language.

@@ -19,7 +19,7 @@ data class ApiUnexpectedError(
 ) : ApiError(message, throwable)
 
 /**
-Network or File access IO Exception
+ * Network or File access IO Exception
  */
 data class ApiNetworkError(
     override val message: String?,
@@ -27,7 +27,7 @@ data class ApiNetworkError(
 ) : ApiError(message, throwable)
 
 /**
- * Sonic API network request errors. These are mapped from the Sonic Client Retrofit library
+ * API network request errors. These are mapped from the Client Retrofit library
  * These errors have been created from returned http status codes from network calls
  * Classification of these Http errors done with base class and more granular detail is provided in the derived classes
  */

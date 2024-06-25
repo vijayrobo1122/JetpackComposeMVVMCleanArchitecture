@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.app.jetpack.mvvm.business.moviedetail.data.entity.FavoriteEntity
 import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.local.dao.FavoriteDao
 
-@Database(entities = [FavoriteEntity::class], version = 1)
+@Database(entities = [FavoriteEntity::class], version = 1, exportSchema = false)
 abstract class FavoriteAppDatabase : RoomDatabase() {
 
     abstract fun favoriteDao(): FavoriteDao

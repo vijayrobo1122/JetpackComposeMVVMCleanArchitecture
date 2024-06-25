@@ -3,7 +3,6 @@ package com.app.jetpack.mvvm.features.artistdetail
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.app.jetpack.mvvm.business.artistdetail.domain.main.usecase.GetArtistDetailUseCase
 import com.app.jetpack.mvvm.business.artistdetail.domain.model.ArtistDetail
-import com.app.jetpack.mvvm.common.domain.models.DataState
 import com.app.jetpack.mvvm.common.presentation.widgets.mapper.ArtistDetailToUiStateMapper
 import com.app.jetpack.mvvm.common.presentation.widgets.model.ArtistDetailState
 import io.mockk.coEvery
@@ -13,8 +12,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
@@ -36,10 +33,8 @@ class ArtistDetailViewModelTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
 
-    private val getArtistDetailUseCase: GetArtistDetailUseCase =
-        mockk<GetArtistDetailUseCase>(relaxed = true)
-    private val artistDetailToUiStateMapper: ArtistDetailToUiStateMapper =
-        mockk<ArtistDetailToUiStateMapper>(relaxed = true)
+    private val getArtistDetailUseCase = mockk<GetArtistDetailUseCase>(relaxed = true)
+    private val artistDetailToUiStateMapper = mockk<ArtistDetailToUiStateMapper>(relaxed = true)
 
     private lateinit var sut: ArtistDetailViewModel
 
@@ -66,26 +61,6 @@ class ArtistDetailViewModelTest {
     }
 
     @Test
-    fun `artistDetail - loading`() {
-        testScope.launch {
-            // Given
-            val artistId = 134
-            coEvery { getArtistDetailUseCase.invoke(artistId) } returns flow {
-                // Simulate delay for loading state
-                delay(100)
-                emit(DataState.Loading)
-            }
-
-
-            // When
-            sut.artistDetail(artistId)
-
-            // Then
-            assertEquals(sut.artistDetail.value, DataState.Loading)
-        }
-    }
-
-    @Test
     fun `artistDetail fetches artist details successfully`() {
         testScope.launch {
             // Given
@@ -93,16 +68,11 @@ class ArtistDetailViewModelTest {
             val mockArtistDetail = mockk<ArtistDetail>(relaxed = true) {
                 every { id } returns artistId
             }
-            val mockDataStateSuccess = mockk<DataState.Success<ArtistDetail>>(relaxed = true) {
-                every { data } returns mockArtistDetail
-            }
             val mockArtistDetailState = mockk<ArtistDetailState>(relaxed = true) {
                 every { artistId } returns artistId
             }
-
-            every { mockDataStateSuccess.data } returns mockArtistDetail
-
-            coEvery { getArtistDetailUseCase.invoke(artistId) } returns flow { mockDataStateSuccess }
+            val mockDataStateSuccess = Result.success(mockArtistDetail)
+            coEvery { getArtistDetailUseCase.invoke(artistId) } returns mockDataStateSuccess
             every { artistDetailToUiStateMapper.map(mockArtistDetail) } returns mockArtistDetailState
 
 
@@ -110,10 +80,9 @@ class ArtistDetailViewModelTest {
             sut.artistDetail(artistId)
 
             // Then
-            val expectedState = DataState.Success(mockArtistDetailState)
-            assertEquals(mockArtistDetailState.artistId, expectedState.data.artistId)
             coVerify { getArtistDetailUseCase.invoke(artistId) }
             verify { artistDetailToUiStateMapper.map(mockArtistDetail) }
+            assertEquals(mockArtistDetailState, sut.artistDetail.value)
         }
     }
 
@@ -123,16 +92,16 @@ class ArtistDetailViewModelTest {
             // Given
             val artistId = 134
             val mockException = mockk<Exception>(relaxed = true)
-            val mockDataStateError = mockk<DataState.Error<ArtistDetail>>(relaxed = true)
-            coEvery { getArtistDetailUseCase.invoke(artistId) } returns flow { mockException }
+            val mockDataStateError = Result.failure<ArtistDetail>(mockException)
+            coEvery { getArtistDetailUseCase.invoke(artistId) } returns mockDataStateError
 
             // When
             sut.artistDetail(artistId)
 
             //Then
-            assertEquals(mockDataStateError, sut.artistDetail.value)
             coVerify { getArtistDetailUseCase.invoke(artistId) }
             verifyNoInteractions(artistDetailToUiStateMapper)
+            assertEquals(mockDataStateError, sut.artistDetail.value)
         }
     }
 }

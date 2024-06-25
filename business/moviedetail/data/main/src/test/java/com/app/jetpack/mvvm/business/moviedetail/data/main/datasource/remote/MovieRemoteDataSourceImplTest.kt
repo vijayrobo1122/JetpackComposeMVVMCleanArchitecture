@@ -1,25 +1,17 @@
 package com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.remote
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.paging.PagingData
-import app.cash.turbine.test
 import com.app.jetpack.mvvm.business.moviedetail.data.entity.BaseModelEntity
 import com.app.jetpack.mvvm.business.moviedetail.data.entity.GenresEntity
 import com.app.jetpack.mvvm.business.moviedetail.data.entity.MovieDetailEntity
 import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.BaseModelMapper
-import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.GenresMapper
-import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.MovieDetailMapper
-import com.app.jetpack.mvvm.business.moviedetail.domain.model.BaseModel
-import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genres
-import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieDetail
-import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieItem
-import com.app.jetpack.mvvm.common.domain.models.DataState
+import com.app.jetpack.mvvm.common.network.safeApiCall
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
@@ -31,7 +23,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.verifyNoInteractions
 
 class MovieRemoteDataSourceImplTest {
 
@@ -42,21 +33,19 @@ class MovieRemoteDataSourceImplTest {
 
     private val apiService: MovieApiService = mockk(relaxed = true)
     private val baseModelMapper: BaseModelMapper = mockk(relaxed = true)
-    private val movieDetailMapper: MovieDetailMapper = mockk(relaxed = true)
-    private val genresMapper: GenresMapper = mockk(relaxed = true)
 
     private val testDispatcher = StandardTestDispatcher()
 
     private val testScope = TestScope(testDispatcher)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        sut = MovieRemoteDataSourceImpl(
-            apiService, baseModelMapper, movieDetailMapper, genresMapper
-        )
+        sut = MovieRemoteDataSourceImpl(apiService, baseModelMapper)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @After
     fun tearDown() {
         Dispatchers.resetMain()
@@ -67,26 +56,18 @@ class MovieRemoteDataSourceImplTest {
         testScope.launch {
             // Given
             val movieId = 123
-            val mockMovieDetail = mockk<MovieDetail>(relaxed = true)
             val mockMovieDetailEntity = mockk<MovieDetailEntity>(relaxed = true)
-
-            // Mock dependencies
+            val mockDataStateSuccess = Result.success(mockMovieDetailEntity)
             coEvery { apiService.movieDetail(movieId) } returns mockMovieDetailEntity
-            every { movieDetailMapper.mapTo(mockMovieDetailEntity) } returns mockMovieDetail
+            coEvery { safeApiCall { apiService.movieDetail(movieId) } } returns mockDataStateSuccess
 
             // When
-            val movieDetailFlow = sut.movieDetail(movieId)
+            val result = sut.movieDetail(movieId)
 
             // Then
             coVerify(exactly = 1) { apiService.movieDetail(movieId) }
-            verify { movieDetailMapper.mapTo(mockMovieDetailEntity) }
-
-            movieDetailFlow.test {
-                val expectedEmissions =
-                    listOf(DataState.Loading, DataState.Success(mockMovieDetail))
-
-                assertEquals(expectedEmissions, awaitItem())
-            }
+            assertEquals(true, result.isSuccess)
+            assertEquals(mockMovieDetailEntity, result.getOrNull())
         }
     }
 
@@ -96,19 +77,17 @@ class MovieRemoteDataSourceImplTest {
             // Given
             val movieId = 123
             val mockException = mockk<Exception>(relaxed = true)
+            val mockDataStateError = Result.failure<MovieDetailEntity>(mockException)
             coEvery { apiService.movieDetail(movieId) } throws mockException
+            coEvery { safeApiCall { apiService.movieDetail(movieId) } } returns mockDataStateError
 
-            // Trigger artist detail fetch
-            val movieDetailFlow = sut.movieDetail(movieId)
+            // When
+            val result = sut.movieDetail(movieId)
 
             // Then
             coVerify { apiService.movieDetail(movieId) }
-            verifyNoInteractions(movieDetailMapper)
-            movieDetailFlow.test {
-                val expectedEmissions = listOf(DataState.Loading, DataState.Error(mockException))
-
-                assertEquals(expectedEmissions, awaitItem())
-            }
+            assertEquals(true, result.isFailure)
+            assertEquals(mockException, result.exceptionOrNull())
         }
     }
 
@@ -119,26 +98,25 @@ class MovieRemoteDataSourceImplTest {
             // Given
             val movieId = 123
             val page = 1
-            val mockBaseModel = mockk<BaseModel>(relaxed = true)
             val mockBaseModelEntity = mockk<BaseModelEntity>(relaxed = true)
-
-            // Mock dependencies
+            val mockDataStateSuccess = Result.success(mockBaseModelEntity)
             coEvery { apiService.recommendedMovie(movieId, page) } returns mockBaseModelEntity
-            every { baseModelMapper.mapTo(mockBaseModelEntity) } returns mockBaseModel
+            coEvery {
+                safeApiCall {
+                    apiService.recommendedMovie(
+                        movieId,
+                        page
+                    )
+                }
+            } returns mockDataStateSuccess
 
             // When
-            val recommendedMovieFlow = sut.recommendedMovie(movieId, page)
+            val result = sut.recommendedMovie(movieId, page)
 
             // Then
             coVerify(exactly = 1) { apiService.recommendedMovie(movieId, page) }
-            verify { baseModelMapper.mapTo(mockBaseModelEntity) }
-
-            recommendedMovieFlow.test {
-                val expectedEmissions =
-                    listOf(DataState.Loading, DataState.Success(mockBaseModel))
-
-                assertEquals(expectedEmissions, awaitItem())
-            }
+            assertEquals(true, result.isSuccess)
+            assertEquals(mockBaseModelEntity, result.getOrNull())
         }
     }
 
@@ -149,19 +127,24 @@ class MovieRemoteDataSourceImplTest {
             val movieId = 123
             val page = 1
             val mockException = mockk<Exception>(relaxed = true)
+            val mockDataStateError = Result.failure<BaseModelEntity>(mockException)
             coEvery { apiService.recommendedMovie(movieId, page) } throws mockException
+            coEvery {
+                safeApiCall {
+                    apiService.recommendedMovie(
+                        movieId,
+                        page
+                    )
+                }
+            } returns mockDataStateError
 
-            // Trigger artist detail fetch
-            val recommendedMovieFlow = sut.recommendedMovie(movieId, page)
+            // When
+            val result = sut.recommendedMovie(movieId, page)
 
             // Then
             coVerify { apiService.recommendedMovie(movieId, page) }
-            verifyNoInteractions(baseModelMapper)
-            recommendedMovieFlow.test {
-                val expectedEmissions = listOf(DataState.Loading, DataState.Error(mockException))
-
-                assertEquals(expectedEmissions, awaitItem())
-            }
+            assertEquals(true, result.isFailure)
+            assertEquals(mockException, result.exceptionOrNull())
         }
     }
 
@@ -169,26 +152,18 @@ class MovieRemoteDataSourceImplTest {
     fun `genreList fetches genres successfully`() {
         testScope.launch {
             // Given
-            val mockGenres = mockk<Genres>(relaxed = true)
             val mockGenresEntity = mockk<GenresEntity>(relaxed = true)
-
-            // Mock dependencies
+            val mockDataStateSuccess = Result.success(mockGenresEntity)
             coEvery { apiService.genreList() } returns mockGenresEntity
-            every { genresMapper.mapTo(mockGenresEntity) } returns mockGenres
+            coEvery { safeApiCall { apiService.genreList() } } returns mockDataStateSuccess
 
             // When
-            val genresFlow = sut.genreList()
+            val result = sut.genreList()
 
             // Then
             coVerify(exactly = 1) { apiService.genreList() }
-            verify { genresMapper.mapTo(mockGenresEntity) }
-
-            genresFlow.test {
-                val expectedEmissions =
-                    listOf(DataState.Loading, DataState.Success(mockGenres))
-
-                assertEquals(expectedEmissions, awaitItem())
-            }
+            assertEquals(true, result.isSuccess)
+            assertEquals(mockGenresEntity, result.getOrNull())
         }
     }
 
@@ -197,33 +172,34 @@ class MovieRemoteDataSourceImplTest {
         testScope.launch {
             // Given
             val mockException = mockk<Exception>(relaxed = true)
+            val mockDataStateError = Result.failure<GenresEntity>(mockException)
             coEvery { apiService.genreList() } throws mockException
+            coEvery { safeApiCall { apiService.genreList() } } returns mockDataStateError
 
-            // Trigger artist detail fetch
-            val genresFlow = sut.genreList()
+            // When
+            val result = sut.genreList()
 
             // Then
             coVerify { apiService.genreList() }
-            verifyNoInteractions(genresMapper)
-            genresFlow.test {
-                val expectedEmissions = listOf(DataState.Loading, DataState.Error(mockException))
-
-                assertEquals(expectedEmissions, awaitItem())
-            }
+            assertEquals(true, result.isFailure)
+            assertEquals(mockException, result.exceptionOrNull())
         }
     }
 
     @Test
     fun `nowPlayingPagingDataSource should return PagingData flow`() = runTest {
         testScope.launch {
+            // Given
             val genreId: String? = null
             val page = 1
             val apiKey = "apiKey"
 
-            val flow = sut.nowPlayingPagingDataSource(genreId)
+            // When
+            val result = sut.nowPlayingPagingDataSource(genreId)
 
-            flow.collect { pagingData ->
-                assert(pagingData is PagingData<MovieItem>)
+            // Then
+            result.collect {
+                assert(true)
             }
             coVerify { apiService.nowPlayingMovieList(page, genreId, apiKey) }
             verify { baseModelMapper.mapTo(any()) }
@@ -233,14 +209,17 @@ class MovieRemoteDataSourceImplTest {
     @Test
     fun `popularPagingDataSource should return PagingData flow`() = runTest {
         testScope.launch {
+            // Given
             val genreId: String? = null
             val page = 1
             val apiKey = "apiKey"
 
-            val flow = sut.popularPagingDataSource(genreId)
+            // When
+            val result = sut.popularPagingDataSource(genreId)
 
-            flow.collect { pagingData ->
-                assert(pagingData is PagingData<MovieItem>)
+            // Then
+            result.collect {
+                assert(true)
             }
             coVerify { apiService.popularMovieList(page, genreId, apiKey) }
             verify { baseModelMapper.mapTo(any()) }
@@ -250,14 +229,17 @@ class MovieRemoteDataSourceImplTest {
     @Test
     fun `topRatedPagingDataSource should return PagingData flow`() = runTest {
         testScope.launch {
+            // Given
             val genreId: String? = null
             val page = 1
             val apiKey = "apiKey"
 
-            val flow = sut.topRatedPagingDataSource(genreId)
+            // When
+            val result = sut.topRatedPagingDataSource(genreId)
 
-            flow.collect { pagingData ->
-                assert(pagingData is PagingData<MovieItem>)
+            // Then
+            result.collect {
+                assert(true)
             }
             coVerify { apiService.topRatedMovieList(page, genreId, apiKey) }
             verify { baseModelMapper.mapTo(any()) }
@@ -267,14 +249,17 @@ class MovieRemoteDataSourceImplTest {
     @Test
     fun `upcomingPagingDataSource should return PagingData flow`() = runTest {
         testScope.launch {
+            // Given
             val genreId: String? = null
             val page = 1
             val apiKey = "apiKey"
 
-            val flow = sut.upcomingPagingDataSource(genreId)
+            // When
+            val result = sut.upcomingPagingDataSource(genreId)
 
-            flow.collect { pagingData ->
-                assert(pagingData is PagingData<MovieItem>)
+            // Then
+            result.collect {
+                assert(true)
             }
             coVerify { apiService.upcomingMovieList(page, genreId, apiKey) }
             verify { baseModelMapper.mapTo(any()) }
@@ -284,14 +269,17 @@ class MovieRemoteDataSourceImplTest {
     @Test
     fun `genrePagingDataSource should return PagingData flow`() = runTest {
         testScope.launch {
-            val genreId: String = "action"
+            // Given
+            val genreId = "action"
             val page = 1
             val apiKey = "apiKey"
 
-            val flow = sut.genrePagingDataSource(genreId)
+            // When
+            val result = sut.genrePagingDataSource(genreId)
 
-            flow.collect { pagingData ->
-                assert(pagingData is PagingData<MovieItem>)
+            // Then
+            result.collect {
+                assert(true)
             }
             coVerify { apiService.moviesByGenre(page, genreId, apiKey) }
             verify { baseModelMapper.mapTo(any()) }

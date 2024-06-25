@@ -59,6 +59,7 @@ class UpComingViewModelTest {
         sut = UpComingViewModel(getUpcomingMoviesUseCase, movieItemToUiStateMapper)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @After
     fun tearDown() {
         Dispatchers.resetMain()

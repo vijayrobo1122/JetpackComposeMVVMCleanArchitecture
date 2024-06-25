@@ -24,14 +24,22 @@ buildscript {
         set("minSdkVersion", 24)
         set("targetSdkVersion", 34)
         set("kotlinCompilerVersion", "1.5.10")
+        set("jvmTargetVersion", JavaVersion.VERSION_11.toString())
     }
 }
 
 allprojects {
 
+    tasks.withType<JavaCompile>().configureEach {
+        sourceCompatibility = JavaVersion.VERSION_11.toString()
+        targetCompatibility = JavaVersion.VERSION_11.toString()
+    }
+
     tasks.register("printAllDependencies") {
         dependsOn("dependencies")
     }
+
+    apply(plugin = "jacoco")
 
     apply(plugin = "io.gitlab.arturbosch.detekt")
     val analysisDir = file(projectDir)

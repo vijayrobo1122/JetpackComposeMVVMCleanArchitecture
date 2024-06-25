@@ -120,13 +120,9 @@ object ArtistDetailDataModule {
     @Provides
     fun provideArtistRemoteDataSource(
         @Named("artist_api_service") artistApiService: ArtistApiService,
-        artistDetailMapper: ArtistDetailMapper,
-        artistMapper: ArtistMapper,
     ): ArtistRemoteDataSource {
         return ArtistRemoteDataSourceImpl(
             artistApiService = artistApiService,
-            artistDetailMapper = artistDetailMapper,
-            artistMapper = artistMapper,
         )
     }
 }

@@ -9,10 +9,12 @@ import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.remote.Mov
 import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.BaseModelMapper
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.BaseModel
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieItem
+import com.app.jetpack.mvvm.common.network.safeApiCall
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
@@ -21,6 +23,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -28,7 +31,6 @@ import org.junit.Rule
 import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
-import java.io.IOException
 
 class GenrePagingDataSourceTest {
     @get:Rule
@@ -44,12 +46,14 @@ class GenrePagingDataSourceTest {
 
     private val testScope = TestScope(testDispatcher)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         sut = GenrePagingDataSource(apiService, baseModelMapper, genreId)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @After
     fun tearDown() {
         Dispatchers.resetMain()
@@ -59,6 +63,7 @@ class GenrePagingDataSourceTest {
     fun `load returns Page on successful load`() = runTest {
         testScope.launch {
             // Given
+            val params = LoadParams.Refresh<Int>(null, 2, false)
             val genreId = "123"
             val movieItem = mockk<MovieItem>(relaxed = true) {
                 every { id } returns 123
@@ -72,12 +77,17 @@ class GenrePagingDataSourceTest {
             val baseModelEntity = mockk<BaseModelEntity>(relaxed = true) {
                 every { results } returns listOf(movieItemEntity)
             }
-
+            val mockDataStateSuccess = Result.success(baseModelEntity)
             coEvery { apiService.moviesByGenre(1, genreId) } returns baseModelEntity
+            coEvery {
+                safeApiCall {
+                    apiService.moviesByGenre(
+                        1,
+                        genreId
+                    )
+                }
+            } returns mockDataStateSuccess
             coEvery { baseModelMapper.mapTo(baseModelEntity) } returns baseModel
-
-
-            val params = LoadParams.Refresh<Int>(null, 2, false)
 
             // When
             val result = sut.load(params)
@@ -95,10 +105,11 @@ class GenrePagingDataSourceTest {
     @Test
     fun `load returns Error on IOException`() = runTest {
         // Given
-        val exception = IOException("Network error")
-
-        coEvery { apiService.moviesByGenre(1, genreId) } throws exception
         val params = LoadParams.Refresh<Int>(null, 2, false)
+        val mockException = mockk<Exception>(relaxed = true)
+        val mockDataStateError = Result.failure<BaseModelEntity>(exception = mockException)
+        coEvery { apiService.moviesByGenre(1, genreId) } throws mockException
+        coEvery { safeApiCall { apiService.moviesByGenre(1, genreId) } } returns mockDataStateError
 
         // When
         val result = sut.load(params)
@@ -106,30 +117,30 @@ class GenrePagingDataSourceTest {
         // Then
         assert(result is PagingSource.LoadResult.Error)
         result as PagingSource.LoadResult.Error
-        assertEquals(exception, result.throwable)
+        assertEquals(mockException, result.throwable)
     }
 
     @Test
     fun `load returns Error on HttpException`() = runTest {
         // Given
-        val exception = HttpException(
+        val params = LoadParams.Refresh<Int>(null, 2, false)
+        val mockException = HttpException(
             Response.error<ResponseBody>(
-                500, ResponseBody.create(
-                    "application/json".toMediaType(), "Server error"
-                )
+                500, "Server error"
+                    .toResponseBody("application/json".toMediaType())
             )
         )
+        val mockDataStateError = Result.failure<BaseModelEntity>(exception = mockException)
+        coEvery { apiService.moviesByGenre(1, genreId) } throws mockException
+        coEvery { safeApiCall { apiService.moviesByGenre(1, genreId) } } returns mockDataStateError
 
-        coEvery { apiService.moviesByGenre(1, genreId) } throws exception
-        val params = LoadParams.Refresh<Int>(null, 2, false)
 
         // When
-
         val result = sut.load(params)
 
         // Then
         assert(result is PagingSource.LoadResult.Error)
         result as PagingSource.LoadResult.Error
-        assertEquals(exception, result.throwable)
+        assertEquals(mockException, result.throwable)
     }
 }

@@ -57,43 +57,4 @@ data class ApiRetrofitException internal constructor(
          */
         UNEXPECTED
     }
-
-    companion object {
-        @Suppress("LongParameterList")
-        fun httpError(
-            url: String,
-            response: Response<*>,
-            statusCode: Int,
-            sonicCode: String?,
-            reasonCode: String?,
-            errorJson: String?
-        ): ApiRetrofitException {
-            val message = response.code().toString() + " " + response.message()
-            return ApiRetrofitException(
-                message = message,
-                url = url,
-                response = response,
-                kind = Kind.HTTP,
-                httpStatusCode = statusCode,
-                reasonCode = reasonCode,
-                errorJson = errorJson
-            )
-        }
-
-        fun networkError(exception: IOException): ApiRetrofitException {
-            return ApiRetrofitException(
-                message = exception.message,
-                kind = Kind.NETWORK,
-                exception = exception
-            )
-        }
-
-        fun unexpectedError(exception: Throwable): ApiRetrofitException {
-            return ApiRetrofitException(
-                message = exception.message,
-                kind = Kind.UNEXPECTED,
-                exception = exception
-            )
-        }
-    }
 }

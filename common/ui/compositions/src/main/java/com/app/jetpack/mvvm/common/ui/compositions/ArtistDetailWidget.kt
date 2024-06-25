@@ -54,13 +54,13 @@ fun ArtistDetailWidget(
                     stringResource(StringResources.labelGender),
                     artistDetailState.gender.genderInString()
                 )
-                artistDetailState.birthday?.let { birthday ->
+                artistDetailState.birthday.let { birthday ->
                     PersonalInfo(
                         stringResource(StringResources.labelBirthDay),
                         birthday
                     )
                 }
-                artistDetailState.placeOfBirth?.let { birthPlace ->
+                artistDetailState.placeOfBirth.let { birthPlace ->
                     PersonalInfo(
                         stringResource(StringResources.labelPlaceOfBirth),
                         birthPlace

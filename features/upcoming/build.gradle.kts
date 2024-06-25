@@ -1,3 +1,5 @@
+apply(from = "$rootDir/config/analytics/jacoco.gradle")
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -9,13 +11,17 @@ android {
     namespace = "com.app.jetpack.mvvm.features.upcoming"
     compileSdk = rootProject.ext.get("compileSdkVersion") as Int
 
+    defaultConfig {
+        minSdk = rootProject.ext.get("minSdkVersion") as Int
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = rootProject.ext.get("jvmTargetVersion") as String
     }
 
     buildFeatures {
@@ -24,6 +30,12 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion = rootProject.ext.get("kotlinCompilerVersion") as String
+    }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
     }
 }
 
@@ -52,10 +64,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
 
-    testImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.test.manifest)
+
     testImplementation(libs.kotlinx.coroutines.test)
-
     testImplementation(libs.mockk.agent)
     testImplementation(libs.mockk.android)
     testImplementation(libs.mockito.core)

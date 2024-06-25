@@ -113,7 +113,7 @@ object MovieDetailDataModule {
 
     @Singleton
     @Provides
-    fun provideArtistRepository(
+    fun provideMovieRepositoryImpl(
         movieLocalDataSource: MovieLocalDataSource,
         movieRemoteDataSource: MovieRemoteDataSource,
         baseModelMapper: BaseModelMapper,

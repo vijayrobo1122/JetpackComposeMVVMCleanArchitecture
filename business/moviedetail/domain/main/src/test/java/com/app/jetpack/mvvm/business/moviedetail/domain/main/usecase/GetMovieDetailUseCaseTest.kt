@@ -1,17 +1,14 @@
 package com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import app.cash.turbine.test
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.repository.MovieRepository
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieDetail
-import com.app.jetpack.mvvm.common.domain.models.DataState
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
@@ -37,12 +34,14 @@ class GetMovieDetailUseCaseTest {
 
     private val testScope = TestScope(testDispatcher)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         sut = GetMovieDetailUseCase(repository)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @After
     fun tearDown() {
         Dispatchers.resetMain()
@@ -57,18 +56,16 @@ class GetMovieDetailUseCaseTest {
                 every { id } returns 1
                 every { title } returns "Movie Title"
             }
-            val mockDataState = DataState.Success(mockMovieDetail)
-            coEvery { repository.movieDetail(movieId) } returns flowOf(mockDataState)
+            val mockDataStateSuccess = Result.success(mockMovieDetail)
+            coEvery { repository.movieDetail(movieId) } returns mockDataStateSuccess
 
             // When
             val result = sut.invoke(movieId)
 
             // Then
-            result.test {
-                coVerify { repository.movieDetail(movieId) }
-                val data = awaitItem()
-                assertEquals(mockDataState, data)
-            }
+            coVerify { repository.genreList() }
+            assertEquals(true, result.isSuccess)
+            assertEquals(mockMovieDetail, result.getOrNull())
         }
     }
 
@@ -77,23 +74,21 @@ class GetMovieDetailUseCaseTest {
         testScope.launch {
             // Given
             val movieId = 1
-            val error = Exception("Network Error")
-            coEvery { repository.movieDetail(movieId) } returns flow { throw error }
+            val errorMessage = "Network Error"
+            val mockException = mockk<Exception>(relaxed = true) {
+                every { message } returns errorMessage
+            }
+            val mockDataStateError = Result.failure<MovieDetail>(mockException)
+            coEvery { repository.movieDetail(movieId) } returns mockDataStateError
 
 
             // When
             val result = sut.invoke(movieId)
 
             // Then
-            result.test {
-                coVerify { repository.movieDetail(movieId) }
-                try {
-                    awaitItem()
-                    assert(false) { "Exception was expected but not thrown" }
-                } catch (e: Exception) {
-                    assert(e.message == error.message)
-                }
-            }
+            coVerify { repository.movieDetail(movieId) }
+            assertEquals(true, result.isFailure)
+            assertEquals(mockException, result.exceptionOrNull())
         }
     }
 }

@@ -4,15 +4,20 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.PagingData
 import androidx.paging.map
 import app.cash.turbine.test
+import com.app.jetpack.mvvm.business.moviedetail.data.entity.BaseModelEntity
+import com.app.jetpack.mvvm.business.moviedetail.data.entity.GenreEntity
+import com.app.jetpack.mvvm.business.moviedetail.data.entity.GenresEntity
+import com.app.jetpack.mvvm.business.moviedetail.data.entity.MovieDetailEntity
 import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.MovieLocalDataSource
 import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.MovieRemoteDataSource
-import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetRecommendedMovieUseCase
+import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.BaseModelMapper
+import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.GenresMapper
+import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.MovieDetailMapper
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.BaseModel
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genre
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genres
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieDetail
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieItem
-import com.app.jetpack.mvvm.common.domain.models.DataState
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -21,7 +26,7 @@ import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -42,21 +47,30 @@ class MovieRepositoryImplTest {
 
     private lateinit var sut: MovieRepositoryImpl
 
-    private val movieLocalDataSource: MovieLocalDataSource =
-        mockk<MovieLocalDataSource>(relaxed = true)
-    private val movieRemoteDataSource: MovieRemoteDataSource =
-        mockk<MovieRemoteDataSource>(relaxed = true)
+    private val movieLocalDataSource = mockk<MovieLocalDataSource>(relaxed = true)
+    private val movieRemoteDataSource = mockk<MovieRemoteDataSource>(relaxed = true)
+    private val baseModelMapper: BaseModelMapper = mockk(relaxed = true)
+    private val movieDetailMapper: MovieDetailMapper = mockk(relaxed = true)
+    private val genresMapper: GenresMapper = mockk(relaxed = true)
 
     private val testDispatcher = StandardTestDispatcher()
 
     private val testScope = TestScope(testDispatcher)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        sut = MovieRepositoryImpl(movieLocalDataSource, movieRemoteDataSource)
+        sut = MovieRepositoryImpl(
+            movieLocalDataSource,
+            movieRemoteDataSource,
+            baseModelMapper,
+            movieDetailMapper,
+            genresMapper
+        )
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @After
     fun tearDown() {
         Dispatchers.resetMain()
@@ -123,22 +137,21 @@ class MovieRepositoryImplTest {
         testScope.launch {
             // Given
             val movieId = 1
-            val movieDetail = mockk<MovieDetail>(relaxed = true) {
-                every { id } returns 1
-                every { title } returns "Title"
-            }
-            val mockDataState = DataState.Success(movieDetail)
-            coEvery { movieRemoteDataSource.movieDetail(movieId) } returns flow { mockDataState }
+            val mockMovieDetail = mockk<MovieDetail>(relaxed = true)
+            val mockMovieDetailEntity = mockk<MovieDetailEntity>(relaxed = true)
+            val mockDataStateSuccess = Result.success(mockMovieDetailEntity)
+            coEvery { movieRemoteDataSource.movieDetail(movieId) } returns mockDataStateSuccess
+            every { movieDetailMapper.mapTo(mockMovieDetailEntity) } returns mockMovieDetail
 
             // When
             val result = sut.movieDetail(movieId)
 
             // Then
-            result.test {
-                coVerify { movieRemoteDataSource.movieDetail(movieId) }
-                val data = awaitItem()
-                assertEquals(mockDataState, data)
-            }
+            coVerify { movieRemoteDataSource.movieDetail(movieId) }
+            verify { movieDetailMapper.mapTo(mockMovieDetailEntity) }
+            assertEquals(true, result.isSuccess)
+            assertEquals(mockMovieDetail, result.getOrNull())
+
         }
     }
 
@@ -149,11 +162,11 @@ class MovieRepositoryImplTest {
             val movieId = 1
             val page = 1
 
-            val params = GetRecommendedMovieUseCase.Params(
-                movieId = movieId,
-                page = page
-            )
-            val movieItem = mockk<MovieItem>(relaxed = true) {
+//            val params = GetRecommendedMovieUseCase.Params(
+//                movieId = movieId,
+//                page = page
+//            )
+            /*val movieItem = mockk<MovieItem>(relaxed = true) {
                 every { id } returns 1
                 every { title } returns "Movie 1"
             }
@@ -162,24 +175,27 @@ class MovieRepositoryImplTest {
                 every { totalPages } returns 110
                 every { totalResults } returns 10
                 every { moviesList } returns listOf(movieItem)
-            }
-            val mockDataState = DataState.Success(mockBaseModel)
+            }*/
+            val mockBaseModel = mockk<BaseModel>(relaxed = true)
+            val mockBaseModelEntity = mockk<BaseModelEntity>(relaxed = true)
+            val mockDataStateSuccess = Result.success(mockBaseModelEntity)
+
             coEvery {
                 movieRemoteDataSource.recommendedMovie(
                     movieId,
                     page
                 )
-            } returns flow { mockDataState }
+            } returns mockDataStateSuccess
+            every { baseModelMapper.mapTo(mockBaseModelEntity) } returns mockBaseModel
 
             // When
             val result = sut.recommendedMovie(movieId, page)
 
             // Then
-            result.test {
-                coVerify { movieRemoteDataSource.recommendedMovie(movieId, page) }
-                val data = awaitItem()
-                assertEquals(mockDataState, data)
-            }
+            coVerify { movieRemoteDataSource.recommendedMovie(movieId, page) }
+            verify { baseModelMapper.mapTo(mockBaseModelEntity) }
+            assertEquals(true, result.isSuccess)
+            assertEquals(mockBaseModel, result.getOrNull())
         }
     }
 
@@ -194,18 +210,25 @@ class MovieRepositoryImplTest {
             val mockGenres = mockk<Genres>(relaxed = true) {
                 every { genres } returns listOf(mockGenre)
             }
-            val mockDataState = DataState.Success(mockGenres)
-            coEvery { movieRemoteDataSource.genreList() } returns flow { mockDataState }
+            val mockGenreEntity = mockk<GenreEntity>(relaxed = true) {
+                every { id } returns 1
+                every { name } returns "Action"
+            }
+            val mockGenresEntity = mockk<GenresEntity>(relaxed = true) {
+                every { genres } returns listOf(mockGenreEntity)
+            }
+            val mockDataStateSuccess = Result.success(mockGenresEntity)
+            coEvery { movieRemoteDataSource.genreList() } returns mockDataStateSuccess
+            every { genresMapper.mapTo(mockGenresEntity) } returns mockGenres
 
             // When
             val result = sut.genreList()
 
             // Then
-            result.test {
-                coVerify { movieRemoteDataSource.genreList() }
-                val data = awaitItem()
-                assertEquals(mockDataState, data)
-            }
+            coVerify { movieRemoteDataSource.genreList() }
+            verify { genresMapper.mapTo(mockGenresEntity) }
+            assertEquals(true, result.isSuccess)
+            assertEquals(true, result.getOrNull())
         }
     }
 

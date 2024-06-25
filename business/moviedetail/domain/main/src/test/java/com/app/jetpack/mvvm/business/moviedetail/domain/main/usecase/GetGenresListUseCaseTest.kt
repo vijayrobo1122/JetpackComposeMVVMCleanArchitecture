@@ -1,18 +1,15 @@
 package com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import app.cash.turbine.test
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.repository.MovieRepository
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genre
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genres
-import com.app.jetpack.mvvm.common.domain.models.DataState
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
@@ -38,12 +35,14 @@ class GetGenresListUseCaseTest {
 
     private val testScope = TestScope(testDispatcher)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         sut = GetGenresListUseCase(repository)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @After
     fun tearDown() {
         Dispatchers.resetMain()
@@ -60,18 +59,16 @@ class GetGenresListUseCaseTest {
             val mockGenres = mockk<Genres>(relaxed = true) {
                 every { genres } returns listOf(mockGenre)
             }
-            val mockDataState = DataState.Success(mockGenres)
-            coEvery { repository.genreList() } returns flowOf(mockDataState)
+            val mockDataStateSuccess = Result.success(mockGenres)
+            coEvery { repository.genreList() } returns mockDataStateSuccess
 
             // When
             val result = sut.invoke()
 
             // Then
-            result.test {
-                coVerify { repository.genreList() }
-                val data = awaitItem()
-                assertEquals(mockDataState, data)
-            }
+            coVerify { repository.genreList() }
+            assertEquals(true, result.isSuccess)
+            assertEquals(mockGenres, result.getOrNull())
         }
     }
 
@@ -79,23 +76,21 @@ class GetGenresListUseCaseTest {
     fun `given movie id when usecase invoke throws exception when repository throws exception`() {
         testScope.launch {
             // Given
-            val error = Exception("Network Error")
-            coEvery { repository.genreList() } returns flow { throw error }
+            val errorMessage = "Network Error"
+            val mockException = mockk<Exception>(relaxed = true) {
+                every { message } returns errorMessage
+            }
+            val mockDataStateError = Result.failure<Genres>(mockException)
+            coEvery { repository.genreList() } returns mockDataStateError
 
 
             // When
             val result = sut.invoke()
 
             // Then
-            result.test {
-                coVerify { repository.genreList() }
-                try {
-                    awaitItem()
-                    assert(false) { "Exception was expected but not thrown" }
-                } catch (e: Exception) {
-                    assert(e.message == error.message)
-                }
-            }
+            coVerify { repository.genreList() }
+            assertEquals(true, result.isFailure)
+            assertEquals(mockException, result.exceptionOrNull())
         }
     }
 }

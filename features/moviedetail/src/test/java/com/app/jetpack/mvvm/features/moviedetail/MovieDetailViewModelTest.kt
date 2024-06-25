@@ -17,7 +17,6 @@ import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieDetail
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.ProductionCompany
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.ProductionCountry
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.SpokenLanguage
-import com.app.jetpack.mvvm.common.domain.models.DataState
 import com.app.jetpack.mvvm.common.presentation.widgets.mapper.ArtistToUiStateMapper
 import com.app.jetpack.mvvm.common.presentation.widgets.mapper.BaseModelToUiStateMapper
 import com.app.jetpack.mvvm.common.presentation.widgets.mapper.MovieDetailToUiStateMapper
@@ -30,7 +29,6 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
@@ -53,24 +51,15 @@ class MovieDetailViewModelTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
 
-    private val getMovieCreditUseCase: GetMovieCreditUseCase =
-        mockk<GetMovieCreditUseCase>(relaxed = true)
-    private val getRecommendedMovieUseCase: GetRecommendedMovieUseCase =
-        mockk<GetRecommendedMovieUseCase>(relaxed = true)
-    private val getMovieDetailUseCase: GetMovieDetailUseCase =
-        mockk<GetMovieDetailUseCase>(relaxed = true)
-    private val likeMovieUseCase: LikeMovieUseCase =
-        mockk<LikeMovieUseCase>(relaxed = true)
-    private val unlikeMovieUseCase: UnlikeMovieUseCase =
-        mockk<UnlikeMovieUseCase>(relaxed = true)
-    private val isMovieFavoriteUseCase: IsMovieFavoriteUseCase =
-        mockk<IsMovieFavoriteUseCase>(relaxed = true)
-    private val movieDetailToUiStateMapper: MovieDetailToUiStateMapper =
-        mockk<MovieDetailToUiStateMapper>(relaxed = true)
-    private val artistToUiStateMapper: ArtistToUiStateMapper =
-        mockk<ArtistToUiStateMapper>(relaxed = true)
-    private val baseModelToUiStateMapper: BaseModelToUiStateMapper =
-        mockk<BaseModelToUiStateMapper>(relaxed = true)
+    private val getMovieCreditUseCase = mockk<GetMovieCreditUseCase>(relaxed = true)
+    private val getRecommendedMovieUseCase = mockk<GetRecommendedMovieUseCase>(relaxed = true)
+    private val getMovieDetailUseCase = mockk<GetMovieDetailUseCase>(relaxed = true)
+    private val likeMovieUseCase = mockk<LikeMovieUseCase>(relaxed = true)
+    private val unlikeMovieUseCase = mockk<UnlikeMovieUseCase>(relaxed = true)
+    private val isMovieFavoriteUseCase = mockk<IsMovieFavoriteUseCase>(relaxed = true)
+    private val movieDetailToUiStateMapper = mockk<MovieDetailToUiStateMapper>(relaxed = true)
+    private val artistToUiStateMapper = mockk<ArtistToUiStateMapper>(relaxed = true)
+    private val baseModelToUiStateMapper = mockk<BaseModelToUiStateMapper>(relaxed = true)
 
     private lateinit var sut: MovieDetailViewModel
 
@@ -143,24 +132,18 @@ class MovieDetailViewModelTest {
         testScope.launch {
             // Given
             val movieId = 123
-
             val mockMovieDetail = mockk<MovieDetail>(relaxed = true)
-            val mockDataStateSuccess = mockk<DataState.Success<MovieDetail>>(relaxed = true)
             val mockMovieDetailState = mockk<MovieDetailState>(relaxed = true)
-
-            coEvery { getMovieDetailUseCase.invoke(movieId) } returns flow { mockDataStateSuccess }
-            every { mockDataStateSuccess.data } returns mockMovieDetail
+            val mockDataStateSuccess = Result.success(mockMovieDetail)
+            coEvery { getMovieDetailUseCase.invoke(movieId) } returns mockDataStateSuccess
             every { movieDetailToUiStateMapper.map(mockMovieDetail) } returns mockMovieDetailState
 
 
             // When
-
             sut.movieDetailApi(movieId)
 
             // Then
             assertEquals(mockDataStateSuccess, sut.movieDetail.value)
-
-            // Verify mocks
             coVerify { getMovieCreditUseCase.invoke(movieId) }
             coVerify { movieDetailToUiStateMapper.map(mockMovieDetail) }
         }
@@ -172,13 +155,10 @@ class MovieDetailViewModelTest {
             // Given
             val movieId = 123
             val mockException = mockk<Exception>(relaxed = true)
-            val mockDataStateError = mockk<DataState.Error<Artist>>(relaxed = true) {
-                every { exception } returns mockException
-            }
-            coEvery { getMovieDetailUseCase.invoke(movieId) } returns flow { mockDataStateError }
+            val mockDataStateError = Result.failure<MovieDetail>(mockException)
+            coEvery { getMovieDetailUseCase.invoke(movieId) } returns mockDataStateError
 
             // When
-
             sut.movieDetailApi(movieId)
 
             // Then
@@ -202,25 +182,18 @@ class MovieDetailViewModelTest {
             val movieId = 123
             val page = 1
             val params = GetRecommendedMovieUseCase.Params(movieId, page)
-
             val mockBaseModel = mockk<BaseModel>(relaxed = true)
-            val mockDataStateSuccess = mockk<DataState.Success<BaseModel>>(relaxed = true)
             val mockBaseModelState = mockk<BaseModelState>(relaxed = true)
-
-            coEvery { getRecommendedMovieUseCase.invoke(params) } returns flow { mockDataStateSuccess }
-            every { mockDataStateSuccess.data } returns mockBaseModel
+            val mockDataStateSuccess = Result.success(mockBaseModel)
+            coEvery { getRecommendedMovieUseCase.invoke(params) } returns mockDataStateSuccess
             every { baseModelToUiStateMapper.map(mockBaseModel) } returns mockBaseModelState
 
 
             // When
-
             sut.recommendedMovieApi(movieId, page)
 
             // Then
-            //val expectedState = DataState.Success(mockBaseModelState)
             assertEquals(mockDataStateSuccess, sut.recommendedMovie.value)
-
-            // Verify mocks
             coVerify { getMovieCreditUseCase.invoke(movieId) }
             coVerify { baseModelToUiStateMapper.map(mockBaseModel) }
         }
@@ -234,15 +207,10 @@ class MovieDetailViewModelTest {
             val page = 1
             val params = GetRecommendedMovieUseCase.Params(movieId, page)
             val mockException = mockk<Exception>(relaxed = true)
-            val mockDataStateError = mockk<DataState.Error<BaseModel>>(relaxed = true) {
-                every { exception } returns mockException
-            }
-
-            // Mock dependencies
-            coEvery { getRecommendedMovieUseCase.invoke(params) } returns flow { mockDataStateError }
+            val mockDataStateError = Result.failure<BaseModel>(mockException)
+            coEvery { getRecommendedMovieUseCase.invoke(params) } returns mockDataStateError
 
             // When
-
             sut.movieCredit(movieId)
 
             // Then
@@ -265,24 +233,17 @@ class MovieDetailViewModelTest {
         testScope.launch {
             // Given
             val movieId = 123
-            val mockArtist = mockk<Artist>(relaxed = true)
-            val mockDataStateSuccess = mockk<DataState.Success<Artist>>(relaxed = true)
             val mockArtistState = mockk<ArtistState>(relaxed = true)
-
-            coEvery { getMovieCreditUseCase.invoke(any()) } returns flow { mockDataStateSuccess }
-            every { mockDataStateSuccess.data } returns mockArtist
+            val mockArtist = mockk<Artist>(relaxed = true)
+            val mockDataStateSuccess = Result.success(mockArtist)
+            coEvery { getMovieCreditUseCase.invoke(any()) } returns mockDataStateSuccess
             every { artistToUiStateMapper.map(mockArtist) } returns mockArtistState
 
-
             // When
-
             sut.movieCredit(movieId)
 
             // Then
-            //val expectedState = DataState.Success(mockArtistState)
             assertEquals(mockDataStateSuccess, sut.artist.value)
-
-            // Verify mocks
             coVerify { getMovieCreditUseCase.invoke(movieId) }
             coVerify { artistToUiStateMapper.map(mockArtist) }
         }
@@ -293,15 +254,10 @@ class MovieDetailViewModelTest {
         testScope.launch {
             val movieId = 123
             val mockException = mockk<Exception>(relaxed = true)
-            val mockDataStateError = mockk<DataState.Error<Artist>>(relaxed = true) {
-                every { exception } returns mockException
-            }
-
-            // Mock dependencies
-            coEvery { getMovieCreditUseCase.invoke(any()) } returns flow { mockDataStateError }
+            val mockDataStateError = Result.failure<Artist>(mockException)
+            coEvery { getMovieCreditUseCase.invoke(any()) } returns mockDataStateError
 
             // When
-
             sut.movieCredit(movieId)
 
             // Then
@@ -314,33 +270,33 @@ class MovieDetailViewModelTest {
 
     companion object {
 
-        val belongsToCollection = BelongsToCollection(
+        private val belongsToCollection = BelongsToCollection(
             id = 123,
             backdropPath = "backdropPath",
             name = "name",
             posterPath = "posterPath",
         )
-        val genre = Genre(
+        private val genre = Genre(
             id = 234,
             name = "name",
         )
-        val productionCompany = ProductionCompany(
+        private val productionCompany = ProductionCompany(
             id = 234,
             logoPath = "logoPath",
             originCountry = "originCountry",
             name = "name",
         )
-        val productionCountry = ProductionCountry(
+        private val productionCountry = ProductionCountry(
             isoName = "isoName",
             name = "name",
         )
-        val spokenLanguage = SpokenLanguage(
+        private val spokenLanguage = SpokenLanguage(
             englishName = "englishName",
             isoName = "isoName",
             name = "name",
         )
 
-        val movieDetail = MovieDetail(
+        private val movieDetail = MovieDetail(
             id = 123,
             isAdult = true,
             backdropPath = "backdropPath",

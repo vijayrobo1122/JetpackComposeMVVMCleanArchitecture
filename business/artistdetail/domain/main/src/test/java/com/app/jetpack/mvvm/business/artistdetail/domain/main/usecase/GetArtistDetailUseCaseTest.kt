@@ -1,15 +1,13 @@
 package com.app.jetpack.mvvm.business.artistdetail.domain.main.usecase
 
-import app.cash.turbine.test
 import com.app.jetpack.mvvm.business.artistdetail.domain.main.repository.ArtistRepository
 import com.app.jetpack.mvvm.business.artistdetail.domain.model.ArtistDetail
-import com.app.jetpack.mvvm.common.domain.models.DataState
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
@@ -30,12 +28,14 @@ class GetArtistDetailUseCaseTest {
 
     private val testScope = TestScope(testDispatcher)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         sut = GetArtistDetailUseCase(repository)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @After
     fun tearDown() {
         Dispatchers.resetMain()
@@ -47,22 +47,16 @@ class GetArtistDetailUseCaseTest {
             // Given
             val artistId = 1
             val mockArtistDetail = mockk<ArtistDetail>(relaxed = true)
-            val mockDataStateSuccess = mockk<DataState.Success<ArtistDetail>>(relaxed = true) {
-                every { data } returns mockArtistDetail
-            }
-            coEvery { repository.artistDetail(artistId) } returns flow { mockDataStateSuccess }
+            val mockDataStateSuccess = Result.success(mockArtistDetail)
+            coEvery { repository.artistDetail(artistId) } returns mockDataStateSuccess
 
             // When
             val result = sut.invoke(artistId)
 
             // Then
             coVerify { repository.artistDetail(artistId) }
-            result.test {
-                val item = awaitItem()
-                assertEquals(item, mockDataStateSuccess)
-                awaitComplete()
-                cancelAndIgnoreRemainingEvents()
-            }
+            assertEquals(true, result.isSuccess)
+            assertEquals(mockArtistDetail, result.getOrNull())
         }
     }
 
@@ -75,10 +69,8 @@ class GetArtistDetailUseCaseTest {
             val mockException = mockk<Exception>(relaxed = true) {
                 every { message } returns errorMessage
             }
-            val mockDataStateError = mockk<DataState.Error<ArtistDetail>>(relaxed = true) {
-                every { exception } returns mockException
-            }
-            coEvery { repository.artistDetail(artistId) } returns flow { mockDataStateError }
+            val mockDataStateError = Result.failure<ArtistDetail>(mockException)
+            coEvery { repository.artistDetail(artistId) } returns mockDataStateError
 
 
             // When
@@ -86,12 +78,8 @@ class GetArtistDetailUseCaseTest {
 
             // Then
             coVerify { repository.artistDetail(artistId) }
-            result.test {
-                val item = awaitItem()
-                assertEquals(item, mockDataStateError)
-                awaitComplete()
-                cancelAndIgnoreRemainingEvents()
-            }
+            assertEquals(true, result.isFailure)
+            assertEquals(mockException, result.exceptionOrNull())
         }
     }
 }

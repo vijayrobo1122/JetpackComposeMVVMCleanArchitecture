@@ -7,6 +7,7 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
@@ -26,12 +27,14 @@ class UnlikeMovieUseCaseTest {
 
     private val testScope = TestScope(testDispatcher)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         sut = UnlikeMovieUseCase(repository)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @After
     fun tearDown() {
         Dispatchers.resetMain()
@@ -45,7 +48,7 @@ class UnlikeMovieUseCaseTest {
             coEvery { repository.unlikeMovie(movieId) } just runs
 
             // When
-            val result = sut.invoke(movieId)
+            sut.invoke(movieId)
 
             // Then
             coVerify { repository.unlikeMovie(movieId) }

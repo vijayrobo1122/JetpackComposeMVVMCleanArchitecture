@@ -17,3 +17,14 @@ local.properties
 
 jacoco-reports/
 detekt-reports/
+/.idea/migrations.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/vcs.xml
+/.idea/other.xml
+/.idea/compiler.xml
+/.idea/misc.xml
+/.idea/kotlinc.xml
+/.idea/deploymentTargetSelector.xml
+/.idea/detekt.xml
+/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch
+/.idea/gradle.xml
