@@ -38,7 +38,7 @@ import coil.request.ImageRequest
 import com.app.jetpack.mvvm.common.general.extensions.hourMinutes
 import com.app.jetpack.mvvm.common.general.extensions.roundTo
 import com.app.jetpack.mvvm.common.presentation.widgets.model.MovieDetailState
-import com.app.jetpack.mvvm.common.ui.components.CustomImage
+import com.app.jetpack.mvvm.common.ui.components.NetworkImage
 import com.app.jetpack.mvvm.common.ui.components.SubtitlePrimary
 import com.app.jetpack.mvvm.common.ui.components.SubtitleSecondary
 import com.app.jetpack.mvvm.common.ui.resources.strings.StringResources
@@ -62,11 +62,12 @@ fun MovieDetailCard(
 
     Column(modifier = modifier) {
         Box(modifier = Modifier) {
-            CustomImage(
+            NetworkImage(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(300.dp),
-                imagePath = imageUrl
+                imageUrl = imageUrl,
+                contentDescription = "movie image"
             )
             Box(
                 modifier = Modifier

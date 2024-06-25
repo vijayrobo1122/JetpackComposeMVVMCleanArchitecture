@@ -16,8 +16,6 @@ private const val HTTP_CODE_SERVER_ERROR_MAX = 599
  */
 internal class ApiErrorMapper {
     fun map(throwable: Throwable): ApiError {
-        println("vijay throwable name : " + throwable::class.java.simpleName)
-        println("vijay throwable message : " + throwable.message)
         return when (throwable) {
             is ApiError -> {
                 throwable

@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.app.jetpack.mvvm.common.presentation.widgets.model.CastState
-import com.app.jetpack.mvvm.common.ui.components.CustomImage
+import com.app.jetpack.mvvm.common.ui.components.NetworkImage
 import com.app.jetpack.mvvm.common.ui.components.SubtitleSecondary
 import com.app.jetpack.mvvm.common.ui.resources.strings.StringResources
 import com.app.jetpack.mvvm.common.ui.theme.FontColor
@@ -46,7 +46,7 @@ fun ArtistAndCrewCard(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    CustomImage(
+                    NetworkImage(
                         modifier = Modifier
                             .padding(bottom = 5.dp)
                             .height(80.dp)
@@ -55,7 +55,8 @@ fun ArtistAndCrewCard(
                             .clickable {
                                 onArtistItemClick(item.id)
                             },
-                        imagePath = BuildConfig.IMAGE_BASE_URL.plus(item.profilePath)
+                        imageUrl = BuildConfig.IMAGE_BASE_URL.plus(item.profilePath),
+                        contentDescription = "artist"
                     )
                     SubtitleSecondary(text = item.name)
                 }

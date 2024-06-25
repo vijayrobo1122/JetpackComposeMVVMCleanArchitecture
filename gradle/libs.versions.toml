@@ -14,9 +14,6 @@ junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 kotlinxCoroutinesCore = "1.8.1"
-landscapistAnimation = "2.2.13"
-landscapistCoil = "2.2.13"
-landscapistPlaceholder = "2.2.13"
 lifecycleRuntimeKtx = "2.8.2"
 activityCompose = "1.9.0"
 composeBom = "2024.06.00"
@@ -44,6 +41,7 @@ coreTesting = "2.2.0"
 turbine = "1.1.0"
 appcompat = "1.7.0"
 material = "1.12.0"
+uiUtil = "1.6.8"
 
 
 [libraries]
@@ -59,7 +57,8 @@ androidx-paging-compose = { module = "androidx.paging:paging-compose", version.r
 
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingCompose" }
 androidx-palette-ktx = { module = "androidx.palette:palette-ktx", version.ref = "paletteKtx" }
-coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+androidx-ui-util = { module = "androidx.compose.ui:ui-util", version.ref = "uiUtil" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detektFormatting" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidCompiler" }
@@ -79,9 +78,6 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
-landscapist-animation = { module = "com.github.skydoves:landscapist-animation", version.ref = "landscapistAnimation" }
-landscapist-coil = { module = "com.github.skydoves:landscapist-coil", version.ref = "landscapistCoil" }
-landscapist-placeholder = { module = "com.github.skydoves:landscapist-placeholder", version.ref = "landscapistPlaceholder" }
 mockk-agent = { module = "io.mockk:mockk-agent", version.ref = "mockkAgent" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockkAndroid" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }

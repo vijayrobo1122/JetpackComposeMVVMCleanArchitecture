@@ -33,9 +33,8 @@ dependencies {
 
     implementation(libs.androidx.material3)
 
-    implementation(libs.landscapist.coil)
-    implementation(libs.landscapist.animation)
-    implementation(libs.landscapist.placeholder)
+    implementation(libs.coil.compose)
+    implementation(libs.androidx.ui.util)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -11,6 +11,8 @@
 
 ## Technologies Used
 
+https://proandroiddev.com/shimmer-shadow-loading-effect-animation-with-jetpack-compose-f4b3de28dc2b
+
 * Kotlin - Main programming language.
 * Jetpack Compose - Modern UI toolkit for building native Android UI.
 * Room Database - Local storage solution for persisting TODO items.

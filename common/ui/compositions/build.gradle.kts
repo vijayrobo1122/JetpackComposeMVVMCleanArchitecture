@@ -49,14 +49,13 @@ dependencies {
     implementation(project(":common:ui:components"))
     implementation(project(":common:ui:theme"))
 
+    implementation(libs.coil.compose)
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.palette.ktx)
-
-    implementation(libs.coil)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

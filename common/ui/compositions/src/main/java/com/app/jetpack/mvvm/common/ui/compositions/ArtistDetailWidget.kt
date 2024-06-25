@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.app.jetpack.mvvm.common.general.extensions.genderInString
 import com.app.jetpack.mvvm.common.presentation.widgets.model.ArtistDetailState
 import com.app.jetpack.mvvm.common.ui.components.BioGraphyText
-import com.app.jetpack.mvvm.common.ui.components.CustomImage
+import com.app.jetpack.mvvm.common.ui.components.NetworkImage
 import com.app.jetpack.mvvm.common.ui.resources.strings.StringResources
 import com.app.jetpack.mvvm.common.ui.theme.FontColor
 import com.app.jetpack.mvvm.common.ui.theme.SecondaryFontColor
@@ -30,13 +30,14 @@ fun ArtistDetailWidget(
         modifier = modifier
     ) {
         Row {
-            CustomImage(
+            NetworkImage(
                 modifier = Modifier
                     .padding(bottom = 8.dp)
                     .height(250.dp)
                     .width(190.dp)
                     .cornerRadius(10.dp),
-                imagePath = BuildConfig.IMAGE_BASE_URL.plus(artistDetailState.profilePath)
+                imageUrl = BuildConfig.IMAGE_BASE_URL.plus(artistDetailState.profilePath),
+                contentDescription = "artist image",
             )
             Column {
                 Text(

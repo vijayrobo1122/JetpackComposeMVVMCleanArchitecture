@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.app.jetpack.mvvm.common.presentation.widgets.model.MovieItemState
-import com.app.jetpack.mvvm.common.ui.components.CustomImage
+import com.app.jetpack.mvvm.common.ui.components.NetworkImage
 import com.app.jetpack.mvvm.common.ui.resources.strings.StringResources
 import com.app.jetpack.mvvm.common.ui.theme.FontColor
 import com.app.jetpack.mvvm.common.ui.theme.cornerRadius
@@ -42,7 +42,7 @@ fun RecommendedMovieCard(
                         start = 0.dp, end = 8.dp, top = 5.dp, bottom = 5.dp
                     )
                 ) {
-                    CustomImage(
+                    NetworkImage(
                         modifier = Modifier
                             .height(190.dp)
                             .width(140.dp)
@@ -50,7 +50,8 @@ fun RecommendedMovieCard(
                             .clickable {
                                 onItemClick(item.id)
                             },
-                        imagePath = BuildConfig.IMAGE_BASE_URL.plus(item.posterPath)
+                        imageUrl = BuildConfig.IMAGE_BASE_URL.plus(item.posterPath),
+                        contentDescription = "movie image"
                     )
                 }
             })
