@@ -7,11 +7,12 @@ import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.MovieLocal
 import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.MovieRemoteDataSource
 import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.local.MovieLocalDataSourceImpl
 import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.local.dao.FavoriteDao
+import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.local.dao.GenreDao
 import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.local.database.FavoriteAppDatabase
 import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.remote.MovieApiService
 import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.remote.MovieRemoteDataSourceImpl
 import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.BaseModelMapper
-import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.GenresMapper
+import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.GenreMapper
 import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.MovieDetailMapper
 import com.app.jetpack.mvvm.business.moviedetail.data.main.repository.MovieRepositoryImpl
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.repository.MovieRepository
@@ -118,14 +119,14 @@ object MovieDetailDataModule {
         movieRemoteDataSource: MovieRemoteDataSource,
         baseModelMapper: BaseModelMapper,
         movieDetailMapper: MovieDetailMapper,
-        genresMapper: GenresMapper,
+        genreMapper: GenreMapper
     ): MovieRepository {
         return MovieRepositoryImpl(
             movieLocalDataSource = movieLocalDataSource,
             movieRemoteDataSource = movieRemoteDataSource,
             baseModelMapper = baseModelMapper,
             movieDetailMapper = movieDetailMapper,
-            genresMapper = genresMapper,
+            genreMapper = genreMapper
         )
     }
 
@@ -143,12 +144,18 @@ object MovieDetailDataModule {
     @Provides
     fun provideFavoriteDao(database: FavoriteAppDatabase): FavoriteDao = database.favoriteDao()
 
+    @Provides
+    fun provideGenreDao(database: FavoriteAppDatabase): GenreDao = database.genreDao()
+
     @Singleton
     @Provides
     fun provideMovieLocalDataSource(
-        favoriteDao: FavoriteDao
+        favoriteDao: FavoriteDao, genreDao: GenreDao,
     ): MovieLocalDataSource {
-        return MovieLocalDataSourceImpl(favoriteDao = favoriteDao)
+        return MovieLocalDataSourceImpl(
+            favoriteDao = favoriteDao,
+            genreDao = genreDao,
+        )
     }
 
     @Singleton

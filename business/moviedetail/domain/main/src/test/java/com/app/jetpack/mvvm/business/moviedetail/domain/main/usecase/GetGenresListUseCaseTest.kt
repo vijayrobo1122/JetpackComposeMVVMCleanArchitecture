@@ -3,7 +3,6 @@ package com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.repository.MovieRepository
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genre
-import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genres
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -49,16 +48,14 @@ class GetGenresListUseCaseTest {
     }
 
     @Test
-    fun `Given movie id when usecase invoke should return recommended movie data`() = runTest {
+    fun `When genreList usecase invoke should return genres list data from remote api`() = runTest {
         testScope.launch {
             // Given
             val mockGenre = mockk<Genre>(relaxed = true) {
-                every { id } returns 1
+                every { genreId } returns 1
                 every { name } returns "Action"
             }
-            val mockGenres = mockk<Genres>(relaxed = true) {
-                every { genres } returns listOf(mockGenre)
-            }
+            val mockGenres = listOf(mockGenre)
             val mockDataStateSuccess = Result.success(mockGenres)
             coEvery { repository.genreList() } returns mockDataStateSuccess
 
@@ -73,14 +70,14 @@ class GetGenresListUseCaseTest {
     }
 
     @Test
-    fun `given movie id when usecase invoke throws exception when repository throws exception`() {
+    fun `When genreList usecase invoke should return repository throws exception`() {
         testScope.launch {
             // Given
             val errorMessage = "Network Error"
             val mockException = mockk<Exception>(relaxed = true) {
                 every { message } returns errorMessage
             }
-            val mockDataStateError = Result.failure<Genres>(mockException)
+            val mockDataStateError = Result.failure<List<Genre>>(mockException)
             coEvery { repository.genreList() } returns mockDataStateError
 
 

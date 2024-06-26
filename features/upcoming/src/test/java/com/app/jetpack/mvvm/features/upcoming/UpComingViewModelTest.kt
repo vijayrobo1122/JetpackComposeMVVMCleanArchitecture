@@ -5,9 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.paging.PagingData
 import androidx.paging.map
 import app.cash.turbine.test
+import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.FetchLocalGenreListUseCase
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetUpcomingMoviesUseCase
-import com.app.jetpack.mvvm.business.moviedetail.domain.model.GenreId
+import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genre
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieItem
+import com.app.jetpack.mvvm.common.presentation.widgets.mapper.GenreToUiStateMapper
 import com.app.jetpack.mvvm.common.presentation.widgets.mapper.MovieItemToUiStateMapper
 import com.app.jetpack.mvvm.common.presentation.widgets.model.GenreState
 import com.app.jetpack.mvvm.common.presentation.widgets.model.MovieItemState
@@ -23,6 +25,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -41,10 +44,10 @@ class UpComingViewModelTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
 
-    private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase =
-        mockk<GetUpcomingMoviesUseCase>(relaxed = true)
-    private val movieItemToUiStateMapper: MovieItemToUiStateMapper =
-        mockk<MovieItemToUiStateMapper>(relaxed = true)
+    private val getUpcomingMoviesUseCase = mockk<GetUpcomingMoviesUseCase>(relaxed = true)
+    private val movieItemToUiStateMapper = mockk<MovieItemToUiStateMapper>(relaxed = true)
+    private val fetchLocalGenreListUseCase = mockk<FetchLocalGenreListUseCase>(relaxed = true)
+    private val genreToUiStateMapper = mockk<GenreToUiStateMapper>(relaxed = true)
 
     private lateinit var sut: UpComingViewModel
 
@@ -56,7 +59,12 @@ class UpComingViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        sut = UpComingViewModel(getUpcomingMoviesUseCase, movieItemToUiStateMapper)
+        sut = UpComingViewModel(
+            getUpcomingMoviesUseCase,
+            movieItemToUiStateMapper,
+            fetchLocalGenreListUseCase,
+            genreToUiStateMapper
+        )
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -136,8 +144,8 @@ class UpComingViewModelTest {
     @Test
     fun `test upcomingMovies flow handles failure`() = runTest {
         // Given
-        val testGenreId = GenreId("test_genre")
-        sut.filterData.value = testGenreId
+        val testGenreId = "test_genre"
+        sut.genreIdData.value = testGenreId
         val errorMessage = "Network Error"
         val errorFlow: Flow<PagingData<MovieItem>> = flow { throw Exception(errorMessage) }
 
@@ -158,6 +166,30 @@ class UpComingViewModelTest {
                 cancelAndIgnoreRemainingEvents()
             }
         }
+    }
+
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `fetchGenres fetches genres and maps to GenreState with All genre prepended`() {
+        val mockGenres = listOf(Genre(genreId = 1, name = "Action"))
+        val expectedGenreState = listOf(UpComingViewModel.addGenreState) + mockGenres.map {
+            genreToUiStateMapper.map(it)
+        }
+
+        coEvery { fetchLocalGenreListUseCase.invoke() } returns mockGenres
+
+        every { genreToUiStateMapper.map(mockGenres.get(0)) } returns expectedGenreState.get(1)
+
+        sut.fetchGenres()
+        val values = mutableListOf<List<GenreState>>()
+        testScope.launch {
+            sut.genreStateList.collect { values.add(it) }
+
+        }
+        testScope.advanceUntilIdle()
+
+        assertEquals(listOf(expectedGenreState), values)
     }
 
     private fun collectPagingData(pagingData: PagingData<MovieItemState>): List<MovieItemState> {

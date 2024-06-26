@@ -1,4 +1,4 @@
-package com.app.jetpack.mvvm.business.moviedetail.data.entity
+package com.app.jetpack.mvvm.business.moviedetail.data.entity.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

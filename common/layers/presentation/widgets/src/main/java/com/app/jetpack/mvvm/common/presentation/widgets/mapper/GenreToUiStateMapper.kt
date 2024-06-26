@@ -9,8 +9,8 @@ class GenreToUiStateMapper @Inject constructor() {
 
     fun map(param: Genre): GenreState {
         return GenreState(
-            id = param.id.toString(),
-            genreId = param.id,
+            id = param.genreId.toString(),
+            genreId = param.genreId,
             name = param.name,
         )
     }

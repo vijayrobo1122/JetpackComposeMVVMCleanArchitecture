@@ -2,8 +2,9 @@ package com.app.jetpack.mvvm.features.popular
 
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.app.jetpack.mvvm.business.moviedetail.domain.model.GenreId
 import com.app.jetpack.mvvm.common.presentation.widgets.model.GenreState
 import com.app.jetpack.mvvm.common.ui.compositions.MoviesListWidget
 
@@ -11,18 +12,18 @@ import com.app.jetpack.mvvm.common.ui.compositions.MoviesListWidget
 fun PopularScreen(
     isShowExitAppDialog: Boolean,
     onMovieItemClick: (String) -> Unit,
-    genresStateList: ArrayList<GenreState>? = null,
 ) {
     val viewModel = hiltViewModel<PopularViewModel>()
+    val genreStateList: List<GenreState> by viewModel.genreStateList.collectAsState(emptyList())
 
     MoviesListWidget(
         isShowExitAppDialog = isShowExitAppDialog,
         movies = viewModel.popularMovies,
-        genresStateList = genresStateList,
+        genresStateList = genreStateList,
         selectedGenreState = viewModel.selectedGenre.value,
         onMovieItemClick = onMovieItemClick
     ) {
-        viewModel.filterData.value = GenreId(it?.id ?: "")
+        viewModel.genreIdData.value = it?.id ?: ""
         it?.let {
             viewModel.selectedGenre.value = it
         }

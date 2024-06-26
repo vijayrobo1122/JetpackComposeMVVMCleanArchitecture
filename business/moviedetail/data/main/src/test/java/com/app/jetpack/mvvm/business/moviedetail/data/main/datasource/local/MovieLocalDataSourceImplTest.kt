@@ -1,11 +1,14 @@
 package com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.local
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.app.jetpack.mvvm.business.moviedetail.data.entity.FavoriteEntity
+import com.app.jetpack.mvvm.business.moviedetail.data.entity.db.FavoriteEntity
+import com.app.jetpack.mvvm.business.moviedetail.data.entity.db.GenreEntity
 import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.local.dao.FavoriteDao
+import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.local.dao.GenreDao
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +31,7 @@ class MovieLocalDataSourceImplTest {
     private lateinit var sut: MovieLocalDataSourceImpl
 
     private val favoriteDao: FavoriteDao = mockk(relaxed = true)
+    private val genreDao: GenreDao = mockk(relaxed = true)
 
     private val testDispatcher = StandardTestDispatcher()
 
@@ -37,7 +41,7 @@ class MovieLocalDataSourceImplTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        sut = MovieLocalDataSourceImpl(favoriteDao)
+        sut = MovieLocalDataSourceImpl(favoriteDao, genreDao)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -93,6 +97,37 @@ class MovieLocalDataSourceImplTest {
 
         // Then
         assertFalse(result)
+    }
+
+
+    @Test
+    fun `getAllGenres should return list of genres`() = runTest {
+        // Given
+        val data = listOf(
+            GenreEntity(1, genreId = 1, "Action"),
+            GenreEntity(2, genreId = 2, "Adventure"),
+        )
+        coEvery { genreDao.getAllData() } returns data
+
+        val result = sut.getAllGenres()
+
+        // Then
+        assertEquals(data, result)
+    }
+
+    @Test
+    fun `insert all GenreEntity should call insertAllGenres on genreDao`() = runTest {
+        // Given
+        val data = listOf(
+            GenreEntity(1, genreId = 1, "Action"),
+            GenreEntity(2, genreId = 2, "Adventure"),
+        )
+
+        // When
+        sut.insertAllGenres(data)
+
+        // Then
+        coVerify { genreDao.insertAll(data) }
     }
 }
 

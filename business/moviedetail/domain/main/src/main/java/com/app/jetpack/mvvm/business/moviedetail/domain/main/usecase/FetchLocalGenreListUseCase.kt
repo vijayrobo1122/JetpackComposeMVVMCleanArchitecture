@@ -5,10 +5,10 @@ import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genre
 import com.app.jetpack.mvvm.common.domain.api.UseCase
 import javax.inject.Inject
 
-class GetGenresListUseCase @Inject constructor(
+class FetchLocalGenreListUseCase @Inject constructor(
     private val repository: MovieRepository
-) : UseCase.Suspending<Result<List<Genre>>> {
-    override suspend fun invoke(): Result<List<Genre>> {
-        return repository.genreList()
+) : UseCase.Suspending<List<Genre>> {
+    override suspend fun invoke(): List<Genre> {
+        return repository.fetchLocalGenreList()
     }
 }

@@ -1,6 +1,6 @@
 package com.app.jetpack.mvvm.business.moviedetail.data.main.mapper
 
-import com.app.jetpack.mvvm.business.moviedetail.data.entity.GenreEntity
+import com.app.jetpack.mvvm.business.moviedetail.data.entity.db.GenreEntity
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genre
 import io.mockk.every
 import io.mockk.mockk
@@ -16,11 +16,11 @@ class GenreMapperTest {
 
         // Given
         val genreEntity = GenreEntity(
-            id = 234,
+            genreId = 234,
             name = "name",
         )
         val genre = mockk<Genre>(relaxed = true) {
-            every { id } returns genreEntity.id
+            every { genreId } returns genreEntity.genreId
             every { name } returns genreEntity.name
         }
 
@@ -28,7 +28,7 @@ class GenreMapperTest {
         val genreModel: Genre = sut.mapTo(genreEntity)
 
         // Then
-        assertEquals(genre.id, genreModel.id)
+        assertEquals(genre.genreId, genreModel.genreId)
         assertEquals(genre.name, genreModel.name)
     }
 }

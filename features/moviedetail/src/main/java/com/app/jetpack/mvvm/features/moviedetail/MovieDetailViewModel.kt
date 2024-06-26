@@ -54,7 +54,9 @@ class MovieDetailViewModel @Inject constructor(
             _isLoading.value = true
             getMovieDetailUseCase.invoke(movieId).fold(
                 onSuccess = { data ->
-                    _movieDetail.value = movieDetailToUiStateMapper.map(data)
+                    _movieDetail.value = movieDetailToUiStateMapper.map(data).also {
+                        it.isFavorite = isMovieFavoriteUseCase.invoke(movieId)
+                    }
                     _isLoading.value = false
                 },
                 onFailure = {

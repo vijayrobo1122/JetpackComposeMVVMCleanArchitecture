@@ -42,6 +42,7 @@ turbine = "1.1.0"
 appcompat = "1.7.0"
 material = "1.12.0"
 uiUtil = "1.6.8"
+runtimeLivedata = "1.6.8"
 
 
 [libraries]
@@ -99,6 +100,7 @@ mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockito
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }

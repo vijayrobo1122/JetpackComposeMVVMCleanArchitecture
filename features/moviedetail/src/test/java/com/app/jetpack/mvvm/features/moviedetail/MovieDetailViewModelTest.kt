@@ -3,6 +3,7 @@ package com.app.jetpack.mvvm.features.moviedetail
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import app.cash.turbine.test
 import com.app.jetpack.mvvm.business.artistdetail.domain.main.usecase.GetMovieCreditUseCase
 import com.app.jetpack.mvvm.business.artistdetail.domain.model.Artist
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetMovieDetailUseCase
@@ -135,6 +136,7 @@ class MovieDetailViewModelTest {
             val mockMovieDetail = mockk<MovieDetail>(relaxed = true)
             val mockMovieDetailState = mockk<MovieDetailState>(relaxed = true)
             val mockDataStateSuccess = Result.success(mockMovieDetail)
+            coEvery { isMovieFavoriteUseCase.invoke(movieId) } returns false
             coEvery { getMovieDetailUseCase.invoke(movieId) } returns mockDataStateSuccess
             every { movieDetailToUiStateMapper.map(mockMovieDetail) } returns mockMovieDetailState
 
@@ -143,9 +145,45 @@ class MovieDetailViewModelTest {
             sut.movieDetailApi(movieId)
 
             // Then
-            assertEquals(mockDataStateSuccess, sut.movieDetail.value)
             coVerify { getMovieCreditUseCase.invoke(movieId) }
+            coVerify { isMovieFavoriteUseCase.invoke(movieId) }
             coVerify { movieDetailToUiStateMapper.map(mockMovieDetail) }
+            sut.movieDetail.test {
+                val item = awaitItem()
+                assertEquals(mockDataStateSuccess.getOrNull(), item)
+                assertEquals(false, item?.isFavorite)
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+    }
+
+    @Test
+    fun `movieDetailApi fetches movie details with favorite status successfully`() {
+
+        testScope.launch {
+            // Given
+            val movieId = 123
+            val mockMovieDetail = mockk<MovieDetail>(relaxed = true)
+            val mockMovieDetailState = mockk<MovieDetailState>(relaxed = true)
+            val mockDataStateSuccess = Result.success(mockMovieDetail)
+            coEvery { isMovieFavoriteUseCase.invoke(movieId) } returns true
+            coEvery { getMovieDetailUseCase.invoke(movieId) } returns mockDataStateSuccess
+            every { movieDetailToUiStateMapper.map(mockMovieDetail) } returns mockMovieDetailState
+
+
+            // When
+            sut.movieDetailApi(movieId)
+
+            // Then
+            coVerify { getMovieCreditUseCase.invoke(movieId) }
+            coVerify { isMovieFavoriteUseCase.invoke(movieId) }
+            coVerify { movieDetailToUiStateMapper.map(mockMovieDetail) }
+            sut.movieDetail.test {
+                val item = awaitItem()
+                assertEquals(mockDataStateSuccess.getOrNull(), item)
+                assertEquals(true, item?.isFavorite)
+                cancelAndIgnoreRemainingEvents()
+            }
         }
     }
 
@@ -193,9 +231,13 @@ class MovieDetailViewModelTest {
             sut.recommendedMovieApi(movieId, page)
 
             // Then
-            assertEquals(mockDataStateSuccess, sut.recommendedMovie.value)
             coVerify { getMovieCreditUseCase.invoke(movieId) }
             coVerify { baseModelToUiStateMapper.map(mockBaseModel) }
+            sut.recommendedMovie.test {
+                val item = awaitItem()
+                assertEquals(mockDataStateSuccess.getOrNull(), item)
+                cancelAndIgnoreRemainingEvents()
+            }
         }
     }
 
@@ -214,9 +256,9 @@ class MovieDetailViewModelTest {
             sut.movieCredit(movieId)
 
             // Then
-            assertEquals(mockDataStateError, sut.recommendedMovie.value)
             coVerify { getMovieCreditUseCase.invoke(movieId) }
             verifyNoInteractions(artistToUiStateMapper)
+            assertEquals(mockDataStateError, sut.recommendedMovie.value)
         }
     }
 
@@ -243,9 +285,13 @@ class MovieDetailViewModelTest {
             sut.movieCredit(movieId)
 
             // Then
-            assertEquals(mockDataStateSuccess, sut.artist.value)
             coVerify { getMovieCreditUseCase.invoke(movieId) }
             coVerify { artistToUiStateMapper.map(mockArtist) }
+            sut.artist.test {
+                val item = awaitItem()
+                assertEquals(mockDataStateSuccess.getOrNull(), item)
+                cancelAndIgnoreRemainingEvents()
+            }
         }
     }
 
@@ -261,9 +307,13 @@ class MovieDetailViewModelTest {
             sut.movieCredit(movieId)
 
             // Then
-            assertEquals(mockDataStateError, sut.artist.value)
             coVerify { getMovieCreditUseCase.invoke(movieId) }
             verifyNoInteractions(artistToUiStateMapper)
+            sut.artist.test {
+                val item = awaitItem()
+                assertEquals(mockDataStateError, item)
+                cancelAndIgnoreRemainingEvents()
+            }
         }
     }
 
@@ -277,7 +327,7 @@ class MovieDetailViewModelTest {
             posterPath = "posterPath",
         )
         private val genre = Genre(
-            id = 234,
+            genreId = 234,
             name = "name",
         )
         private val productionCompany = ProductionCompany(

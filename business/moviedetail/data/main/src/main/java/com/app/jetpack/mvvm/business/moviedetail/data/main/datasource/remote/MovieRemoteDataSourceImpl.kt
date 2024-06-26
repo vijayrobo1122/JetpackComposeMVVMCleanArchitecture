@@ -23,16 +23,16 @@ class MovieRemoteDataSourceImpl @Inject constructor(
     private val baseModelMapper: BaseModelMapper,
 ) : MovieRemoteDataSource {
 
+    override suspend fun genreList(): Result<GenresEntity> {
+        return safeApiCall { apiService.genreList() }
+    }
+
     override suspend fun movieDetail(movieId: Int): Result<MovieDetailEntity> {
         return safeApiCall { apiService.movieDetail(movieId) }
     }
 
     override suspend fun recommendedMovie(movieId: Int, page: Int): Result<BaseModelEntity> {
         return safeApiCall { apiService.recommendedMovie(movieId, page) }
-    }
-
-    override suspend fun genreList(): Result<GenresEntity> {
-        return safeApiCall { apiService.genreList() }
     }
 
     override fun nowPlayingPagingDataSource(genreId: String?): Flow<PagingData<MovieItem>> {

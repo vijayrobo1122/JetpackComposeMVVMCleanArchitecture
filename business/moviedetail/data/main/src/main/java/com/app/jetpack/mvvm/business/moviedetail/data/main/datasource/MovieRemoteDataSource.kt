@@ -8,11 +8,12 @@ import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieItem
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRemoteDataSource {
+
+    suspend fun genreList(): Result<GenresEntity>
+
     suspend fun movieDetail(movieId: Int): Result<MovieDetailEntity>
 
     suspend fun recommendedMovie(movieId: Int, page: Int): Result<BaseModelEntity>
-
-    suspend fun genreList(): Result<GenresEntity>
 
     fun nowPlayingPagingDataSource(genreId: String?): Flow<PagingData<MovieItem>>
 

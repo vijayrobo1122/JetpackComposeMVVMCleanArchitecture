@@ -1,6 +1,6 @@
 package com.app.jetpack.mvvm.business.moviedetail.domain.model
 
 data class Genre(
-    val id: Int?,
+    val genreId: Int,
     val name: String
 )

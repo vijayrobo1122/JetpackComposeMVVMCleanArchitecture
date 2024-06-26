@@ -30,10 +30,10 @@ class MainViewModel @Inject constructor(
             _isLoading.value = true
             getGenresListUseCase.invoke().fold(
                 onSuccess = { data ->
-                    val genresStateList: ArrayList<GenreState> = data.genres.map { genre ->
+                    val genresStateList: ArrayList<GenreState> = data.map { genre ->
                         genreToUiStateMapper.map(genre)
                     } as ArrayList<GenreState>
-                    if (genresStateList.first().name != DEFAULT_GENRE_ITEM) {
+                    if (genresStateList.isNotEmpty() && genresStateList.first().name != DEFAULT_GENRE_ITEM) {
                         genresStateList.add(
                             0,
                             GenreState(genreId = null, name = DEFAULT_GENRE_ITEM)

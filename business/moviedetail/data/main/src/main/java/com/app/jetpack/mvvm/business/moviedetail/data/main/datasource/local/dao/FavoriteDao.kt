@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.app.jetpack.mvvm.business.moviedetail.data.entity.FavoriteEntity
+import com.app.jetpack.mvvm.business.moviedetail.data.entity.db.FavoriteEntity
 
 @Dao
 interface FavoriteDao {

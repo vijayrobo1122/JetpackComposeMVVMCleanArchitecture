@@ -1,6 +1,8 @@
 package com.app.jetpack.mvvm.features.toprated.di
 
+import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.FetchLocalGenreListUseCase
 import com.app.jetpack.mvvm.business.moviedetail.domain.main.usecase.GetTopRatedMoviesUseCase
+import com.app.jetpack.mvvm.common.presentation.widgets.mapper.GenreToUiStateMapper
 import com.app.jetpack.mvvm.common.presentation.widgets.mapper.MovieItemToUiStateMapper
 import com.app.jetpack.mvvm.features.toprated.TopRatedViewModel
 import dagger.Module
@@ -16,10 +18,14 @@ class TopRatedModule {
     fun provideTopRatedViewModel(
         getTopRatedMoviesUseCase: GetTopRatedMoviesUseCase,
         movieItemToUiStateMapper: MovieItemToUiStateMapper,
+        fetchLocalGenreListUseCase: FetchLocalGenreListUseCase,
+        genreToUiStateMapper: GenreToUiStateMapper,
     ): TopRatedViewModel {
         return TopRatedViewModel(
             getTopRatedMoviesUseCase,
             movieItemToUiStateMapper,
+            fetchLocalGenreListUseCase,
+            genreToUiStateMapper,
         )
     }
 }

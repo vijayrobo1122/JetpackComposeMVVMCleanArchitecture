@@ -5,17 +5,16 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import app.cash.turbine.test
 import com.app.jetpack.mvvm.business.moviedetail.data.entity.BaseModelEntity
-import com.app.jetpack.mvvm.business.moviedetail.data.entity.GenreEntity
 import com.app.jetpack.mvvm.business.moviedetail.data.entity.GenresEntity
 import com.app.jetpack.mvvm.business.moviedetail.data.entity.MovieDetailEntity
+import com.app.jetpack.mvvm.business.moviedetail.data.entity.db.GenreEntity
 import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.MovieLocalDataSource
 import com.app.jetpack.mvvm.business.moviedetail.data.main.datasource.MovieRemoteDataSource
 import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.BaseModelMapper
-import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.GenresMapper
+import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.GenreMapper
 import com.app.jetpack.mvvm.business.moviedetail.data.main.mapper.MovieDetailMapper
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.BaseModel
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genre
-import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genres
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieDetail
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.MovieItem
 import io.mockk.coEvery
@@ -51,7 +50,7 @@ class MovieRepositoryImplTest {
     private val movieRemoteDataSource = mockk<MovieRemoteDataSource>(relaxed = true)
     private val baseModelMapper: BaseModelMapper = mockk(relaxed = true)
     private val movieDetailMapper: MovieDetailMapper = mockk(relaxed = true)
-    private val genresMapper: GenresMapper = mockk(relaxed = true)
+    private val genreMapper: GenreMapper = mockk(relaxed = true)
 
     private val testDispatcher = StandardTestDispatcher()
 
@@ -66,7 +65,7 @@ class MovieRepositoryImplTest {
             movieRemoteDataSource,
             baseModelMapper,
             movieDetailMapper,
-            genresMapper
+            genreMapper
         )
     }
 
@@ -204,14 +203,11 @@ class MovieRepositoryImplTest {
         testScope.launch {
             // Given
             val mockGenre = mockk<Genre>(relaxed = true) {
-                every { id } returns 1
+                every { genreId } returns 1
                 every { name } returns "Action"
             }
-            val mockGenres = mockk<Genres>(relaxed = true) {
-                every { genres } returns listOf(mockGenre)
-            }
             val mockGenreEntity = mockk<GenreEntity>(relaxed = true) {
-                every { id } returns 1
+                every { genreId } returns 1
                 every { name } returns "Action"
             }
             val mockGenresEntity = mockk<GenresEntity>(relaxed = true) {
@@ -219,16 +215,94 @@ class MovieRepositoryImplTest {
             }
             val mockDataStateSuccess = Result.success(mockGenresEntity)
             coEvery { movieRemoteDataSource.genreList() } returns mockDataStateSuccess
-            every { genresMapper.mapTo(mockGenresEntity) } returns mockGenres
+            every { genreMapper.mapTo(mockGenreEntity) } returns mockGenre
 
             // When
             val result = sut.genreList()
 
             // Then
             coVerify { movieRemoteDataSource.genreList() }
-            verify { genresMapper.mapTo(mockGenresEntity) }
+            verify { genreMapper.mapTo(mockGenreEntity) }
             assertEquals(true, result.isSuccess)
             assertEquals(true, result.getOrNull())
+        }
+    }
+
+    @Test
+    fun `genreList should return flow from local data source`() = runTest {
+        testScope.launch {
+            // Given
+            val mockGenre = mockk<Genre>(relaxed = true) {
+                every { genreId } returns 1
+                every { name } returns "Action"
+            }
+            val mockGenreEntity = mockk<GenreEntity>(relaxed = true) {
+                every { genreId } returns 1
+                every { name } returns "Action"
+            }
+            val mockGenresEntity = mockk<GenresEntity>(relaxed = true) {
+                every { genres } returns listOf(mockGenreEntity)
+            }
+            val genresList = listOf(mockGenreEntity)
+            coEvery { movieLocalDataSource.getAllGenres() } returns genresList
+
+            val mockDataStateSuccess = Result.success(mockGenresEntity)
+
+            coEvery { movieRemoteDataSource.genreList() } returns mockDataStateSuccess
+            every { genreMapper.mapTo(mockGenreEntity) } returns mockGenre
+
+
+            // When
+            val result = sut.genreList()
+
+            // Then
+            coVerify { movieLocalDataSource.getAllGenres() }
+            assertEquals(true, movieLocalDataSource.getAllGenres().isNotEmpty())
+            verify { genreMapper.mapTo(mockGenreEntity) }
+            coVerify(exactly = 0) { movieRemoteDataSource.genreList() }
+            assertEquals(true, result.isSuccess)
+            assertEquals(listOf(mockGenre), result.getOrNull())
+        }
+    }
+
+    @Test
+    fun `genreList should return flow from remote data source 1`() = runTest {
+        testScope.launch {
+            // Given
+            val mockGenre = mockk<Genre>(relaxed = true) {
+                every { genreId } returns 1
+                every { name } returns "Action"
+            }
+            val mockGenreEntity = mockk<GenreEntity>(relaxed = true) {
+                every { genreId } returns 1
+                every { name } returns "Action"
+            }
+            val mockGenresEntity = mockk<GenresEntity>(relaxed = true) {
+                every { genres } returns listOf(mockGenreEntity)
+            }
+            val genresList = emptyList<GenreEntity>()
+
+
+
+            coEvery { movieLocalDataSource.getAllGenres() } returns genresList
+            val mockDataStateSuccess = Result.success(mockGenresEntity)
+            coEvery { movieRemoteDataSource.genreList() } returns mockDataStateSuccess
+            every { genreMapper.mapTo(mockGenreEntity) } returns mockGenre
+
+            coEvery { movieLocalDataSource.insertAllGenres(mockGenresEntity.genres) } just runs
+
+
+            // When
+            val result = sut.genreList()
+
+            // Then
+            coVerify { movieLocalDataSource.getAllGenres() }
+            assertEquals(true, movieLocalDataSource.getAllGenres().isEmpty())
+            coVerify { movieRemoteDataSource.genreList() }
+            coVerify { movieLocalDataSource.insertAllGenres(mockGenresEntity.genres) }
+            verify { genreMapper.mapTo(mockGenreEntity) }
+            assertEquals(true, result.isSuccess)
+            assertEquals(mockGenresEntity.genres, result.getOrNull())
         }
     }
 
@@ -376,4 +450,30 @@ class MovieRepositoryImplTest {
             }
         }
     }
+
+
+    @Test
+    fun `fetch all genres list from database should return list value from local data source`() =
+        runTest {
+            // Given
+            val mockGenre = mockk<Genre>(relaxed = true) {
+                every { genreId } returns 1
+                every { name } returns "Action"
+            }
+            val mockGenreEntity = mockk<GenreEntity>(relaxed = true) {
+                every { genreId } returns 1
+                every { name } returns "Action"
+            }
+            coEvery { movieLocalDataSource.getAllGenres() } returns listOf(mockGenreEntity)
+            every { genreMapper.mapTo(mockGenreEntity) } returns mockGenre
+
+            // When
+            val result = sut.fetchLocalGenreList()
+
+            // Then
+            coVerify { movieLocalDataSource.getAllGenres() }
+            verify { genreMapper.mapTo(mockGenreEntity) }
+            assertEquals(listOf(mockGenre), result)
+        }
+
 }

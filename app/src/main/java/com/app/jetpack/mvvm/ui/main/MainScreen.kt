@@ -30,7 +30,6 @@ import com.app.jetpack.mvvm.R
 import com.app.jetpack.mvvm.common.navigation.Screen
 import com.app.jetpack.mvvm.common.navigation.currentRoute
 import com.app.jetpack.mvvm.common.navigation.navigationTitle
-import com.app.jetpack.mvvm.common.presentation.widgets.model.GenreState
 import com.app.jetpack.mvvm.common.ui.compositions.AppBarWithArrow
 import com.app.jetpack.mvvm.common.ui.compositions.HomeAppBar
 import com.app.jetpack.mvvm.common.ui.resources.strings.StringResources
@@ -77,10 +76,9 @@ fun MainScreen() {
             }
         },
         content = {
-            genreList.value?.let { list ->
+            genreList.value?.let {
                 CustomScaffoldView(
                     navController,
-                    list,
                     genreName.value,
                     isConnected
                 ) {
@@ -97,7 +95,6 @@ fun MainScreen() {
 @Composable
 fun CustomScaffoldView(
     navController: NavHostController,
-    genreList: List<GenreState>,
     genreName: String,
     isConnected: Boolean,
     openDrawer: () -> Unit
@@ -119,7 +116,7 @@ fun CustomScaffoldView(
             CustomSnackBarView(isShow = isConnected.not(), snackbarHostState)
         },
     ) { innerPadding ->
-        ScaffoldContent(innerPadding, navController, genreList)
+        ScaffoldContent(innerPadding, navController)
     }
 }
 
@@ -160,7 +157,6 @@ fun ScaffoldTopBar(navController: NavHostController, genreName: String, openDraw
 fun ScaffoldContent(
     innerPadding: PaddingValues,
     navController: NavHostController,
-    genreList: List<GenreState>,
 ) {
     Box(
         modifier = Modifier.fillMaxWidth()
@@ -168,7 +164,6 @@ fun ScaffoldContent(
         AppNavigation(
             modifier = Modifier.padding(innerPadding),
             navController = navController,
-            genresStateList = genreList as ArrayList<GenreState>?,
         )
     }
 }

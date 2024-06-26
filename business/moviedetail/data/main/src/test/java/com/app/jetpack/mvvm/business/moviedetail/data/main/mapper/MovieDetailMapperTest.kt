@@ -1,11 +1,11 @@
 package com.app.jetpack.mvvm.business.moviedetail.data.main.mapper
 
 import com.app.jetpack.mvvm.business.moviedetail.data.entity.BelongsToCollectionEntity
-import com.app.jetpack.mvvm.business.moviedetail.data.entity.GenreEntity
 import com.app.jetpack.mvvm.business.moviedetail.data.entity.MovieDetailEntity
 import com.app.jetpack.mvvm.business.moviedetail.data.entity.ProductionCompanyEntity
 import com.app.jetpack.mvvm.business.moviedetail.data.entity.ProductionCountryEntity
 import com.app.jetpack.mvvm.business.moviedetail.data.entity.SpokenLanguageEntity
+import com.app.jetpack.mvvm.business.moviedetail.data.entity.db.GenreEntity
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.BelongsToCollection
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.Genre
 import com.app.jetpack.mvvm.business.moviedetail.domain.model.ProductionCompany
@@ -48,11 +48,11 @@ class MovieDetailMapperTest {
         every { belongsToCollectionMapper.mapTo(belongsToCollectionEntity) } returns belongsToCollection
 
         val genreEntity = GenreEntity(
-            id = 234,
+            genreId = 234,
             name = "name",
         )
         val genre = mockk<Genre>(relaxed = true) {
-            every { id } returns genreEntity.id
+            every { genreId } returns genreEntity.genreId
             every { name } returns genreEntity.name
         }
         every { genreMapper.mapTo(genreEntity) } returns genre
@@ -164,7 +164,7 @@ class MovieDetailMapperTest {
         assertEquals(belongsToCollectionEntity.posterPath, belongsToCollectionModel.posterPath)
 
         val genreModel = movieDetailModel.genresList.first()
-        assertEquals(genre.id, genreModel.id)
+        assertEquals(genre.genreId, genreModel.genreId)
         assertEquals(genre.name, genreModel.name)
 
         val productionCompanyModel = movieDetailModel.productionCompaniesList.first()

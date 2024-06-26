@@ -50,7 +50,6 @@ fun NetworkImage(
                             shouldLoadImage = true
                         },
                         onError = { request, error ->
-                            println("vijay image error : " + error.throwable.message)
                             shouldLoadImage = true
                             imageError = true
                         }
